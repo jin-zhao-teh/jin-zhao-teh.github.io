@@ -1,0 +1,36 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif; /* Clean base font for the body */
+    color: white; /* Default text color for contrast */
+}
+
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire background */
+}
+
+header {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem; /* Larger font size for prominence */
+    font-weight: normal; /* Use normal weight to avoid overwhelming the design */
+    color: white; /* White text for contrast against dark backgrounds */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Subtle shadow for better readability */
+    padding: 20px 40px; /* Generous padding for a clean look */
+    text-align: center; /* Center align text */
+    line-height: 1.2; /* Adjust line-height for readability */
+    max-width: 90%; /* Ensures header doesn't exceed viewport width */
+}
