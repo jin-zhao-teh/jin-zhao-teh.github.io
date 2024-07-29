@@ -2,19 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jin-Zhao Teh</title>
   </head>
   <body>
-    <div id="background">
-        <picture>
-            <source>
-            <img src="Images/Img1.webp">
-        </picture>
+    <div id="slider">
+      <div class="slide" id="hero-page-w1">
+        <div id="background">
+          <picture>
+            <img src="Images/Img1.webp" alt="Background Image 1" />
+          </picture>
+        </div>
+        <header>Jin-Zhao Teh</header>
+      </div>
+      <div class="slide" id="hero-page-w2">
+        <div id="background">
+          <picture>
+            <img src="Images/Img1.webp" alt="Background Image 2" />
+          </picture>
+        </div>
+        <header>Another Page</header>
+      </div>
+      <!-- Add more slides here -->
     </div>
-    <header>
-        Jin-Zhao Teh
-    </header>
+    <button id="prev">
+      <svg viewBox="0 0 24 24" class="icon">
+        <line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="2" />
+        <line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="2" />
+      </svg>
+    </button>
+    <button id="next">
+      <svg viewBox="0 0 24 24" class="icon">
+        <line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="2" />
+        <line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="2" />
+      </svg>
+    </button>
+    <script src="js/hero-page-transition.js"></script>
   </body>
 </html>
