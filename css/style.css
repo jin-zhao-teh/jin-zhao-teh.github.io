@@ -2,12 +2,26 @@ html,
 body {
   height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif; /* Clean base font for the body */
-  color: white; /* Default text color for contrast */
-  font-weight: bolder; /* Bold text for contrast against dark backgrounds */
+  font-family: Arial, sans-serif;
+  color: black;
+  font-weight: bolder;
 }
 
-#background {
+#slider {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  min-width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+.hero-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,7 +30,7 @@ body {
   overflow: hidden;
 }
 
-#background img {
+.hero-background img {
   width: 100%;
   height: 100%;
   object-fit: cover; /* Ensures the image covers the entire background */
@@ -27,37 +41,15 @@ header {
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 5vw; /* Scales font size relative to viewport width */
-  font-weight: 450; /* Use normal weight to avoid overwhelming the design */
-  color: white; /* White text for contrast against dark backgrounds */
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Subtle shadow for better readability */
-  padding: 0; /* Remove padding to ensure text scales properly */
-  text-align: center; /* Center align text */
-  line-height: 1.2; /* Adjust line-height for readability */
-  max-width: 90vw; /* Ensures header doesn't exceed viewport width */
-  white-space: nowrap; /* Prevents text from wrapping */
-}
-
-#slider {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-
-.slide {
-  min-width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  position: relative;
-}
-
-#background img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  font-size: 5vw;
+  font-weight: 450;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  padding: 0;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 90vw;
+  white-space: nowrap;
 }
 
 button {
@@ -107,9 +99,11 @@ button {
 #next:hover .icon {
   animation: rotate-in 0.5s forwards;
 }
+
 #next .icon {
   animation: rotate-out 0.5s forwards;
 }
+
 #prev .icon {
   animation: rotate-in 0.5s forwards;
 }
@@ -132,4 +126,34 @@ button {
   to {
     transform: rotate(90deg); /* Rotate inward (positive direction) */
   }
+}
+
+/* Existing styles */
+
+/* Additional styles for fading effect */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide.inactive {
+  display: none;
+}
+
+.slide.next {
+  transform: translateX(100%);
+}
+
+.slide.prev {
+  transform: translateX(-100%);
 }

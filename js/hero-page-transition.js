@@ -1,51 +1,34 @@
-// js/slider.js
-document.addEventListener("DOMContentLoaded", () => {
-  const s = document.getElementById("slider"); // Slider element
-  const l = document.querySelectorAll(".slide"); // Slide elements
-  const p = document.getElementById("prev"); // Previous button
-  const n = document.getElementById("next"); // Next button
-  let c = 0; // Current slide index
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
 
-  function showSlide(i) {
-    if (i >= l.length) {
-      c = l.length - 1; // Stay on the last slide
-    } else if (i < 0) {
-      c = 0; // Stay on the first slide
-    } else {
-      c = i;
-    }
-    s.style.transform = `translateX(-${c * 100}%)`;
-  }
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active', 'prev', 'next');
+            if (i === currentSlide) {
+                slide.classList.add(index > currentSlide ? 'prev' : 'next');
+            }
+        });
 
-  function handleClick(e) {
-    // Check if the click is not on a button
-    if (e.target !== p && e.target !== n) {
-      if (e.clientX < window.innerWidth / 2) {
-        // Clicked on the left half of the screen
-        if (c > 0) {
-          showSlide(c - 1);
+        if (index >= slides.length) {
+            currentSlide = slides.length - 1;
+        } else if (index < 0) {
+            currentSlide = 0;
+        } else {
+            currentSlide = index;
         }
-      } else {
-        // Clicked on the right half of the screen
-        if (c < l.length - 1) {
-          showSlide(c + 1);
-        }
-      }
-    }
-  }
 
-  n.addEventListener("click", () => {
-    if (c < l.length - 1) {
-      showSlide(c + 1);
+        slides[currentSlide].classList.add('active');
     }
-  });
 
-  p.addEventListener("click", () => {
-    if (c > 0) {
-      showSlide(c - 1);
-    }
-  });
+    document.getElementById('next').addEventListener('click', () => {
+        showSlide(currentSlide + 1);
+    });
 
-  // Add click event listener to the document
-  document.addEventListener("click", handleClick);
+    document.getElementById('prev').addEventListener('click', () => {
+        showSlide(currentSlide - 1);
+    });
+
+    // Initially display the first slide
+    slides[currentSlide].classList.add('active');
 });
