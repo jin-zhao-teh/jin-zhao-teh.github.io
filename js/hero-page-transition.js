@@ -1,34 +1,33 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const slider = document.getElementById("slider");
+  const slides = document.querySelectorAll(".slide");
+  let currentIndex = 0;
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.remove('active', 'prev', 'next');
-            if (i === currentSlide) {
-                slide.classList.add(index > currentSlide ? 'prev' : 'next');
-            }
-        });
+  // Update the slider position
+  function updateSliderPosition() {
+    slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
+  }
 
-        if (index >= slides.length) {
-            currentSlide = slides.length - 1;
-        } else if (index < 0) {
-            currentSlide = 0;
-        } else {
-            currentSlide = index;
-        }
-
-        slides[currentSlide].classList.add('active');
+  // Show the next slide
+  function nextSlide() {
+    if (currentIndex < slides.length - 1) {
+      currentIndex++;
+      updateSliderPosition();
     }
+  }
 
-    document.getElementById('next').addEventListener('click', () => {
-        showSlide(currentSlide + 1);
-    });
+  // Show the previous slide
+  function prevSlide() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateSliderPosition();
+    }
+  }
 
-    document.getElementById('prev').addEventListener('click', () => {
-        showSlide(currentSlide - 1);
-    });
+  // Attach event listeners to the buttons
+  document.getElementById("next").addEventListener("click", nextSlide);
+  document.getElementById("prev").addEventListener("click", prevSlide);
 
-    // Initially display the first slide
-    slides[currentSlide].classList.add('active');
+  // Initial position setup
+  updateSliderPosition();
 });

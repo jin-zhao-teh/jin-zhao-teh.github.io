@@ -5,22 +5,22 @@ body {
   font-family: Arial, sans-serif;
   color: black;
   font-weight: bolder;
+  overflow: hidden;
 }
 
 #slider {
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
   transition: transform 0.5s ease-in-out;
+  width: 100%; /* Adjust based on the number of slides */
+  height: 100vh;
 }
 
 .slide {
-  min-width: 100%;
-  height: 100%;
-  box-sizing: border-box;
+  flex: 1 0 100%;
+  height: 100vh;
   position: relative;
 }
+
 .hero-background {
   position: absolute;
   top: 0;
@@ -34,6 +34,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover; /* Ensures the image covers the entire background */
+  object-position: center; /* Center the image within the container */
 }
 
 header {
@@ -41,7 +42,7 @@ header {
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 5vw;
+  font-size: 2.5vw;
   font-weight: 450;
   color: white;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
@@ -87,16 +88,18 @@ button {
   stroke: white;
   stroke-width: 2;
   fill: none;
-  transition: transform 0.5s ease; /* Smooth transition for transform */
+  transition: transform 0.5s ease;
 }
 
-/* Rotation effect for the previous button */
 #prev:hover .icon {
   animation: rotate-out 0.5s forwards;
 }
 
-/* Rotation effect for the next button */
 #next:hover .icon {
+  animation: rotate-in 0.5s forwards;
+}
+
+#prev .icon {
   animation: rotate-in 0.5s forwards;
 }
 
@@ -104,56 +107,20 @@ button {
   animation: rotate-out 0.5s forwards;
 }
 
-#prev .icon {
-  animation: rotate-in 0.5s forwards;
-}
-
-/* Keyframes for rotating outwards (left button) */
 @keyframes rotate-out {
   from {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(-90deg); /* Rotate outward (negative direction) */
+    transform: rotate(-90deg);
   }
 }
 
-/* Keyframes for rotating inwards (right button) */
 @keyframes rotate-in {
   from {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(90deg); /* Rotate inward (positive direction) */
+    transform: rotate(90deg);
   }
-}
-
-/* Existing styles */
-
-/* Additional styles for fading effect */
-.slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-}
-
-.slide.active {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.slide.inactive {
-  display: none;
-}
-
-.slide.next {
-  transform: translateX(100%);
-}
-
-.slide.prev {
-  transform: translateX(-100%);
 }
