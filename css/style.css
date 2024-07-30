@@ -10,7 +10,7 @@ body {
 
 #slider {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 1s ease-in-out;
   width: 100%; /* Adjust based on the number of slides */
   height: 100vh;
 }
