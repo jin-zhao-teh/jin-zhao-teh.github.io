@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   // Update the slider position
-  function updateSliderPosition() {
+  function updateSliderPosition(type) {
+
     slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
   }
 
