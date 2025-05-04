@@ -124,3 +124,19 @@ button {
     transform: rotate(90deg);
   }
 }
+
+/* Additional CSS for zoom effect */
+.zoom-slide {
+  animation: zoomIn 1s forwards;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

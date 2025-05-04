@@ -5,20 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndexY = 0;
 
   // Update the slider position
-  function updateSliderPosition(type) {
-    console.log(type)
-    if (type == "x") {
-      slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
-    } else if (type == "y") {
-      slider.style.transform = `translateY(-${currentIndexY * 100}vw)`;
-    }
+  function updateSliderPosition() {
+    slider.style.transform = `translateX(-${currentIndex * 100}vw) translateY(-${currentIndexY * 100}vh)`;
   }
 
   // Show the next slide, x
   function nextSlide() {
     if (currentIndex < slides.length - 1) {
       currentIndex++;
-      updateSliderPosition("x");
+      updateSliderPosition();
     }
   }
 
@@ -26,29 +21,48 @@ document.addEventListener("DOMContentLoaded", () => {
   function prevSlide() {
     if (currentIndex > 0) {
       currentIndex--;
-      updateSliderPosition("x");
+      updateSliderPosition();
     }
   }
-  // Show the next slide, y
-  function nextSlideY() {
-    if (currentIndex < slides.length - 1) {
+
+  // Move vertically based on the slide index
+  function toggleVerticalSlide() {
+    if (currentIndex % 2 === 0) {
       currentIndexY++;
-      if (currentIndexY > 0) {
-        Array.prototype.slice.call(document.getElementsByClassName("Hero-bttn"), 0).forEach(element => {
-          element.style.display = "None";
-        });
-      } else {
-        Array.prototype.slice.call(document.getElementsByClassName("Hero-bttn"), 0).forEach(element => {
-          element.style.display = "block";
-        });
-      }
-      updateSliderPosition("y");
+    } else {
+      currentIndexY--;
     }
-  };
+    updateSliderPosition();
+  }
+
+  // Open a new slide with zoom effect
+  function openZoomSlide() {
+    const newSlide = document.createElement("div");
+    newSlide.classList.add("slide", "zoom-slide");
+    newSlide.innerHTML = `
+      <div class="hero-background">
+        <img src="Images/Img2.webp" alt="Background Image Zoom" />
+      </div>
+      <header class="Hero-text">Zoomed In Slide</header>
+    `;
+    slider.appendChild(newSlide);
+    currentIndex++;
+    updateSliderPosition();
+  }
+
   // Attach event listeners to the buttons
   document.getElementById("next").addEventListener("click", nextSlide);
   document.getElementById("prev").addEventListener("click", prevSlide);
-  document.getElementById("Hero-text1").addEventListener("click", nextSlideY);
+
+  Array.from(document.getElementsByClassName("Hero-text")).forEach((element) => {
+    element.addEventListener("click", toggleVerticalSlide);
+  });
+
+  Array.from(document.getElementsByClassName("slide")).forEach((element, index) => {
+    if (index === 1) {
+      element.addEventListener("click", openZoomSlide);
+    }
+  });
 
   // Initial position setup
   updateSliderPosition();
