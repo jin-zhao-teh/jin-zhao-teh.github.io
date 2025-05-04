@@ -23,9 +23,13 @@ if not exist "%tempZip%" (
     exit /b 1
 )
 
-:: Extract the ZIP file to the target folder
+:: Create a temporary folder to extract the zip contents
+set "tempExtract=%temp%\updateExtract"
+mkdir "%tempExtract%"
+
+:: Extract the ZIP file to the temporary folder
 echo Extracting the update.zip...
-powershell -Command "Expand-Archive -Path '%tempZip%' -DestinationPath '%targetFolder%' -Force"
+powershell -Command "Expand-Archive -Path '%tempZip%' -DestinationPath '%tempExtract%' -Force"
 
 :: Check if the extraction was successful
 if errorlevel 1 (
@@ -33,9 +37,16 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: Clean up the downloaded ZIP file
+:: Move extracted files from temp folder into the target folder
+echo Moving the extracted contents into the "%folderName%" folder...
+for /r "%tempExtract%" %%f in (*) do (
+    move /Y "%%f" "%targetFolder%\"
+)
+
+:: Clean up the downloaded and extracted files
 echo Cleaning up...
 del "%tempZip%"
+rd /S /Q "%tempExtract%"
 
 :: Confirm the update is complete
 echo Update completed successfully.
