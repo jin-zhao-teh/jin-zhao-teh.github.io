@@ -850,7 +850,7 @@
         
         // Physics functions
         function sigma_v(T, fuel) {
-            T = Math.max(T, 0.1); // Avoid negative temperatures
+            T = Math.max(T, 0.1) // Avoid negative temperatures
             
             if (fuel === "DT") {
                 // More accurate DT reactivity
