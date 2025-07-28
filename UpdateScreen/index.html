@@ -1,199 +1,572 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Fake Windows Update</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #111;
-      color: white;
-      height: 100%;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Update</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    #config-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      background: #1c1c1c;
-    }
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
 
-    #config-screen select, #config-screen button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 1.2em;
-    }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(0, 15, 30, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            margin: 20px;
+            backdrop-filter: blur(10px);
+        }
 
-    #update-screen, #boot-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background: #0c0c0c;
-      color: white;
-      z-index: 9999;
-    }
+        header {
+            background: linear-gradient(to right, #0067b8, #003b73);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #00b7c3;
+        }
 
-    .logo {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-    .progress {
-      font-size: 1.5em;
-    }
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
 
-    #boot-logo {
-      font-size: 3em;
-      color: white;
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: sans-serif;
-      white-space: pre-line;
-      text-align: center;
-    }
-  </style>
+        .content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: rgba(0, 30, 60, 0.6);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4fc3f7;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(0, 40, 80, 0.8);
+            color: #fff;
+            font-size: 1rem;
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        select:focus, button:focus {
+            outline: none;
+            border-color: #00b7c3;
+            box-shadow: 0 0 0 3px rgba(0, 183, 195, 0.3);
+        }
+
+        button {
+            background: linear-gradient(to right, #0083b0, #00b7c3);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 28px;
+            padding: 14px;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #006a8f, #0095a0);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .info {
+            background: rgba(0, 30, 60, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .info h2 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .info ul {
+            padding-left: 25px;
+            line-height: 1.8;
+        }
+
+        .info li {
+            margin-bottom: 8px;
+        }
+
+        /* Update Screen Styles */
+        #updateOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .windows-update {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .update-logo {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            color: #00bcf2;
+        }
+
+        .update-title {
+            font-size: 2.8rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .update-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #0067b8, #00b7c3);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .update-message {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #aaa;
+            min-height: 2em;
+        }
+
+        .update-note {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .manufacturer-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: #000;
+        }
+
+        .manufacturer-logo {
+            font-size: 8rem;
+            color: #fff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 183, 195, 0.7);
+        }
+
+        .manufacturer-text {
+            font-size: 3rem;
+            color: #fff;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .boot-text {
+            font-size: 1.5rem;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        .secret-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .update-title {
+                font-size: 2rem;
+            }
+            
+            .update-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>Windows Update Simulator</h1>
+            <div class="subtitle">Experience the authentic Windows update experience</div>
+        </header>
+        
+        <div class="content">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="osSelect">Select Operating System</label>
+                    <select id="osSelect">
+                        <option value="Windows 11">Windows 11</option>
+                        <option value="Windows 10">Windows 10</option>
+                        <option value="Windows 8.1">Windows 8.1</option>
+                        <option value="Windows 7">Windows 7</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="manufacturerSelect">Select Manufacturer</label>
+                    <select id="manufacturerSelect">
+                        <option value="HP">HP</option>
+                        <option value="Dell">Dell</option>
+                        <option value="Lenovo">Lenovo</option>
+                        <option value="Asus">Asus</option>
+                        <option value="Acer">Acer</option>
+                        <option value="Microsoft">Microsoft Surface</option>
+                    </select>
+                </div>
+                
+                <button id="startUpdate">Start Windows Update</button>
+            </div>
+            
+            <div class="info">
+                <h2>About This Simulator</h2>
+                <ul>
+                    <li>Simulates a realistic Windows update experience</li>
+                    <li>Locks the screen and disables all keyboard shortcuts</li>
+                    <li>Randomized update duration between 20-60 seconds</li>
+                    <li>Features authentic progress indicators and messages</li>
+                    <li>Manufacturer boot screen after update completes</li>
+                    <li>Secret key sequence: Press <strong>U, P, D, A, T, E</strong> in order to exit early</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        This is a simulation for educational purposes only. No actual update is occurring.
+    </footer>
+    
+    <!-- Update Screen Overlay -->
+    <div id="updateOverlay">
+        <div class="windows-update">
+            <div class="update-logo"></div>
+            <h1 class="update-title" id="osTitle">Windows 11</h1>
+            <div class="update-subtitle">Getting things ready</div>
+            <div class="update-message" id="updateMessage">Preparing to download updates...</div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+            
+            <div class="update-note">
+                Your computer will restart several times. This might take a while.<br>
+                Please keep your computer plugged in.
+            </div>
+        </div>
+        
+        <div class="manufacturer-screen" id="manufacturerScreen">
+            <div class="manufacturer-logo" id="manufacturerLogo">HP</div>
+            <div class="manufacturer-text" id="manufacturerText">HP</div>
+            <div class="boot-text">Starting up...</div>
+        </div>
+        
+        <div class="secret-hint">Press U, P, D, A, T, E in order to exit</div>
+    </div>
 
-<!-- Configuration Screen -->
-<div id="config-screen">
-  <h2>Fake Windows Update Simulator</h2>
-  <label>
-    Select OS:
-    <select id="os-select">
-      <option>Windows 11</option>
-      <option>Windows 10</option>
-      <option>Windows 7</option>
-      <option>Windows XP</option>
-    </select>
-  </label>
-
-  <label>
-    Select Manufacturer:
-    <select id="manufacturer-select">
-      <option>HP</option>
-      <option>Dell</option>
-      <option>Lenovo</option>
-      <option>Acer</option>
-      <option>Asus</option>
-    </select>
-  </label>
-
-  <button onclick="startUpdate()">Start Fake Update</button>
-</div>
-
-<!-- Fake Update Screen -->
-<div id="update-screen">
-  <div class="logo" id="os-name">Updating Windows...</div>
-  <div class="progress" id="progress-text">0%</div>
-</div>
-
-<!-- Boot Screen -->
-<div id="boot-screen">
-  <div id="boot-logo"></div>
-</div>
-
-<script>
-function startUpdate() {
-  const os = document.getElementById('os-select').value;
-  const manufacturer = document.getElementById('manufacturer-select').value;
-  document.getElementById('config-screen').style.display = 'none';
-  updateScreen(os, manufacturer);
-}
-
-function updateScreen(os, manufacture) {
-  let progress = 0;
-  const updateScreen = document.getElementById('update-screen');
-  const progressText = document.getElementById('progress-text');
-  const osName = document.getElementById('os-name');
-  const bootScreen = document.getElementById('boot-screen');
-  const bootLogo = document.getElementById('boot-logo');
-  const secretCode = ['Escape', 'u', 'p', 'd'];
-  let codeIndex = 0;
-
-  osName.textContent = `Installing ${os} updates`;
-
-  // Show update screen
-  updateScreen.style.display = 'flex';
-
-  // Disable controls
-  const blockEvent = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  };
-
-  const disableControls = () => {
-    window.addEventListener('keydown', blockEvent, true);
-    window.addEventListener('keypress', blockEvent, true);
-    window.addEventListener('keyup', (e) => {
-      if (e.key === secretCode[codeIndex]) {
-        codeIndex++;
-        if (codeIndex === secretCode.length) {
-          cleanup();
+    <script>
+        // Configuration
+        const MESSAGES = [
+            "Preparing to download updates...",
+            "Downloading updates...",
+            "Organizing files...",
+            "Applying system updates...",
+            "Installing security updates...",
+            "Configuring system settings...",
+            "Optimizing performance...",
+            "Finalizing updates...",
+            "Getting ready to restart..."
+        ];
+        
+        const SECRET_SEQUENCE = ['u', 'p', 'd', 'a', 't', 'e'];
+        
+        // DOM Elements
+        const updateOverlay = document.getElementById('updateOverlay');
+        const osTitle = document.getElementById('osTitle');
+        const updateMessage = document.getElementById('updateMessage');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const manufacturerScreen = document.getElementById('manufacturerScreen');
+        const manufacturerLogo = document.getElementById('manufacturerLogo');
+        const manufacturerText = document.getElementById('manufacturerText');
+        const startButton = document.getElementById('startUpdate');
+        
+        // State variables
+        let secretIndex = 0;
+        let isUpdating = false;
+        
+        // Disable keyboard shortcuts
+        function disableShortcuts(event) {
+            // Prevent all key combinations that could interfere
+            if (event.ctrlKey || event.altKey || event.metaKey) {
+                event.preventDefault();
+                return;
+            }
+            
+            // Block specific keys
+            const blockedKeys = [
+                'Escape', 'Tab', 'F4', 'F5', 'F11', 'F12', 
+                'Alt', 'Control', 'Meta', 'OS', 'ContextMenu'
+            ];
+            
+            if (blockedKeys.includes(event.key)) {
+                event.preventDefault();
+            }
+            
+            // Block specific shortcuts
+            if (event.key === 'w' && event.ctrlKey) event.preventDefault();
+            if (event.key === 't' && event.ctrlKey) event.preventDefault();
+            if (event.key === 'n' && event.ctrlKey) event.preventDefault();
+            if (event.key === 'N' && event.ctrlKey && event.shiftKey) event.preventDefault();
+            if (event.key === 'T' && event.ctrlKey && event.shiftKey) event.preventDefault();
+            if (event.key === 'F4' && event.altKey) event.preventDefault();
+            
+            // Check secret sequence
+            if (event.key.toLowerCase() === SECRET_SEQUENCE[secretIndex]) {
+                secretIndex++;
+                if (secretIndex === SECRET_SEQUENCE.length) {
+                    endUpdate();
+                }
+            } else {
+                secretIndex = 0;
+            }
         }
-      } else {
-        codeIndex = 0;
-      }
-    }, true);
-    window.addEventListener('contextmenu', blockEvent, true);
-    window.addEventListener('mousedown', blockEvent, true);
-  };
-
-  const cleanup = () => {
-    window.removeEventListener('keydown', blockEvent, true);
-    window.removeEventListener('keypress', blockEvent, true);
-    window.removeEventListener('keyup', blockEvent, true);
-    window.removeEventListener('contextmenu', blockEvent, true);
-    window.removeEventListener('mousedown', blockEvent, true);
-    updateScreen.style.display = 'none';
-    bootScreen.style.display = 'none';
-    document.exitFullscreen?.();
-  };
-
-  disableControls();
-  document.body.requestFullscreen?.();
-
-  // Simulate update progress
-  const interval = setInterval(() => {
-    const increment = Math.random() * 3 + 1;
-    progress = Math.min(100, progress + increment);
-    progressText.textContent = `${Math.floor(progress)}%`;
-
-    if (progress >= 100) {
-      clearInterval(interval);
-      setTimeout(() => {
-        // Simulate "reboot"
-        updateScreen.style.display = 'none';
-        bootScreen.style.display = 'block';
-        bootLogo.textContent = `${manufacture.toUpperCase()}`;
-        bootLogo.style.display = 'block';
-
-        setTimeout(() => {
-          bootLogo.textContent = `${manufacture.toUpperCase()} Firmware v2.3\nPress F2 for Setup`;
-        }, 1500);
-
-        setTimeout(() => {
-          cleanup();
-        }, 4000);
-      }, 2000);
-    }
-  }, 300 + Math.random() * 400);
-}
-</script>
-
+        
+        // Update progress bar
+        function updateProgress(percent) {
+            progressBar.style.width = `${percent}%`;
+            progressText.textContent = `${Math.round(percent)}%`;
+        }
+        
+        // Show random update message
+        function showRandomMessage() {
+            const randomIndex = Math.floor(Math.random() * MESSAGES.length);
+            updateMessage.textContent = MESSAGES[randomIndex];
+        }
+        
+        // End the update process
+        function endUpdate() {
+            isUpdating = false;
+            updateOverlay.style.display = 'none';
+            document.removeEventListener('keydown', disableShortcuts);
+            document.removeEventListener('contextmenu', preventContextMenu);
+            secretIndex = 0;
+        }
+        
+        // Prevent context menu
+        function preventContextMenu(event) {
+            event.preventDefault();
+        }
+        
+        // Simulate manufacturer boot screen
+        function showManufacturerScreen(os, manufacturer) {
+            document.querySelector('.windows-update').style.display = 'none';
+            manufacturerScreen.style.display = 'flex';
+            manufacturerText.textContent = manufacturer;
+            
+            // Set manufacturer-specific styling
+            switch(manufacturer) {
+                case 'HP':
+                    manufacturerLogo.textContent = 'HP';
+                    manufacturerLogo.style.color = '#0096D6';
+                    break;
+                case 'Dell':
+                    manufacturerLogo.textContent = 'DELL';
+                    manufacturerLogo.style.color = '#007DB8';
+                    break;
+                case 'Lenovo':
+                    manufacturerLogo.textContent = 'LENOVO';
+                    manufacturerLogo.style.color = '#E2231A';
+                    break;
+                case 'Asus':
+                    manufacturerLogo.textContent = 'ASUS';
+                    manufacturerLogo.style.color = '#000000';
+                    break;
+                case 'Acer':
+                    manufacturerLogo.textContent = 'acer';
+                    manufacturerLogo.style.color = '#83B81A';
+                    manufacturerLogo.style.textTransform = 'lowercase';
+                    manufacturerLogo.style.fontSize = '7rem';
+                    break;
+                case 'Microsoft':
+                    manufacturerLogo.textContent = '';
+                    manufacturerLogo.style.fontFamily = 'Segoe MDL2 Assets';
+                    manufacturerLogo.style.fontSize = '10rem';
+                    manufacturerLogo.style.color = '#0078D7';
+                    break;
+                default:
+                    manufacturerLogo.textContent = manufacturer;
+            }
+            
+            // Return to normal after delay
+            setTimeout(() => {
+                endUpdate();
+            }, 5000);
+        }
+        
+        // Main update function
+        function updateScreen(os, manufacturer) {
+            isUpdating = true;
+            secretIndex = 0;
+            
+            // Set OS title
+            osTitle.textContent = os;
+            
+            // Show overlay
+            updateOverlay.style.display = 'block';
+            
+            // Disable keyboard shortcuts
+            document.addEventListener('keydown', disableShortcuts);
+            document.addEventListener('contextmenu', preventContextMenu);
+            
+            // Initialize progress
+            let progress = 0;
+            updateProgress(progress);
+            
+            // Calculate random update time (20-60 seconds)
+            const totalTime = 20000 + Math.random() * 40000;
+            const startTime = Date.now();
+            
+            // Update interval
+            const updateInterval = setInterval(() => {
+                if (!isUpdating) {
+                    clearInterval(updateInterval);
+                    return;
+                }
+                
+                // Calculate progress based on elapsed time
+                const elapsed = Date.now() - startTime;
+                progress = Math.min(100, (elapsed / totalTime) * 100);
+                updateProgress(progress);
+                
+                // Show random message every few seconds
+                if (Math.random() > 0.9) {
+                    showRandomMessage();
+                }
+                
+                // If update complete
+                if (progress >= 100) {
+                    clearInterval(updateInterval);
+                    
+                    // Simulate restart with black screen
+                    setTimeout(() => {
+                        document.querySelector('.windows-update').style.display = 'none';
+                        updateOverlay.style.backgroundColor = '#000';
+                        
+                        // Show manufacturer screen after delay
+                        setTimeout(() => {
+                            showManufacturerScreen(os, manufacturer);
+                        }, 2000);
+                    }, 1500);
+                }
+            }, 200);
+        }
+        
+        // Initialize UI
+        startButton.addEventListener('click', () => {
+            const os = document.getElementById('osSelect').value;
+            const manufacturer = document.getElementById('manufacturerSelect').value;
+            updateScreen(os, manufacturer);
+        });
+    </script>
 </body>
 </html>
