@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fake Windows Update</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: white;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #config-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: #1c1c1c;
+    }
+
+    #config-screen select, #config-screen button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 1.2em;
+    }
+
+    #update-screen, #boot-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: #0c0c0c;
+      color: white;
+      z-index: 9999;
+    }
+
+    .logo {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .progress {
+      font-size: 1.5em;
+    }
+
+    #boot-logo {
+      font-size: 3em;
+      color: white;
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: sans-serif;
+      white-space: pre-line;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Configuration Screen -->
+<div id="config-screen">
+  <h2>Fake Windows Update Simulator</h2>
+  <label>
+    Select OS:
+    <select id="os-select">
+      <option>Windows 11</option>
+      <option>Windows 10</option>
+      <option>Windows 7</option>
+      <option>Windows XP</option>
+    </select>
+  </label>
+
+  <label>
+    Select Manufacturer:
+    <select id="manufacturer-select">
+      <option>HP</option>
+      <option>Dell</option>
+      <option>Lenovo</option>
+      <option>Acer</option>
+      <option>Asus</option>
+    </select>
+  </label>
+
+  <button onclick="startUpdate()">Start Fake Update</button>
+</div>
+
+<!-- Fake Update Screen -->
+<div id="update-screen">
+  <div class="logo" id="os-name">Updating Windows...</div>
+  <div class="progress" id="progress-text">0%</div>
+</div>
+
+<!-- Boot Screen -->
+<div id="boot-screen">
+  <div id="boot-logo"></div>
+</div>
+
+<script>
+function startUpdate() {
+  const os = document.getElementById('os-select').value;
+  const manufacturer = document.getElementById('manufacturer-select').value;
+  document.getElementById('config-screen').style.display = 'none';
+  updateScreen(os, manufacturer);
+}
+
+function updateScreen(os, manufacture) {
+  let progress = 0;
+  const updateScreen = document.getElementById('update-screen');
+  const progressText = document.getElementById('progress-text');
+  const osName = document.getElementById('os-name');
+  const bootScreen = document.getElementById('boot-screen');
+  const bootLogo = document.getElementById('boot-logo');
+  const secretCode = ['Escape', 'u', 'p', 'd'];
+  let codeIndex = 0;
+
+  osName.textContent = `Installing ${os} updates`;
+
+  // Show update screen
+  updateScreen.style.display = 'flex';
+
+  // Disable controls
+  const blockEvent = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  };
+
+  const disableControls = () => {
+    window.addEventListener('keydown', blockEvent, true);
+    window.addEventListener('keypress', blockEvent, true);
+    window.addEventListener('keyup', (e) => {
+      if (e.key === secretCode[codeIndex]) {
+        codeIndex++;
+        if (codeIndex === secretCode.length) {
+          cleanup();
+        }
+      } else {
+        codeIndex = 0;
+      }
+    }, true);
+    window.addEventListener('contextmenu', blockEvent, true);
+    window.addEventListener('mousedown', blockEvent, true);
+  };
+
+  const cleanup = () => {
+    window.removeEventListener('keydown', blockEvent, true);
+    window.removeEventListener('keypress', blockEvent, true);
+    window.removeEventListener('keyup', blockEvent, true);
+    window.removeEventListener('contextmenu', blockEvent, true);
+    window.removeEventListener('mousedown', blockEvent, true);
+    updateScreen.style.display = 'none';
+    bootScreen.style.display = 'none';
+    document.exitFullscreen?.();
+  };
+
+  disableControls();
+  document.body.requestFullscreen?.();
+
+  // Simulate update progress
+  const interval = setInterval(() => {
+    const increment = Math.random() * 3 + 1;
+    progress = Math.min(100, progress + increment);
+    progressText.textContent = `${Math.floor(progress)}%`;
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        // Simulate "reboot"
+        updateScreen.style.display = 'none';
+        bootScreen.style.display = 'block';
+        bootLogo.textContent = `${manufacture.toUpperCase()}`;
+        bootLogo.style.display = 'block';
+
+        setTimeout(() => {
+          bootLogo.textContent = `${manufacture.toUpperCase()} Firmware v2.3\nPress F2 for Setup`;
+        }, 1500);
+
+        setTimeout(() => {
+          cleanup();
+        }, 4000);
+      }, 2000);
+    }
+  }, 300 + Math.random() * 400);
+}
+</script>
+
+</body>
+</html>
