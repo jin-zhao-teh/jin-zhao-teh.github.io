@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows Update</title>
+    <title>Windows Update Simulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background: linear-gradient(135deg, #0a1a3a, #1a3a5f);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -21,52 +22,76 @@
             align-items: center;
             padding: 20px;
             color: #fff;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
             background: rgba(0, 15, 30, 0.85);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
             overflow: hidden;
             margin: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 150, 255, 0.2);
         }
 
         header {
             background: linear-gradient(to right, #0067b8, #003b73);
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             border-bottom: 2px solid #00b7c3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0) 50%, 
+                rgba(255,255,255,0.1) 100%);
+            pointer-events: none;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.8;
+            font-size: 1.2rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
         .content {
-            padding: 30px;
+            padding: 35px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 30px;
         }
 
         .controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 25px;
             background: rgba(0, 30, 60, 0.6);
-            padding: 25px;
+            padding: 30px;
             border-radius: 10px;
             border: 1px solid rgba(0, 150, 255, 0.3);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .control-group {
@@ -76,24 +101,37 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-weight: 600;
             color: #4fc3f7;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        select, button {
+        label i {
+            font-size: 1.3rem;
+        }
+
+        select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 18px;
             border-radius: 8px;
             border: none;
             background: rgba(0, 40, 80, 0.8);
             color: #fff;
-            font-size: 1rem;
+            font-size: 1.05rem;
             border: 1px solid rgba(0, 150, 255, 0.4);
             transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
         }
 
-        select:focus, button:focus {
+        select:focus {
             outline: none;
             border-color: #00b7c3;
             box-shadow: 0 0 0 3px rgba(0, 183, 195, 0.3);
@@ -104,39 +142,60 @@
             color: white;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 28px;
-            padding: 14px;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
+            margin-top: 30px;
+            padding: 16px;
+            font-size: 1.15rem;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         button:hover {
             background: linear-gradient(to right, #006a8f, #0095a0);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
 
         .info {
             background: rgba(0, 30, 60, 0.6);
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             border: 1px solid rgba(0, 150, 255, 0.3);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
         .info h2 {
             color: #4fc3f7;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .info ul {
-            padding-left: 25px;
+            padding-left: 30px;
             line-height: 1.8;
+            font-size: 1.05rem;
         }
 
         .info li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info li i {
+            color: #00b7c3;
+            margin-top: 5px;
         }
 
         /* Update Screen Styles */
@@ -162,36 +221,44 @@
             height: 100%;
             text-align: center;
             padding: 20px;
+            background: #000;
         }
 
         .update-logo {
-            font-size: 3.5rem;
-            margin-bottom: 30px;
+            font-size: 6rem;
+            margin-bottom: 40px;
             color: #00bcf2;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
         }
 
         .update-title {
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             font-weight: 300;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #fff;
         }
 
         .update-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 300;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             color: #ccc;
         }
 
         .progress-container {
-            width: 80%;
-            max-width: 600px;
+            width: 85%;
+            max-width: 700px;
             background: rgba(255, 255, 255, 0.1);
-            height: 30px;
-            border-radius: 15px;
+            height: 35px;
+            border-radius: 18px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -203,23 +270,25 @@
         }
 
         .progress-text {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
+            font-size: 2.2rem;
+            margin-bottom: 35px;
             color: #fff;
+            font-weight: 300;
         }
 
         .update-message {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
             color: #aaa;
             min-height: 2em;
         }
 
         .update-note {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #666;
-            max-width: 600px;
-            line-height: 1.6;
+            max-width: 700px;
+            line-height: 1.7;
+            margin-top: 30px;
         }
 
         .manufacturer-screen {
@@ -232,53 +301,117 @@
         }
 
         .manufacturer-logo {
-            font-size: 8rem;
+            font-size: 9rem;
             color: #fff;
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px rgba(0, 183, 195, 0.7);
+            margin-bottom: 40px;
+            text-shadow: 0 0 30px rgba(0, 183, 195, 0.8);
         }
 
         .manufacturer-text {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: #fff;
             font-weight: 300;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
         }
 
         .boot-text {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #666;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            position: relative;
+        }
+
+        .boot-text::after {
+            content: "";
+            display: inline-block;
+            width: 15px;
+            height: 25px;
+            background: #666;
+            margin-left: 10px;
+            vertical-align: bottom;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .secret-hint {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             left: 0;
             width: 100%;
             text-align: center;
             color: #333;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            letter-spacing: 1px;
         }
 
         footer {
-            margin-top: 20px;
+            margin-top: 25px;
             text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 1rem;
+            max-width: 800px;
+            line-height: 1.6;
         }
 
-        @media (max-width: 600px) {
+        .key-hint {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin: 0 2px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
             .controls {
                 flex-direction: column;
+            }
+            
+            .update-title {
+                font-size: 2.5rem;
+            }
+            
+            .update-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .update-message {
+                font-size: 1.3rem;
+            }
+            
+            h1 {
+                font-size: 2.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .controls {
+                padding: 20px;
             }
             
             .update-title {
                 font-size: 2rem;
             }
             
-            .update-subtitle {
-                font-size: 1.2rem;
+            .update-logo {
+                font-size: 4.5rem;
+            }
+            
+            .manufacturer-logo {
+                font-size: 6rem;
+            }
+            
+            .manufacturer-text {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -287,13 +420,13 @@
     <div class="container">
         <header>
             <h1>Windows Update Simulator</h1>
-            <div class="subtitle">Experience the authentic Windows update experience</div>
+            <div class="subtitle">Experience the authentic Windows update process with full screen lock and keyboard shortcut disabling</div>
         </header>
         
         <div class="content">
             <div class="controls">
                 <div class="control-group">
-                    <label for="osSelect">Select Operating System</label>
+                    <label for="osSelect"><i class="fas fa-window-restore"></i> Select Operating System</label>
                     <select id="osSelect">
                         <option value="Windows 11">Windows 11</option>
                         <option value="Windows 10">Windows 10</option>
@@ -303,7 +436,7 @@
                 </div>
                 
                 <div class="control-group">
-                    <label for="manufacturerSelect">Select Manufacturer</label>
+                    <label for="manufacturerSelect"><i class="fas fa-laptop"></i> Select Manufacturer</label>
                     <select id="manufacturerSelect">
                         <option value="HP">HP</option>
                         <option value="Dell">Dell</option>
@@ -311,34 +444,38 @@
                         <option value="Asus">Asus</option>
                         <option value="Acer">Acer</option>
                         <option value="Microsoft">Microsoft Surface</option>
+                        <option value="Samsung">Samsung</option>
                     </select>
                 </div>
                 
-                <button id="startUpdate">Start Windows Update</button>
+                <button id="startUpdate">
+                    <i class="fas fa-sync-alt"></i> Start Windows Update
+                </button>
             </div>
             
             <div class="info">
-                <h2>About This Simulator</h2>
+                <h2><i class="fas fa-lock"></i> Security Features</h2>
                 <ul>
-                    <li>Simulates a realistic Windows update experience</li>
-                    <li>Locks the screen and disables all keyboard shortcuts</li>
-                    <li>Randomized update duration between 20-60 seconds</li>
-                    <li>Features authentic progress indicators and messages</li>
-                    <li>Manufacturer boot screen after update completes</li>
-                    <li>Secret key sequence: Press <strong>U, P, D, A, T, E</strong> in order to exit early</li>
+                    <li><i class="fas fa-check-circle"></i> Full screen overlay that disables all controls</li>
+                    <li><i class="fas fa-check-circle"></i> All keyboard shortcuts disabled (Alt+F4, Ctrl+W, Esc, etc.)</li>
+                    <li><i class="fas fa-check-circle"></i> Context menu (right-click) completely disabled</li>
+                    <li><i class="fas fa-check-circle"></i> Randomized update duration between 20-60 seconds</li>
+                    <li><i class="fas fa-check-circle"></i> Authentic Windows update UI with progress indicators</li>
+                    <li><i class="fas fa-check-circle"></i> Manufacturer-specific boot screen after completion</li>
+                    <li><i class="fas fa-check-circle"></i> Secret key sequence: Press <span class="key-hint">U</span>, <span class="key-hint">P</span>, <span class="key-hint">D</span>, <span class="key-hint">A</span>, <span class="key-hint">T</span>, <span class="key-hint">E</span> in order to exit</li>
                 </ul>
             </div>
         </div>
     </div>
     
     <footer>
-        This is a simulation for educational purposes only. No actual update is occurring.
+        This is a simulation for educational purposes only. No actual update is occurring. Press the secret key sequence (U, P, D, A, T, E) to exit the update screen.
     </footer>
     
     <!-- Update Screen Overlay -->
     <div id="updateOverlay">
         <div class="windows-update">
-            <div class="update-logo"></div>
+            <div class="update-logo"><i class="fab fa-windows"></i></div>
             <h1 class="update-title" id="osTitle">Windows 11</h1>
             <div class="update-subtitle">Getting things ready</div>
             <div class="update-message" id="updateMessage">Preparing to download updates...</div>
@@ -355,9 +492,9 @@
         </div>
         
         <div class="manufacturer-screen" id="manufacturerScreen">
-            <div class="manufacturer-logo" id="manufacturerLogo">HP</div>
+            <div class="manufacturer-logo" id="manufacturerLogo"><i class="fas fa-laptop"></i></div>
             <div class="manufacturer-text" id="manufacturerText">HP</div>
-            <div class="boot-text">Starting up...</div>
+            <div class="boot-text">Starting up</div>
         </div>
         
         <div class="secret-hint">Press U, P, D, A, T, E in order to exit</div>
@@ -374,10 +511,19 @@
             "Configuring system settings...",
             "Optimizing performance...",
             "Finalizing updates...",
-            "Getting ready to restart..."
+            "Getting ready to restart...",
+            "Applying critical updates...",
+            "Setting up new features...",
+            "Installing drivers...",
+            "Optimizing storage...",
+            "Checking system integrity..."
         ];
         
         const SECRET_SEQUENCE = ['u', 'p', 'd', 'a', 't', 'e'];
+        const BLOCKED_KEYS = [
+            'Escape', 'Tab', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
+            'Alt', 'Control', 'Meta', 'OS', 'ContextMenu', 'Backspace', 'Delete'
+        ];
         
         // DOM Elements
         const updateOverlay = document.getElementById('updateOverlay');
@@ -394,31 +540,78 @@
         let secretIndex = 0;
         let isUpdating = false;
         
-        // Disable keyboard shortcuts
+        // Disable ALL keyboard shortcuts
         function disableShortcuts(event) {
-            // Prevent all key combinations that could interfere
-            if (event.ctrlKey || event.altKey || event.metaKey) {
+            // Block all function keys and special keys
+            if (BLOCKED_KEYS.includes(event.key)) {
                 event.preventDefault();
                 return;
             }
             
-            // Block specific keys
-            const blockedKeys = [
-                'Escape', 'Tab', 'F4', 'F5', 'F11', 'F12', 
-                'Alt', 'Control', 'Meta', 'OS', 'ContextMenu'
-            ];
-            
-            if (blockedKeys.includes(event.key)) {
-                event.preventDefault();
+            // Block all Ctrl combinations
+            if (event.ctrlKey) {
+                // Block Ctrl+W, Ctrl+F4, Ctrl+Tab, Ctrl+Page Down, etc.
+                if (['w', 'f4', 'tab', 'pagedown', 'pageup', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+                     'r', 't', 'n', 'shift', 'alt', ' '].includes(event.key.toLowerCase())) {
+                    event.preventDefault();
+                    return;
+                }
             }
             
-            // Block specific shortcuts
-            if (event.key === 'w' && event.ctrlKey) event.preventDefault();
-            if (event.key === 't' && event.ctrlKey) event.preventDefault();
-            if (event.key === 'n' && event.ctrlKey) event.preventDefault();
-            if (event.key === 'N' && event.ctrlKey && event.shiftKey) event.preventDefault();
-            if (event.key === 'T' && event.ctrlKey && event.shiftKey) event.preventDefault();
-            if (event.key === 'F4' && event.altKey) event.preventDefault();
+            // Block all Alt combinations
+            if (event.altKey) {
+                // Block Alt+F4, Alt+Tab, Alt+Left, Alt+Right, etc.
+                if (['f4', 'tab', 'arrowleft', 'arrowright', ' '].includes(event.key.toLowerCase())) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+            
+            // Block all Meta (Cmd) combinations
+            if (event.metaKey) {
+                // Block Cmd+W, Cmd+Q, Cmd+Tab, etc.
+                if (['w', 'q', 'tab', 'arrowleft', 'arrowright', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+                     'r', 't', 'n', 'shift', 'alt', ' '].includes(event.key.toLowerCase())) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+            
+            // Block all Shift combinations
+            if (event.shiftKey) {
+                // Block Shift+Ctrl combinations
+                if (event.ctrlKey) {
+                    if (['w', 'n', 't', 'tab', ' '].includes(event.key.toLowerCase())) {
+                        event.preventDefault();
+                        return;
+                    }
+                }
+            }
+            
+            // Block Esc key
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                return;
+            }
+            
+            // Block Alt+F4 specifically
+            if (event.altKey && event.key === 'F4') {
+                event.preventDefault();
+                return;
+            }
+            
+            // Block Ctrl+Shift+N
+            if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'n') {
+                event.preventDefault();
+                return;
+            }
+            
+            // Block Cmd+Option+Arrow keys
+            if (event.metaKey && event.altKey && 
+                (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+                event.preventDefault();
+                return;
+            }
             
             // Check secret sequence
             if (event.key.toLowerCase() === SECRET_SEQUENCE[secretIndex]) {
@@ -466,35 +659,35 @@
             // Set manufacturer-specific styling
             switch(manufacturer) {
                 case 'HP':
-                    manufacturerLogo.textContent = 'HP';
+                    manufacturerLogo.innerHTML = '<i class="fas fa-h-square"></i>';
                     manufacturerLogo.style.color = '#0096D6';
                     break;
                 case 'Dell':
-                    manufacturerLogo.textContent = 'DELL';
+                    manufacturerLogo.innerHTML = '<i class="fas fa-diamond"></i>';
                     manufacturerLogo.style.color = '#007DB8';
                     break;
                 case 'Lenovo':
-                    manufacturerLogo.textContent = 'LENOVO';
+                    manufacturerLogo.innerHTML = '<i class="fas fa-laptop"></i>';
                     manufacturerLogo.style.color = '#E2231A';
                     break;
                 case 'Asus':
-                    manufacturerLogo.textContent = 'ASUS';
+                    manufacturerLogo.innerHTML = '<i class="fas fa-a"></i>';
                     manufacturerLogo.style.color = '#000000';
                     break;
                 case 'Acer':
-                    manufacturerLogo.textContent = 'acer';
+                    manufacturerLogo.innerHTML = '<i class="fas fa-a"></i>';
                     manufacturerLogo.style.color = '#83B81A';
-                    manufacturerLogo.style.textTransform = 'lowercase';
-                    manufacturerLogo.style.fontSize = '7rem';
                     break;
                 case 'Microsoft':
-                    manufacturerLogo.textContent = '';
-                    manufacturerLogo.style.fontFamily = 'Segoe MDL2 Assets';
-                    manufacturerLogo.style.fontSize = '10rem';
+                    manufacturerLogo.innerHTML = '<i class="fab fa-microsoft"></i>';
                     manufacturerLogo.style.color = '#0078D7';
                     break;
+                case 'Samsung':
+                    manufacturerLogo.innerHTML = '<i class="fas fa-s"></i>';
+                    manufacturerLogo.style.color = '#1428A0';
+                    break;
                 default:
-                    manufacturerLogo.textContent = manufacturer;
+                    manufacturerLogo.innerHTML = '<i class="fas fa-laptop"></i>';
             }
             
             // Return to normal after delay
