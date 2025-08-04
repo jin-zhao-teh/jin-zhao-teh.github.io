@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Google Login + GitHub Fetch</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  #output { white-space: pre-wrap; margin-top: 20px; }
+</style>
+</head>
+<body>
 
+<h2>Login with Google</h2>
+<div id="g_id_signin"></div>
+
+<div id="output">Please sign in.</div>
+
+<script>
+  const GITHUB_USERS_JSON_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/users.json";
+  const CLIENT_ID = "YOUR_CLIENT_ID";
+
+  function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    return JSON.parse(jsonPayload);
+  }
+
+  function handleCredentialResponse(response) {
+    const user = parseJwt(response.credential);
+    const email = user.email;
+    document.getElementById('output').textContent = `Signed in as: ${email}\nChecking user data...`;
+
+    fetch(GITHUB_USERS_JSON_URL)
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch user list");
+        return res.json();
+      })
+      .then(users => {
+        const found = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+        if (found) {
+          document.getElementById('output').textContent = `Hello, ${email}!\nYour rank is: ${found.rank}`;
+        } else {
+          document.getElementById('output').textContent = `Hello, ${email}!\nNo rank found for this user.`;
+        }
+      })
+      .catch(err => {
+        document.getElementById('output').textContent = `Error fetching user list:\n${err}`;
+      });
+  }
+
+  window.onload = () => {
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("g_id_signin"),
+      { theme: "outline", size: "large" }
+    );
+    google.accounts.id.prompt(); // Optional: auto prompt sign in
+  };
+</script>
+
+</body>
+</html>
