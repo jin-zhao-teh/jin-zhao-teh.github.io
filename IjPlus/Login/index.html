@@ -43,9 +43,9 @@
       .then(users => {
         const found = users.find(u => u.email.toLowerCase() === email.toLowerCase());
         if (found) {
-          document.getElementById('output').textContent = `Hello, ${email}!\nYour rank is: ${found.rank}`;
+          document.getElementById('output').textContent = `Hello, ${email}!\nYour key is: ${found.key}`;
         } else {
-          document.getElementById('output').textContent = `Hello, ${email}!\nNo rank found for this user.`;
+          document.getElementById('output').textContent = `Hello, ${email}!\nNo key found for this user.`;
         }
       })
       .catch(err => {
