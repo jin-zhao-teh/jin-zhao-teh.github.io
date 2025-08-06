@@ -3,19 +3,215 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Google Login + GitHub Fetch</title>
+<title>IJ- Login</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; }
-  #output { white-space: pre-wrap; margin-top: 20px; }
+  :root {
+    --primary: #6e48aa;
+    --secondary: #9d50bb;
+    --accent: #4776e6;
+    --dark: #1a1a2e;
+    --light: #f8f9fa;
+    --terminal: #0f0f0f;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fira Code', 'Consolas', monospace;
+  }
+  
+  body {
+    background-color: var(--dark);
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  header {
+    background-color: rgba(26, 26, 46, 0.9);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+  }
+  
+  .logo i {
+    margin-right: 0.5rem;
+  }
+  
+  .login-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 0;
+  }
+  
+  .login-box {
+    background-color: rgba(30, 30, 46, 0.8);
+    border-radius: 8px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+  }
+  
+  .login-box h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--accent);
+  }
+  
+  #g_id_signin {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #output {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--terminal);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent);
+    font-family: 'Fira Code', monospace;
+    white-space: pre-wrap;
+    text-align: left;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .key-display {
+    color: #00ff00;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    word-break: break-all;
+  }
+  
+  footer {
+    background-color: #0f0f0f;
+    color: #b0b0b0;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: auto;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .footer-links a {
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+  
+  .copyright {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  @media (max-width: 768px) {
+    .login-box {
+      padding: 2rem;
+    }
+    
+    .footer-content {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
 </style>
 </head>
 <body>
 
-<h2>Login with Google</h2>
-<div id="g_id_signin"></div>
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">
+        <i class="fas fa-terminal"></i>
+        <span>IJ-</span>
+      </div>
+    </nav>
+  </div>
+</header>
 
-<div id="output">Please sign in.</div>
+<main class="login-container">
+  <div class="login-box">
+    <h2><i class="fas fa-sign-in-alt"></i> Login to IJ-</h2>
+    <div id="g_id_signin" data-theme="dark"></div>
+    
+    <div id="output">Please sign in with Google to access your IJ- key.</div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="logo">
+        <i class="fas fa-terminal"></i>
+        <span>IJ-</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://jin-zhao-teh.github.io/IjPlus/">Home</a>
+        <a href="https://github.com/jin-zhao-teh/Ij-">GitHub</a>
+        <a href="https://jin-zhao-teh.github.io/IjPlus/Login">Login</a>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2023 IJ- Code Executor. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
 
 <script>
   const GITHUB_USERS_JSON_URL = "https://raw.githubusercontent.com/jin-zhao-teh/jin-zhao-teh.github.io/refs/heads/main/IjPlus/Data/Data.json";
@@ -33,7 +229,7 @@
   function handleCredentialResponse(response) {
     const user = parseJwt(response.credential);
     const email = user.email;
-    document.getElementById('output').textContent = `Signed in as: ${email}\nChecking user data...`;
+    document.getElementById('output').innerHTML = `<i class="fas fa-spinner fa-spin"></i> Authenticating ${email}...`;
 
     fetch(GITHUB_USERS_JSON_URL)
       .then(res => {
@@ -43,26 +239,51 @@
       .then(users => {
         const found = users.find(u => u.email.toLowerCase() === email.toLowerCase());
         if (found) {
-          document.getElementById('output').textContent = `Hello, ${email}!\nYour key is: ${found.key}`;
+          document.getElementById('output').innerHTML = `
+            <div>
+              <p><i class="fas fa-check-circle" style="color: #27c93f;"></i> Authenticated as: ${email}</p>
+              <p class="key-display">Your IJ- key: ${found.key}</p>
+              <p style="margin-top: 1rem; color: #b0b0b0;"><i class="fas fa-info-circle"></i> Use this key to access premium features.</p>
+            </div>`;
         } else {
-          document.getElementById('output').textContent = `Hello, ${email}!\nNo key found for this user.`;
+          document.getElementById('output').innerHTML = `
+            <div>
+              <p><i class="fas fa-exclamation-triangle" style="color: #ffbd2e;"></i> Authenticated as: ${email}</p>
+              <p style="margin-top: 1rem; color: #b0b0b0;">No IJ- key found for this account.</p>
+              <p style="margin-top: 0.5rem; color: #b0b0b0;">Please contact support if you believe this is an error.</p>
+            </div>`;
         }
       })
       .catch(err => {
-        document.getElementById('output').textContent = `Error fetching user list:\n${err}`;
+        document.getElementById('output').innerHTML = `
+          <div>
+            <p><i class="fas fa-times-circle" style="color: #ff5f56;"></i> Error fetching user data</p>
+            <p style="margin-top: 1rem; color: #b0b0b0;">${err.message}</p>
+            <p style="margin-top: 0.5rem; color: #b0b0b0;">Please try again later.</p>
+          </div>`;
       });
   }
 
   window.onload = () => {
     google.accounts.id.initialize({
       client_id: CLIENT_ID,
-      callback: handleCredentialResponse
+      callback: handleCredentialResponse,
+      ux_mode: "popup",
+      login_uri: window.location.href
     });
+    
     google.accounts.id.renderButton(
       document.getElementById("g_id_signin"),
-      { theme: "outline", size: "large" }
+      { 
+        theme: "filled_blue",
+        size: "large",
+        width: "400",
+        text: "signin_with",
+        shape: "pill"
+      }
     );
-    google.accounts.id.prompt(); // Optional: auto prompt sign in
+    
+    google.accounts.id.prompt();
   };
 </script>
 
