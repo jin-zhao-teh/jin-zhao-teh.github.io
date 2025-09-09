@@ -114,7 +114,7 @@
         background-color: #3498db;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(52, 152, 219, 0.7);
-        transition: height 0.1s linear;
+        transition: height 0.3s ease; /* Changed from 0.1s linear to 0.3s ease */
         z-index: 2;
       }
 
@@ -549,12 +549,13 @@
         
         let timelineData = [];
         let currentEvents = [];
-        fetch("https://jin-zhao-teh.github.io/GlobalAssessment/data.json")
+        fetch("data.json")
         .then((response) => response.json())
         .then((data) => {
           timelineData = data.timelineData;
           initTimeline();
           populateReferences();
+          setupScrollListener();  
           console.log(data.timelineData);
         })
         .catch((error) => {
@@ -563,8 +564,6 @@
             '<div class="loading">Error loading timeline data. Please try again later.</div>';
         });
 
-        // Use sample data instead of fetching
-        setupScrollListener();
 
         // Function to initialize the timeline with all data
         function initTimeline() {
@@ -689,33 +688,40 @@
           });
         }
 
-        // Function to setup scroll listener for progress and event highlighting
-        function setupScrollListener() {
-          window.addEventListener("scroll", function () {
-            const timelineContainerEl = document.querySelector(
-              ".timeline-container"
-            );
-            const timelineRect = timelineContainerEl.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            
-            // Calculate the middle of the screen position relative to the timeline
-            const middleScreen = window.scrollY + (windowHeight / 2);
-            const timelineTop = timelineContainerEl.offsetTop;
-            const timelineHeight = timelineContainerEl.offsetHeight;
-            
-            // Calculate progress percentage based on middle of screen
-            const scrollPercent = Math.max(
-              0,
-              Math.min(1, (middleScreen - timelineTop) / timelineHeight)
-            );
+      function setupScrollListener() {
+        window.addEventListener("scroll", function() {
+          const timelineContainerEl = document.querySelector(".timeline-container");
+          const timelineRect = timelineContainerEl.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          
+          // Get the position of the timeline relative to the document
+          const timelineTop = window.scrollY + timelineRect.top;
+          const timelineBottom = timelineTop + timelineRect.height;
+          
+          // Calculate the middle of the screen
+          const middleScreen = window.scrollY + (windowHeight / 2);
+          
+          // Calculate progress (0 to 1)
+          let scrollPercent = 0;
+          if (middleScreen > timelineTop) {
+            scrollPercent = Math.min(1, (middleScreen - timelineTop) / timelineRect.height);
+          }
+          
+          // Ensure it reaches 100% at the bottom
+          if (window.scrollY + windowHeight >= document.documentElement.scrollHeight - 10) {
+            scrollPercent = 1;
+          }
 
-            // Update progress bar
-            timelineProgress.style.height = `${scrollPercent * 100}%`;
+          // Update progress bar
+          timelineProgress.style.height = `${scrollPercent * 100}%`;
 
-            // Highlight events based on scroll position
-            highlightActiveEvent(scrollPercent);
-          });
-        }
+          // Highlight events based on scroll position
+          highlightActiveEvent(scrollPercent);
+        });
+        
+        // Trigger scroll once to set initial position
+        window.dispatchEvent(new Event('scroll'));
+      }
 
         // Function to highlight the active event based on scroll position
         function highlightActiveEvent(scrollPercent) {
