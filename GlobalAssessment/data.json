@@ -1,0 +1,94 @@
+{
+  "timelineData": [
+    {
+      "period": "Pre-1960s",
+      "icon": "🚢",
+      "title": "Colonial Administration Era",
+      "description": "During the colonial administration era, the Cook Islands, Niue, and Tokelau were under New Zealand's administration. This period was characterized by limited technological infrastructure and communication capabilities. Communication was primarily through traditional methods, with basic radio technology serving administrative needs. The focus was on maintaining colonial administration rather than technological development or digital inclusion. These territories had limited autonomy, with New Zealand controlling foreign affairs, defense, and most aspects of governance.",
+      "legal": "New Zealand's laws and regulations were extended to these territories, establishing the foundation for future governance structures. The focus was on maintaining colonial administration rather than technological development. This period established the constitutional relationships that would later influence digital technology policies in these territories. The legal framework was primarily based on New Zealand's existing laws, with little consideration for the unique cultural and geographical challenges of the Pacific Islands.",
+      "islands": ["cook", "niue", "tokelau"],
+      "reference": "https://www.nzhistory.govt.nz/politics/cook-islands"
+    },
+    {
+      "period": "1960s-1970s",
+      "icon": "📡",
+      "title": "Early Communication Infrastructure",
+      "description": "The 1960s-1970s marked the beginning of modern communication infrastructure in the Pacific Islands. This era saw the introduction of telecommunication services that primarily served administrative purposes. Radio broadcasting became more widespread, and limited telephone networks were established. These developments were crucial for connecting the islands with the rest of the world and laid the groundwork for future digital connectivity. However, access remained limited to government officials and wealthy individuals, with most of the population still relying on traditional communication methods.",
+      "legal": "New Zealand's Post Office Act governed telecommunications during this period. The limited infrastructure meant that digital rights and privacy issues were not yet significant concerns in these territories. However, this era established the framework for how communication services would be regulated in the future. The legislation focused primarily on technical standards and service provision rather than user rights or privacy protections.",
+      "islands": ["cook", "niue", "tokelau"],
+      "reference": "https://www.teara.govt.nz/en/telecommunications"
+    },
+    {
+      "period": "1980s-1990s",
+      "icon": "💻",
+      "title": "Computerization Begins",
+      "description": "The 1980s-1990s witnessed the introduction of computers in government offices and educational institutions across the Pacific Islands. This period marked the beginning of digital record-keeping and administration. While internet access was extremely limited and expensive, these early steps toward computerization laid the groundwork for future technological development in the region. Digital literacy began to emerge as a valuable skill, with training programs introduced in schools and government departments. The digital divide between urban and rural areas became increasingly apparent during this period.",
+      "legal": "New Zealand's Copyright Act 1994 began to address digital copyright issues. Data protection was minimal, focusing mainly on government records rather than personal privacy. This period marked the first recognition that digital information required specific legal frameworks different from traditional media. However, enforcement mechanisms were weak, and awareness of digital rights among the general population remained low.",
+      "islands": ["cook", "niue"],
+      "reference": "https://www.mch.govt.nz/copyright"
+    },
+    {
+      "period": "2000s",
+      "icon": "🌐",
+      "title": "Internet Connectivity Arrives",
+      "description": "The 2000s marked a significant milestone with the arrival of internet connectivity in the Pacific Islands. Dial-up internet became available, though costs remained high, limiting accessibility for many residents. Mobile phone networks began to expand, and the first internet cafes appeared in urban centers. However, a digital divide between islands became apparent during this period, with remote areas having significantly less access to digital technologies. Social media platforms began to gain popularity, changing how people communicated and accessed information.",
+      "legal": "New Zealand's Telecommunications Act 2001 influenced service provision. The Harmful Digital Communications Act (2015) later provided framework for addressing online safety issues. This period saw the first specific legislation aimed at regulating digital communications and protecting users in online spaces. However, enforcement across the dispersed Pacific Islands remained challenging, and many communities continued to rely on traditional legal frameworks for dispute resolution.",
+      "islands": ["cook", "tokelau"],
+      "reference": "https://www.legislation.govt.nz/act/public/2001/0103/latest/DLM104926.html"
+    },
+    {
+      "period": "2010s",
+      "icon": "📱",
+      "title": "Mobile Revolution & Social Media",
+      "description": "The 2010s witnessed a mobile revolution in the Pacific Islands, with mobile phone ownership expanding rapidly. Social media platforms became popular for communication and community organization. Pacific Islands began developing digital strategies, and there was increased awareness of cybersecurity needs. This period marked a significant shift toward digital integration in daily life, with mobile devices becoming the primary means of internet access for many Pacific Islanders. E-government initiatives began to emerge, allowing citizens to access services online.",
+      "legal": "Privacy Act 2020 extended to protect personal information online. Consumer protection laws began addressing online transactions. Pacific Island countries started developing national digital strategies. This era saw increased recognition of the need for specific legislation to protect privacy and regulate online commerce. However, implementation challenges remained due to limited resources and technical expertise in the region.",
+      "islands": ["niue", "tokelau"],
+      "reference": "https://www.privacy.org.nz/privacy-act-2020/"
+    },
+    {
+      "period": "2020s",
+      "icon": "🤖",
+      "title": "Digital Transformation Era",
+      "description": "The 2020s represent a period of comprehensive digital transformation in the Pacific Islands. Broadband internet expansion, digital government services, and increased focus on digital literacy characterize this era. The COVID-19 pandemic accelerated digital adoption, and emerging technologies like AI began to be discussed in policy circles. Pacific nations are increasingly asserting their digital rights in international forums and developing strategies for digital sovereignty. Remote work and online education became more common, though infrastructure limitations continued to challenge equitable access.",
+      "legal": "Cook Islands National Digital Strategy 2024-2030 aims for comprehensive digital transformation. Focus on data sovereignty, digital inclusion, and cybersecurity. Pacific nations asserting digital rights in international forums. This represents the most comprehensive approach to digital governance yet seen in the region, with specific provisions for protecting indigenous knowledge and cultural heritage in digital spaces.",
+      "islands": ["cook"],
+      "reference": "https://www.mfem.gov.ck/digital-strategy"
+    },
+    {
+      "period": "2025-2030",
+      "icon": "🛰️",
+      "title": "Satellite Internet Expansion",
+      "description": "The period from 2025-2030 is expected to see significant expansion of satellite internet connectivity across the Pacific Islands. Leveraging Low Earth Orbit (LEO) satellite constellations, this technology promises to provide high-speed internet access to even the most remote islands. This development has the potential to bridge the digital divide that has long affected rural and isolated communities. Educational opportunities, telehealth services, and economic development are all expected to benefit from improved connectivity. However, challenges related to affordability and digital literacy will need to be addressed to ensure equitable access.",
+      "legal": "The Pacific Digital Connectivity Initiative represents a regional approach to improving internet infrastructure. This framework includes provisions for technical standards, affordability measures, and capacity building programs. International partnerships with satellite providers are being formalized through agreements that prioritize the needs of Pacific Island communities. Data sovereignty and security considerations are central to these agreements, ensuring that Pacific nations maintain control over their digital infrastructure.",
+      "islands": ["niue"],
+      "reference": "https://www.pacificconnect.org"
+    },
+    {
+      "period": "2030-2035",
+      "icon": "🔒",
+      "title": "Cybersecurity Infrastructure",
+      "description": "Between 2030-2035, the focus shifts to developing robust cybersecurity infrastructure across the Pacific region. As digital connectivity increases, so do vulnerabilities to cyber threats. This period will see the establishment of regional cybersecurity centers and the implementation of advanced protection measures. Capacity building programs will train local experts in cybersecurity best practices, reducing dependence on external technical assistance. Public awareness campaigns will educate citizens about online safety, data protection, and digital hygiene practices.",
+      "legal": "The Pacific Cyber Security Alliance Framework provides a comprehensive approach to regional cybersecurity. This includes standardized protocols for incident response, information sharing mechanisms between nations, and harmonized legislation across jurisdictions. The framework emphasizes the protection of critical infrastructure, personal data, and indigenous knowledge systems. International cooperation agreements facilitate technical assistance and capacity building while respecting national sovereignty.",
+      "islands": ["tokelau"],
+      "reference": "https://www.pacificcyber.org"
+    },
+    {
+      "period": "2035-2040",
+      "icon": "🌊",
+      "title": "Climate Tech & Digital Monitoring",
+      "description": "From 2035-2040, digital technologies are increasingly deployed to address climate change challenges in the Pacific Islands. Advanced monitoring systems using IoT sensors, drones, and satellite imagery provide real-time data on environmental changes. Early warning systems for natural disasters become more sophisticated, potentially saving lives and reducing economic losses. Digital platforms facilitate regional cooperation on climate adaptation strategies, allowing nations to share knowledge and resources. Indigenous knowledge is integrated with scientific data through digital archives, preserving cultural heritage while informing climate policy.",
+      "legal": "The Pacific Climate Resilience Act establishes a legal framework for using digital technologies in climate adaptation and mitigation efforts. This includes provisions for data sharing between nations, protection of traditional ecological knowledge in digital formats, and standards for environmental monitoring technologies. The legislation also addresses liability issues related to climate technology failures and ensures that communities have access to climate-related data that affects them.",
+      "islands": ["cook", "niue", "tokelau"],
+      "reference": "https://www.sprep.org/climate-change"
+    },
+    {
+      "period": "2040+",
+      "icon": "🧠",
+      "title": "AI Integration & Digital Sovereignty",
+      "description": "Beyond 2040, artificial intelligence is fully integrated into governance systems across the Pacific Islands. AI-powered systems assist in resource management, public service delivery, and policy development. Digital sovereignty becomes a central concern, with nations developing frameworks to maintain control over their data and digital infrastructure. Indigenous data governance models emerge, recognizing the unique relationship between Pacific Island communities and their knowledge systems. Digital technologies play a crucial role in preserving languages and cultural practices while facilitating participation in the global digital economy.",
+      "legal": "The Pacific AI Ethics Charter establishes principles for the responsible development and use of artificial intelligence in the region. This includes provisions for algorithmic transparency, accountability mechanisms, and protection against bias. The charter emphasizes the importance of cultural appropriateness and community consultation in AI deployment. Data sovereignty agreements with international tech companies ensure that Pacific nations retain control over their data while benefiting from global technological advancements.",
+      "islands": ["cook", "niue", "tokelau"],
+      "reference": "https://www.pacificai.org"
+    }
+  ]
+}
