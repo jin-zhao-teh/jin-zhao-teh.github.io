@@ -38,6 +38,7 @@
         background-color: #0f172a;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        position: relative;
       }
 
       h1 {
@@ -192,14 +193,14 @@
       }
 
       .event-icon {
-        width: 90px;
-        height: 90px;
+        width: 110px; /* Increased size */
+        height: 110px; /* Increased size */
         background-color: #0f172a;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 40px;
+        font-size: 45px; /* Increased size */
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         border: 5px solid #3498db;
         transition: all 0.3s ease;
@@ -275,7 +276,7 @@
       .timeline-event::after {
         content: "";
         position: absolute;
-        top: 90px;
+        top: 100px; /* Adjusted for larger icon */
         width: 50px;
         height: 4px;
         background-color: #3498db;
@@ -297,19 +298,123 @@
         color: #94a3b8;
       }
 
-      /* Scrollbar styling */
+      /* Scrollbar styling - more transparent */
       ::-webkit-scrollbar {
         width: 12px;
       }
 
       ::-webkit-scrollbar-track {
-        background: #0f172a;
+        background: rgba(15, 23, 42, 0.5); /* More transparent */
         border-radius: 10px;
       }
 
       ::-webkit-scrollbar-thumb {
-        background: #3498db;
+        background: rgba(52, 152, 219, 0.5); /* More transparent */
         border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(52, 152, 219, 0.7); /* Slightly less transparent on hover */
+      }
+
+      /* References button */
+      .references-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .references-btn:hover {
+        background-color: #2980b9;
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* References modal */
+      .references-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 2000;
+        overflow-y: auto;
+        padding: 20px;
+      }
+
+      .references-content {
+        background-color: #1e293b;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 12px;
+        max-width: 800px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        position: relative;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 28px;
+        color: #94a3b8;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .close-btn:hover {
+        color: #e2e8f0;
+      }
+
+      .references-list {
+        margin-top: 20px;
+      }
+
+      .reference-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #0f172a;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      .reference-item:hover {
+        transform: translateX(5px);
+      }
+
+      .reference-link {
+        color: #3498db;
+        text-decoration: none;
+        display: block;
+        font-size: 16px;
+        transition: color 0.3s ease;
+      }
+
+      .reference-link:hover {
+        color: #2980b9;
+        text-decoration: underline;
+      }
+
+      .reference-islands {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-top: 5px;
       }
 
       /* Responsive design */
@@ -365,14 +470,22 @@
         }
 
         .event-icon {
-          width: 70px;
-          height: 70px;
-          font-size: 30px;
+          width: 90px;
+          height: 90px;
+          font-size: 35px;
         }
 
         .event-period {
           font-size: 16px;
           padding: 8px 20px;
+        }
+
+        .references-btn {
+          top: 10px;
+          right: 10px;
+          width: 50px;
+          height: 50px;
+          font-size: 20px;
         }
       }
     </style>
@@ -408,28 +521,50 @@
       </div>
     </div>
 
+    <!-- References Button -->
+    <button class="references-btn" id="references-btn">
+      <i class="fas fa-book"></i>
+    </button>
+
+    <!-- References Modal -->
+    <div class="references-modal" id="references-modal">
+      <div class="references-content">
+        <span class="close-btn" id="close-references">&times;</span>
+        <h2>All References</h2>
+        <div class="references-list" id="references-list">
+          <!-- References will be populated here -->
+        </div>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const timelineContainer = document.getElementById("timeline");
         const timelineProgress = document.getElementById("timeline-progress");
         const filterButtons = document.querySelectorAll(".filter-btn");
+        const referencesBtn = document.getElementById("references-btn");
+        const referencesModal = document.getElementById("references-modal");
+        const closeReferences = document.getElementById("close-references");
+        const referencesList = document.getElementById("references-list");
+        
         let timelineData = [];
         let currentEvents = [];
-
-        // Fetch data from data.json
         fetch("https://jin-zhao-teh.github.io/GlobalAssessment/data.json")
-          .then((response) => response.json())
-          .then((data) => {
-            timelineData = data.timelineData;
-            console.log("Timeline data loaded:", timelineData);
-            initTimeline();
-            setupScrollListener();
-          })
-          .catch((error) => {
-            console.error("Error loading timeline data:", error);
-            timelineContainer.innerHTML =
-              '<div class="loading">Error loading timeline data. Please try again later.</div>';
-          });
+        .then((response) => response.json())
+        .then((data) => {
+          timelineData = data.timelineData;
+          initTimeline();
+          populateReferences();
+          console.log(data.timelineData);
+        })
+        .catch((error) => {
+          console.error("Error loading timeline data:", error);
+          timeline.innerHTML =
+            '<div class="loading">Error loading timeline data. Please try again later.</div>';
+        });
+
+        // Use sample data instead of fetching
+        setupScrollListener();
 
         // Function to initialize the timeline with all data
         function initTimeline() {
@@ -557,22 +692,21 @@
         // Function to setup scroll listener for progress and event highlighting
         function setupScrollListener() {
           window.addEventListener("scroll", function () {
-            const timelineContainer = document.querySelector(
+            const timelineContainerEl = document.querySelector(
               ".timeline-container"
             );
-            if (!timelineContainer) return;
-
-            const timelineRect = timelineContainer.getBoundingClientRect();
+            const timelineRect = timelineContainerEl.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            const triggerPoint = windowHeight / 2;
-
-            // Calculate progress based on the container's top relative to the trigger point
-            const scrollDistance = triggerPoint - timelineRect.top;
-            const totalScrollHeight = timelineRect.height;
-
+            
+            // Calculate the middle of the screen position relative to the timeline
+            const middleScreen = window.scrollY + (windowHeight / 2);
+            const timelineTop = timelineContainerEl.offsetTop;
+            const timelineHeight = timelineContainerEl.offsetHeight;
+            
+            // Calculate progress percentage based on middle of screen
             const scrollPercent = Math.max(
               0,
-              Math.min(1, scrollDistance / totalScrollHeight)
+              Math.min(1, (middleScreen - timelineTop) / timelineHeight)
             );
 
             // Update progress bar
@@ -602,32 +736,44 @@
           });
         }
 
-        // Function to attach read more listeners (for truncated descriptions)
-        function attachReadMoreListener(element) {
-          element.addEventListener("click", function () {
-            const descriptionElement = this.parentElement;
-            const fullDescription = timelineData.find((event) =>
-              event.description.startsWith(
-                descriptionElement.textContent.substring(0, 50)
-              )
-            ).description;
-
-            if (this.textContent === "Read more") {
-              descriptionElement.innerHTML =
-                fullDescription + ' <span class="read-more">Read less</span>';
-              attachReadMoreListener(
-                descriptionElement.querySelector(".read-more")
-              );
-            } else {
-              const truncatedDesc = fullDescription.substring(0, 150) + "...";
-              descriptionElement.innerHTML =
-                truncatedDesc + ' <span class="read-more">Read more</span>';
-              attachReadMoreListener(
-                descriptionElement.querySelector(".read-more")
-              );
-            }
+        // Function to populate references modal
+        function populateReferences() {
+          referencesList.innerHTML = '';
+          timelineData.forEach(event => {
+            const referenceItem = document.createElement('div');
+            referenceItem.className = 'reference-item';
+            
+            const referenceLink = document.createElement('a');
+            referenceLink.className = 'reference-link';
+            referenceLink.href = event.reference;
+            referenceLink.target = '_blank';
+            referenceLink.textContent = `${event.title} (${event.period})`;
+            
+            const referenceIslands = document.createElement('div');
+            referenceIslands.className = 'reference-islands';
+            referenceIslands.textContent = `Islands: ${event.islands.join(', ')}`;
+            
+            referenceItem.appendChild(referenceLink);
+            referenceItem.appendChild(referenceIslands);
+            
+            referencesList.appendChild(referenceItem);
           });
         }
+
+        // Event listeners for references modal
+        referencesBtn.addEventListener('click', function() {
+          referencesModal.style.display = 'block';
+        });
+
+        closeReferences.addEventListener('click', function() {
+          referencesModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+          if (event.target === referencesModal) {
+            referencesModal.style.display = 'none';
+          }
+        });
       });
     </script>
   </body>
