@@ -575,8 +575,18 @@
             button.addEventListener("click", function () {
               filterButtons.forEach((btn) => btn.classList.remove("active"));
               this.classList.add("active");
+              
               console.log(this.dataset.filter)
-              const filter = this.dataset.filter;
+              let filter = this.dataset.filter;
+              if (filter === "Cook Islands") {
+                filter = "cook"
+              } else if (filter === "Niue") {
+                filter = "niue"
+              } else if (filter === "Tokelau") {
+                filter = "tokelau"
+              } else {
+                filter = "all"
+              }
               generateTimelineEvents(filter);
             });
           });
