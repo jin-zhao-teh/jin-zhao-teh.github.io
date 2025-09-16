@@ -575,7 +575,7 @@
             button.addEventListener("click", function () {
               filterButtons.forEach((btn) => btn.classList.remove("active"));
               this.classList.add("active");
-
+              console.log(this.dataset.filter)
               const filter = this.dataset.filter;
               generateTimelineEvents(filter);
             });

@@ -6,7 +6,7 @@
       "title": "Colonial Administration Era",
       "description": "During the colonial administration era, the Cook Islands, Niue, and Tokelau were under New Zealand's administration. This period was characterized by limited technological infrastructure and communication capabilities. Communication was primarily through traditional methods, with basic radio technology serving administrative needs. The focus was on maintaining colonial administration rather than technological development or digital inclusion. These territories had limited autonomy, with New Zealand controlling foreign affairs, defense, and most aspects of governance.",
       "legal": "New Zealand's laws and regulations were extended to these territories, establishing the foundation for future governance structures. The focus was on maintaining colonial administration rather than technological development. This period established the constitutional relationships that would later influence digital technology policies in these territories. The legal framework was primarily based on New Zealand's existing laws, with little consideration for the unique cultural and geographical challenges of the Pacific Islands.",
-      "islands": ["Cook Islands", "niue", "tokelau"],
+      "islands": ["cook", "niue", "tokelau"],
       "reference": "https://www.nzhistory.govt.nz/politics/cook-islands"
     },
     {
