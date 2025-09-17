@@ -209,6 +209,7 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
         
         .graph-title {
@@ -258,21 +259,25 @@
             font-style: italic;
         }
         
-        .interactive-controls {
+        .graph-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 8px;
+            z-index: 20;
         }
         
         .control-btn {
-            padding: 8px 15px;
+            padding: 6px 12px;
             background: #3498db;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             transition: background 0.3s ease;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
         .control-btn:hover {
@@ -341,8 +346,16 @@
                 transform: scale(1.2) rotate(3deg);
             }
             
-            .interactive-controls {
+            .graph-controls {
+                top: 5px;
+                right: 5px;
                 flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            
+            .control-btn {
+                padding: 4px 8px;
+                font-size: 11px;
             }
         }
     </style>
@@ -385,16 +398,16 @@
                 <div class="graph">
                     <h3 class="graph-title">Internet Access Trends (2014-2024)</h3>
                     <div class="graph-container">
-                        <img src="https://jin-zhao-teh.github.io/MathAssessment/Images/internet-trends.png" alt="Internet Access Trends 2014-2024" class="graph-image" onerror="this.style.display='none'; document.getElementById('trend-placeholder').style.display='flex';">
+                        <div class="graph-controls">
+                            <button class="control-btn" onclick="rotateImage('trend-image', 90)">Rotate 90°</button>
+                            <button class="control-btn" onclick="zoomImage('trend-image', 1.2)">Zoom In</button>
+                            <button class="control-btn" onclick="zoomImage('trend-image', 0.8)">Zoom Out</button>
+                            <button class="control-btn" onclick="resetImage('trend-image')">Reset</button>
+                        </div>
+                        <img src="https://jin-zhao-teh.github.io/MathAssessment/Images/internet-trends.png" alt="Internet Access Trends 2014-2024" class="graph-image" id="trend-image" onerror="this.style.display='none'; document.getElementById('trend-placeholder').style.display='flex';">
                         <div id="trend-placeholder" class="graph-placeholder">
                             Image not found: https://jin-zhao-teh.github.io/MathAssessment/Images/internet-trends.png
                         </div>
-                    </div>
-                    <div class="interactive-controls">
-                        <button class="control-btn" onclick="rotateImage('trend-image', 90)">Rotate 90°</button>
-                        <button class="control-btn" onclick="zoomImage('trend-image', 1.2)">Zoom In</button>
-                        <button class="control-btn" onclick="zoomImage('trend-image', 0.8)">Zoom Out</button>
-                        <button class="control-btn" onclick="resetImage('trend-image')">Reset</button>
                     </div>
                     <div class="analysis">
                         <p><strong>Analysis:</strong> Niue shows consistently high internet access rates, largely due to its innovative .nu domain revenue funding free public WiFi. The Cook Islands demonstrate steady growth correlated with tourism development. Tokelau, while starting from a lower baseline, shows the most significant percentage growth, reflecting recent infrastructure investments.</p>
@@ -411,16 +424,16 @@
                 <div class="graph">
                     <h3 class="graph-title">Device Ownership Comparison</h3>
                     <div class="graph-container">
+                        <div class="graph-controls">
+                            <button class="control-btn" onclick="rotateImage('device-image', 90)">Rotate 90°</button>
+                            <button class="control-btn" onclick="zoomImage('device-image', 1.2)">Zoom In</button>
+                            <button class="control-btn" onclick="zoomImage('device-image', 0.8)">Zoom Out</button>
+                            <button class="control-btn" onclick="resetImage('device-image')">Reset</button>
+                        </div>
                         <img src="https://raw.githubusercontent.com/jin-zhao-teh/jin-zhao-teh.github.io/main/MathAssessment/Images/device-ownership.png" alt="Device Ownership Comparison" class="graph-image" id="device-image" onerror="this.style.display='none'; document.getElementById('device-placeholder').style.display='flex';">
                         <div id="device-placeholder" class="graph-placeholder">
                             Image not found: https://jin-zhao-teh.github.io/MathAssessment/Images/device-ownership.png
                         </div>
-                    </div>
-                    <div class="interactive-controls">
-                        <button class="control-btn" onclick="rotateImage('device-image', 90)">Rotate 90°</button>
-                        <button class="control-btn" onclick="zoomImage('device-image', 1.2)">Zoom In</button>
-                        <button class="control-btn" onclick="zoomImage('device-image', 0.8)">Zoom Out</button>
-                        <button class="control-btn" onclick="resetImage('device-image')">Reset</button>
                     </div>
                     <div class="analysis">
                         <p><strong>Analysis:</strong> Smartphones are the most common device across all three regions, reflecting the mobile-first nature of Pacific Island internet use. Laptop/computer ownership shows greater variation, with higher rates in Niue and Cook Islands where educational and tourism initiatives have promoted digital literacy.</p>
@@ -512,16 +525,16 @@
                 <div class="graph">
                     <h3 class="graph-title">Social Media Usage</h3>
                     <div class="graph-container">
+                        <div class="graph-controls">
+                            <button class="control-btn" onclick="rotateImage('social-image', 90)">Rotate 90°</button>
+                            <button class="control-btn" onclick="zoomImage('social-image', 1.2)">Zoom In</button>
+                            <button class="control-btn" onclick="zoomImage('social-image', 0.8)">Zoom Out</button>
+                            <button class="control-btn" onclick="resetImage('social-image')">Reset</button>
+                        </div>
                         <img src="https://jin-zhao-teh.github.io/MathAssessment/Images/social-media.png" alt="Social Media Usage" class="graph-image" id="social-image" onerror="this.style.display='none'; document.getElementById('social-placeholder').style.display='flex';">
                         <div id="social-placeholder" class="graph-placeholder">
                             Image not found: https://jin-zhao-teh.github.io/MathAssessment/Images/social-media.png
                         </div>
-                    </div>
-                    <div class="interactive-controls">
-                        <button class="control-btn" onclick="rotateImage('social-image', 90)">Rotate 90°</button>
-                        <button class="control-btn" onclick="zoomImage('social-image', 1.2)">Zoom In</button>
-                        <button class="control-btn" onclick="zoomImage('social-image', 0.8)">Zoom Out</button>
-                        <button class="control-btn" onclick="resetImage('social-image')">Reset</button>
                     </div>
                     <p>Percentage of population using social media platforms at least weekly. Facebook is the dominant platform across all three regions, followed by YouTube and Instagram.</p>
                     
@@ -614,45 +627,65 @@
     </div>
 
     <script>
-        // Hide placeholders initially (they will be shown only if images fail to load)
+        // Image state tracking
+        const imageStates = {};
+        
+        // Initialize image states
         document.addEventListener('DOMContentLoaded', function() {
+            // Hide placeholders initially
             document.getElementById('trend-placeholder').style.display = 'none';
             document.getElementById('device-placeholder').style.display = 'none';
             document.getElementById('social-placeholder').style.display = 'none';
             
-            // Add IDs to images for manipulation
-            const images = document.querySelectorAll('.graph-image');
-            images.forEach((img, index) => {
-                img.id = `graph-image-${index}`;
+            // Initialize state for each image
+            const imageIds = ['trend-image', 'device-image', 'social-image'];
+            imageIds.forEach(id => {
+                const img = document.getElementById(id);
+                if (img) {
+                    imageStates[id] = {
+                        rotation: 0,
+                        scale: 1,
+                        originalTransform: img.style.transform
+                    };
+                }
             });
         });
         
         // Image manipulation functions
-        let currentRotation = 0;
-        let currentScale = 1;
-        
         function rotateImage(imgId, degrees) {
             const img = document.getElementById(imgId);
-            if (img) {
-                currentRotation += degrees;
-                img.style.transform = `rotate(${currentRotation}deg) scale(${currentScale})`;
+            if (img && imageStates[imgId]) {
+                imageStates[imgId].rotation += degrees;
+                updateImageTransform(imgId);
             }
         }
         
         function zoomImage(imgId, factor) {
             const img = document.getElementById(imgId);
-            if (img) {
-                currentScale *= factor;
-                img.style.transform = `rotate(${currentRotation}deg) scale(${currentScale})`;
+            if (img && imageStates[imgId]) {
+                imageStates[imgId].scale *= factor;
+                updateImageTransform(imgId);
             }
         }
         
         function resetImage(imgId) {
             const img = document.getElementById(imgId);
-            if (img) {
-                currentRotation = 0;
-                currentScale = 1;
-                img.style.transform = 'none';
+            if (img && imageStates[imgId]) {
+                imageStates[imgId].rotation = 0;
+                imageStates[imgId].scale = 1;
+                img.style.transform = '';
+                img.style.zIndex = '';
+                img.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+            }
+        }
+        
+        function updateImageTransform(imgId) {
+            const img = document.getElementById(imgId);
+            if (img && imageStates[imgId]) {
+                const state = imageStates[imgId];
+                img.style.transform = `rotate(${state.rotation}deg) scale(${state.scale})`;
+                img.style.zIndex = '10';
+                img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
             }
         }
         
@@ -660,16 +693,25 @@
         const graphImages = document.querySelectorAll('.graph-image');
         graphImages.forEach(img => {
             img.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.5) rotate(5deg)';
-                this.style.zIndex = '10';
-                this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
+                const imgId = this.id;
+                // Only apply hover effect if image is in its natural state
+                if (imageStates[imgId] && imageStates[imgId].rotation === 0 && imageStates[imgId].scale === 1) {
+                    this.style.transform = 'scale(1.5) rotate(5deg)';
+                    this.style.zIndex = '10';
+                    this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
+                }
             });
             
             img.addEventListener('mouseleave', function() {
-                this.style.transform = `rotate(${currentRotation}deg) scale(${currentScale})`;
-                if (currentScale === 1 && currentRotation === 0) {
+                const imgId = this.id;
+                // Only reset if image is in its natural state
+                if (imageStates[imgId] && imageStates[imgId].rotation === 0 && imageStates[imgId].scale === 1) {
+                    this.style.transform = '';
                     this.style.zIndex = '';
                     this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                } else {
+                    // Otherwise, apply the current transformation state
+                    updateImageTransform(imgId);
                 }
             });
         });
