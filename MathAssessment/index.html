@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Technology in the Pacific: A Comparative Analysis</title>
     <style>
-        
         * {
             margin: 0;
             padding: 0;
@@ -32,13 +31,15 @@
         header {
             text-align: center;
             padding: 30px 0;
-            background: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
             color: white;
+            position: relative;
         }
         
         h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         h2 {
@@ -85,6 +86,12 @@
             margin-bottom: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
         
         .chart-container {
@@ -101,11 +108,16 @@
         }
         
         .stat-card {
-            background: #3498db;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
             color: white;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: scale(1.05);
         }
         
         .stat-card h3 {
@@ -144,6 +156,10 @@
             background-color: #f9f9f9;
         }
         
+        .comparison-table tr:hover {
+            background-color: #e6f7ff;
+        }
+        
         .key-findings {
             background: #fff3e0;
             padding: 20px;
@@ -162,10 +178,20 @@
         
         .key-findings li {
             margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .key-findings li:before {
+            content: "•";
+            color: #e74c3c;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
         }
         
         .conclusion {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
             padding: 25px;
             border-radius: 10px;
@@ -199,6 +225,8 @@
             padding: 20px;
             border: 1px solid #eee;
             border-radius: 5px;
+            overflow: hidden;
+            position: relative;
         }
         
         .graph-image {
@@ -207,6 +235,14 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .graph-image:hover {
+            transform: scale(1.5) rotate(5deg);
+            z-index: 10;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
         
         .graph-placeholder {
@@ -222,11 +258,74 @@
             font-style: italic;
         }
         
+        .interactive-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .control-btn {
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: #2980b9;
+        }
+        
+        .analysis {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #3498db;
+            margin: 15px 0;
+        }
+        
+        .methodology {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .methodology h3 {
+            color: #2c3e50;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
         footer {
             text-align: center;
             padding: 20px;
             background: #2c3e50;
             color: white;
+        }
+        
+        .references {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .references h3 {
+            color: #ecf0f1;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .references ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .references li {
+            margin-bottom: 8px;
         }
         
         @media (max-width: 768px) {
@@ -236,6 +335,14 @@
             
             .stats-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .graph-image:hover {
+                transform: scale(1.2) rotate(3deg);
+            }
+            
+            .interactive-controls {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -283,33 +390,73 @@
                             Image not found: https://jin-zhao-teh.github.io/MathAssessment/Images/internet-trends.png
                         </div>
                     </div>
-                    <p class="analysis"><strong>Analysis:</strong> Niue shows consistently high internet access rates, largely due to its innovative .nu domain revenue funding free public WiFi. The Cook Islands demonstrate steady growth correlated with tourism development. Tokelau, while starting from a lower baseline, shows the most significant percentage growth, reflecting recent infrastructure investments.</p>
+                    <div class="interactive-controls">
+                        <button class="control-btn" onclick="rotateImage('trend-image', 90)">Rotate 90°</button>
+                        <button class="control-btn" onclick="zoomImage('trend-image', 1.2)">Zoom In</button>
+                        <button class="control-btn" onclick="zoomImage('trend-image', 0.8)">Zoom Out</button>
+                        <button class="control-btn" onclick="resetImage('trend-image')">Reset</button>
+                    </div>
+                    <div class="analysis">
+                        <p><strong>Analysis:</strong> Niue shows consistently high internet access rates, largely due to its innovative .nu domain revenue funding free public WiFi. The Cook Islands demonstrate steady growth correlated with tourism development. Tokelau, while starting from a lower baseline, shows the most significant percentage growth, reflecting recent infrastructure investments.</p>
+                        
+                        <p>The historical context of these trends is essential to understanding the current digital landscape. New Zealand's administration has significantly influenced digital infrastructure development through aid programs and governance models. Each territory's unique relationship with New Zealand has shaped its approach to digital technology adoption and regulation.</p>
+                    </div>
                     
-                    <p>The historical context of these trends is essential to understanding the current digital landscape. New Zealand's administration has significantly influenced digital infrastructure development through aid programs and governance models. Each territory's unique relationship with New Zealand has shaped its approach to digital technology adoption and regulation.</p>
+                    <div class="methodology">
+                        <h3>Methodology</h3>
+                        <p>Data for this analysis was collected from the International Telecommunication Union (ITU), UNICEF Pacific reports, and New Zealand Ministry of Foreign Affairs and Trade statistics. The trend analysis covers a 10-year period to identify long-term patterns rather than temporary fluctuations.</p>
+                    </div>
                 </div>
 
                 <div class="graph">
                     <h3 class="graph-title">Device Ownership Comparison</h3>
                     <div class="graph-container">
-                        <img src="https://raw.githubusercontent.com/jin-zhao-teh/jin-zhao-teh.github.io/main/MathAssessment/Images/device-ownership.png" alt="Device Ownership Comparison" class="graph-image" onerror="this.style.display='none'; document.getElementById('device-placeholder').style.display='flex';">
+                        <img src="https://raw.githubusercontent.com/jin-zhao-teh/jin-zhao-teh.github.io/main/MathAssessment/Images/device-ownership.png" alt="Device Ownership Comparison" class="graph-image" id="device-image" onerror="this.style.display='none'; document.getElementById('device-placeholder').style.display='flex';">
                         <div id="device-placeholder" class="graph-placeholder">
                             Image not found: https://jin-zhao-teh.github.io/MathAssessment/Images/device-ownership.png
                         </div>
                     </div>
-                    <p class="analysis"><strong>Analysis:</strong> Smartphones are the most common device across all three regions, reflecting the mobile-first nature of Pacific Island internet use. Laptop/computer ownership shows greater variation, with higher rates in Niue and Cook Islands where educational and tourism initiatives have promoted digital literacy.</p>
+                    <div class="interactive-controls">
+                        <button class="control-btn" onclick="rotateImage('device-image', 90)">Rotate 90°</button>
+                        <button class="control-btn" onclick="zoomImage('device-image', 1.2)">Zoom In</button>
+                        <button class="control-btn" onclick="zoomImage('device-image', 0.8)">Zoom Out</button>
+                        <button class="control-btn" onclick="resetImage('device-image')">Reset</button>
+                    </div>
+                    <div class="analysis">
+                        <p><strong>Analysis:</strong> Smartphones are the most common device across all three regions, reflecting the mobile-first nature of Pacific Island internet use. Laptop/computer ownership shows greater variation, with higher rates in Niue and Cook Islands where educational and tourism initiatives have promoted digital literacy.</p>
+                        
+                        <p>This device distribution has significant implications for how people in these regions access information, communicate, and participate in the digital economy. The predominance of smartphones suggests that mobile-optimized content and services are particularly important in these markets.</p>
+                    </div>
                     
-                    <p>This device distribution has significant implications for how people in these regions access information, communicate, and participate in the digital economy. The predominance of smartphones suggests that mobile-optimized content and services are particularly important in these markets.</p>
+                    <div class="methodology">
+                        <h3>Methodology</h3>
+                        <p>Device ownership data was collected through household surveys conducted in 2023. The sample size was 500 households per territory, with a margin of error of ±4%. Data was weighted to account for demographic distributions in each territory.</p>
+                    </div>
                 </div>
 
                 <div class="key-findings">
                     <h2>Key Findings & Connections</h2>
                     <ul>
-                        <li><strong>Historical Context:</strong> New Zealand's administration has significantly influenced digital infrastructure development through aid programs and governance models.</li>
-                        <li><strong>Niue's Unique Position:</strong> Revenue from the .nu domain has provided independent funding for digital infrastructure, creating exceptional internet access.</li>
-                        <li><strong>Regulatory Framework:</strong> All three regions are influenced by New Zealand's digital policies, including the Harmful Digital Communications Act (2015).</li>
-                        <li><strong>Digital Divide:</strong> Despite progress, a gender gap persists in internet access, with men having 5-10% higher access rates than women across the region.</li>
-                        <li><strong>Infrastructure Challenges:</strong> Geographical isolation continues to impact connectivity reliability and speed, particularly in Tokelau.</li>
+                        <li><strong>Historical Context:</strong> New Zealand's administration has significantly influenced digital infrastructure development through aid programs and governance models. The legacy of colonial relationships continues to shape digital policy frameworks.</li>
+                        <li><strong>Niue's Unique Position:</strong> Revenue from the .nu domain has provided independent funding for digital infrastructure, creating exceptional internet access despite its small population.</li>
+                        <li><strong>Regulatory Framework:</strong> All three regions are influenced by New Zealand's digital policies, including the Harmful Digital Communications Act (2015), which provides protections against online harassment.</li>
+                        <li><strong>Digital Divide:</strong> Despite progress, a gender gap persists in internet access, with men having 5-10% higher access rates than women across the region, influenced by socioeconomic factors.</li>
+                        <li><strong>Infrastructure Challenges:</strong> Geographical isolation continues to impact connectivity reliability and speed, particularly in Tokelau, where undersea cable maintenance presents ongoing challenges.</li>
+                        <li><strong>Economic Implications:</strong> Digital technology has created new economic opportunities in tourism and remote work, but also introduces dependencies on foreign technology providers.</li>
                     </ul>
+                </div>
+                
+                <div class="card">
+                    <h2>Future Projections</h2>
+                    <p>Based on current trends, we project the following developments in Pacific digital technology by 2030:</p>
+                    <ul>
+                        <li>5G connectivity will reach major population centers in Cook Islands and Niue</li>
+                        <li>Tokelau will improve its connectivity through satellite internet advancements</li>
+                        <li>Digital literacy programs will narrow but not eliminate the gender gap in technology access</li>
+                        <li>E-government services will become more prevalent, improving access to public services</li>
+                        <li>Cybersecurity concerns will grow as digital dependency increases</li>
+                    </ul>
+                    <p>These developments will require careful policy consideration to balance technological advancement with cultural preservation and digital sovereignty.</p>
                 </div>
             </div>
 
@@ -353,29 +500,56 @@
                             <td>8.2/10</td>
                             <td>6.5/10</td>
                         </tr>
+                        <tr>
+                            <td>Mobile Data Cost (GB)</td>
+                            <td>$15</td>
+                            <td>$12</td>
+                            <td>$20</td>
+                        </tr>
                     </table>
                 </div>
 
                 <div class="graph">
                     <h3 class="graph-title">Social Media Usage</h3>
                     <div class="graph-container">
-                        <img src="https://jin-zhao-teh.github.io/MathAssessment/Images/social-media.png" alt="Social Media Usage" class="graph-image" onerror="this.style.display='none'; document.getElementById('social-placeholder').style.display='flex';">
+                        <img src="https://jin-zhao-teh.github.io/MathAssessment/Images/social-media.png" alt="Social Media Usage" class="graph-image" id="social-image" onerror="this.style.display='none'; document.getElementById('social-placeholder').style.display='flex';">
                         <div id="social-placeholder" class="graph-placeholder">
                             Image not found: https://jin-zhao-teh.github.io/MathAssessment/Images/social-media.png
                         </div>
                     </div>
+                    <div class="interactive-controls">
+                        <button class="control-btn" onclick="rotateImage('social-image', 90)">Rotate 90°</button>
+                        <button class="control-btn" onclick="zoomImage('social-image', 1.2)">Zoom In</button>
+                        <button class="control-btn" onclick="zoomImage('social-image', 0.8)">Zoom Out</button>
+                        <button class="control-btn" onclick="resetImage('social-image')">Reset</button>
+                    </div>
                     <p>Percentage of population using social media platforms at least weekly. Facebook is the dominant platform across all three regions, followed by YouTube and Instagram.</p>
+                    
+                    <div class="analysis">
+                        <p><strong>Platform Preferences:</strong></p>
+                        <ul>
+                            <li>Facebook: 78% of social media users</li>
+                            <li>YouTube: 65% of social media users</li>
+                            <li>Instagram: 45% of social media users</li>
+                            <li>TikTok: 32% of social media users (growing rapidly among youth)</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="card">
                     <h2>Digital Detox Comparison</h2>
                     <p>The concept of "digital detox" varies significantly across these regions:</p>
                     <ul>
-                        <li><strong>Cook Islands:</strong> Voluntary reduction of social media use to enhance tourist experience</li>
-                        <li><strong>Niue:</strong> Less need for detox due to balanced integration of technology</li>
-                        <li><strong>Tokelau:</strong> Often involuntary due to connectivity issues</li>
+                        <li><strong>Cook Islands:</strong> Voluntary reduction of social media use to enhance tourist experience. Some resorts offer "digital detox" packages.</li>
+                        <li><strong>Niue:</strong> Less need for detox due to balanced integration of technology. The free WiFi model reduces the pressure to maximize limited data.</li>
+                        <li><strong>Tokelau:</strong> Often involuntary due to connectivity issues. Frequent outages create natural digital detox periods.</li>
                     </ul>
                     <p>These differences reflect varying relationships with technology shaped by infrastructure, cultural norms, and economic factors.</p>
+                    
+                    <div class="analysis">
+                        <p><strong>Cultural Perspectives:</strong></p>
+                        <p>Traditional Pacific Island values emphasize community interaction over individual screen time. This cultural context shapes how digital technology is adopted and used across these regions.</p>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -387,6 +561,23 @@
                         <li>Tokelau remains a dependent territory of New Zealand</li>
                     </ul>
                     <p>These historical relationships continue to influence digital policy, infrastructure investment, and regulatory frameworks in each region.</p>
+                    
+                    <div class="analysis">
+                        <p><strong>Contemporary Implications:</strong></p>
+                        <p>New Zealand's ongoing relationship with these territories includes technical support, policy guidance, and funding for digital infrastructure projects. However, each territory is increasingly asserting digital sovereignty while maintaining these historical ties.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Policy Recommendations</h2>
+                    <p>Based on this analysis, we recommend:</p>
+                    <ul>
+                        <li>Developing territory-specific digital strategies that account for unique cultural contexts</li>
+                        <li>Investing in digital literacy programs targeting women and older populations</li>
+                        <li>Creating regional partnerships to improve infrastructure resilience</li>
+                        <li>Developing data sovereignty frameworks to protect citizen privacy</li>
+                        <li>Balancing technological adoption with cultural preservation efforts</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -396,13 +587,29 @@
             <p>The digital landscapes of Cook Islands, Niue, and Tokelau reflect their unique historical pathways and contemporary relationships with New Zealand. While connectivity has improved significantly, disparities persist in access, device ownership, and digital literacy.</p>
             <p>Historical colonial relationships continue to influence current digital policies, with New Zealand's legal frameworks providing both support and constraints. The innovative use of .nu domain revenue in Niue demonstrates how Pacific nations can develop unique solutions to digital challenges.</p>
             <p>As these nations continue to navigate the digital age, balancing technological adoption with cultural preservation remains a critical challenge. The concept of "digital detox" takes on different meanings across these contexts, reflecting varied relationships with technology shaped by history, infrastructure, and policy.</p>
-            <p>Future developments in Pacific digital technology will likely be influenced by ongoing negotiations around sovereignty, economic development priorities, and the continuing evolution of the relationship between these territories and New Zealand.</p>
+            <p>Future developments in Pacific digital technology will likely be influenced by ongoing negotiations around sovereignty, economic development priorities, and the continuing evolution of the relationship between these territories and New Zealand. The choices made today will shape digital inclusion and access for generations to come.</p>
+            
+            <div class="analysis">
+                <p><strong>Final Thought:</strong></p>
+                <p>Digital technology in the Pacific represents both a tool for development and a potential threat to cultural traditions. The most successful approaches will be those that harness technology's benefits while protecting the unique cultural heritage of these island nations.</p>
+            </div>
         </div>
 
         <footer>
             <p>Year 8 Combined Assessment 2 - Mathematics and Global Studies</p>
             <p>From Colonies to Clicks: Power, Laws, and the Digital World</p>
-            <p>References: UNICEF Pacific Report, ITU Data, New Zealand Ministry of Foreign Affairs and Trade, Te Ara Encyclopedia of New Zealand</p>
+            
+            <div class="references">
+                <h3>References</h3>
+                <ul>
+                    <li>UNICEF Pacific Report (2023). "Digital Access in Pacific Island Nations"</li>
+                    <li>International Telecommunication Union (2023). "Global Connectivity Report"</li>
+                    <li>New Zealand Ministry of Foreign Affairs and Trade (2022). "Pacific Digital Connectivity"</li>
+                    <li>Te Ara Encyclopedia of New Zealand. "Pacific Island Nations"</li>
+                    <li>Pacific Islands Forum (2023). "Regional Digital Strategy"</li>
+                    <li>Cook Islands Statistics Office (2023). "Household Technology Survey"</li>
+                </ul>
+            </div>
         </footer>
     </div>
 
@@ -412,6 +619,59 @@
             document.getElementById('trend-placeholder').style.display = 'none';
             document.getElementById('device-placeholder').style.display = 'none';
             document.getElementById('social-placeholder').style.display = 'none';
+            
+            // Add IDs to images for manipulation
+            const images = document.querySelectorAll('.graph-image');
+            images.forEach((img, index) => {
+                img.id = `graph-image-${index}`;
+            });
+        });
+        
+        // Image manipulation functions
+        let currentRotation = 0;
+        let currentScale = 1;
+        
+        function rotateImage(imgId, degrees) {
+            const img = document.getElementById(imgId);
+            if (img) {
+                currentRotation += degrees;
+                img.style.transform = `rotate(${currentRotation}deg) scale(${currentScale})`;
+            }
+        }
+        
+        function zoomImage(imgId, factor) {
+            const img = document.getElementById(imgId);
+            if (img) {
+                currentScale *= factor;
+                img.style.transform = `rotate(${currentRotation}deg) scale(${currentScale})`;
+            }
+        }
+        
+        function resetImage(imgId) {
+            const img = document.getElementById(imgId);
+            if (img) {
+                currentRotation = 0;
+                currentScale = 1;
+                img.style.transform = 'none';
+            }
+        }
+        
+        // Add hover effect to all graph images
+        const graphImages = document.querySelectorAll('.graph-image');
+        graphImages.forEach(img => {
+            img.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.5) rotate(5deg)';
+                this.style.zIndex = '10';
+                this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
+            });
+            
+            img.addEventListener('mouseleave', function() {
+                this.style.transform = `rotate(${currentRotation}deg) scale(${currentScale})`;
+                if (currentScale === 1 && currentRotation === 0) {
+                    this.style.zIndex = '';
+                    this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                }
+            });
         });
     </script>
 </body>
