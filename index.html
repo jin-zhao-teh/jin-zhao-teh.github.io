@@ -4,43 +4,232 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jin-Zhao Teh</title>
+    <title>Jin-Zhao Teh | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#" class="nav-logo">JIN-ZHAO TEH</a>
+        <div class="nav-menu">
+          <a href="#work" class="nav-link">Work</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-toggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
     <div id="slider">
-      <div class="slideX" id="hero-page-w1">
+      <div class="slideX active" id="hero-page-w1">
         <div class="hero-background">
           <img src="Images/Img1.webp" alt="Background Image 1" />
         </div>
-        <header class="Hero-text">My Work</header>
+        <div class="hero-content">
+          <header class="Hero-text">Creative Developer & Designer</header>
+          <p class="hero-subtitle">Crafting digital experiences with code and creativity</p>
+          <a href="#work" class="cta-button">View My Work</a>
+        </div>
       </div>
       <div class="slideX" id="hero-page-w2">
         <div class="hero-background">
-          <img src="Images/Img1.webp" alt="Background Image 2" />
+          <img src="Images/Img2.webp" alt="Background Image 2" />
         </div>
-        <header class="Hero-text">About Me</header>
+        <div class="hero-content">
+          <header class="Hero-text">Innovative Solutions</header>
+          <p class="hero-subtitle">Transforming ideas into interactive realities</p>
+          <a href="#about" class="cta-button">About Me</a>
+        </div>
       </div>
-      <div class="slideY" id="hero-page-w2">
+      <div class="slideX" id="hero-page-w3">
         <div class="hero-background">
-          <img src="Images/Img1.webp" alt="Background Image 2" />
+          <img src="Images/Img3.webp" alt="Background Image 3" />
         </div>
-        <header class="Hero-text">About Me</header>
+        <div class="hero-content">
+          <header class="Hero-text">Let's Collaborate</header>
+          <p class="hero-subtitle">Ready to bring your next project to life</p>
+          <a href="#contact" class="cta-button">Get In Touch</a>
+        </div>
       </div>
-      <!-- Add more slides here -->
     </div>
-    <button id="prev", class="Hero-bttn">
+
+    <!-- Slider Navigation -->
+    <button id="prev" class="Hero-bttn">
       <svg viewBox="0 0 24 24" class="icon">
-        <line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="2" />
-        <line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="2" />
+        <line x1="19" y1="12" x2="5" y2="12" stroke="white" stroke-width="2" />
+        <polyline points="12,5 5,12 12,19" stroke="white" stroke-width="2" fill="none" />
       </svg>
     </button>
-    <button id="next", class="Hero-bttn">
+    <button id="next" class="Hero-bttn">
       <svg viewBox="0 0 24 24" class="icon">
         <line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="2" />
-        <line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="2" />
+        <polyline points="12,5 19,12 12,19" stroke="white" stroke-width="2" fill="none" />
       </svg>
     </button>
+
+    <!-- Work Section -->
+    <section id="work" class="section">
+      <div class="container">
+        <h2 class="section-title">Selected Work</h2>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-image">
+              <img src="Images/project1.webp" alt="Project 1">
+              <div class="project-overlay">
+                <h3>E-commerce Platform</h3>
+                <p>Full-stack development with React & Node.js</p>
+                <a href="#" class="project-link">View Project</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">
+              <img src="Images/project2.webp" alt="Project 2">
+              <div class="project-overlay">
+                <h3>Brand Identity</h3>
+                <p>Visual identity for tech startup</p>
+                <a href="#" class="project-link">View Project</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">
+              <img src="Images/project3.webp" alt="Project 3">
+              <div class="project-overlay">
+                <h3>Mobile Application</h3>
+                <p>iOS & Android fitness tracking app</p>
+                <a href="#" class="project-link">View Project</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">
+              <img src="Images/project4.webp" alt="Project 4">
+              <div class="project-overlay">
+                <h3>Data Visualization</h3>
+                <p>Interactive dashboard with D3.js</p>
+                <a href="#" class="project-link">View Project</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="about-content">
+          <div class="about-text">
+            <h2 class="section-title">About Me</h2>
+            <p>I'm a creative developer and designer with a passion for crafting digital experiences that blend aesthetics with functionality. With over 5 years of experience, I specialize in front-end development, UI/UX design, and interactive web applications.</p>
+            <p>My approach combines technical expertise with creative thinking to deliver solutions that not only look beautiful but also provide seamless user experiences across all devices.</p>
+            <div class="skills">
+              <h3>Skills & Expertise</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Vue.js</span>
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">UI/UX Design</span>
+                <span class="skill-tag">Responsive Design</span>
+                <span class="skill-tag">Animation</span>
+                <span class="skill-tag">Node.js</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-image">
+            <img src="Images/profile.webp" alt="Jin-Zhao Teh">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+          <div class="contact-info">
+            <p>Interested in working together or have a project in mind? I'd love to hear from you.</p>
+            <div class="contact-details">
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>hello@jinzhaoteh.com</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>+1 (123) 456-7890</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>San Francisco, CA</span>
+              </div>
+            </div>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-github"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-dribbble"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <form class="contact-form">
+            <div class="form-group">
+              <input type="text" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+              <textarea placeholder="Your Message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="submit-button">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2023 Jin-Zhao Teh. All rights reserved.</p>
+      </div>
+    </footer>
+
     <script src="js/hero-page-transition.js"></script>
     <script src="js/links.js"></script>
+    <script>
+      // Mobile Navigation Toggle
+      const navToggle = document.querySelector('.nav-toggle');
+      const navMenu = document.querySelector('.nav-menu');
+
+      navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+      });
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    </script>
   </body>
 </html>
