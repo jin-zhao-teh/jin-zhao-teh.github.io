@@ -11,5 +11,33 @@
   <body>
     <p>this is text :)</p>
     <iframe id="EnglishWriting1" src="https://docs.google.com/document/d/1jSK0NVWWcgVm4e0IMqIZfuHQGG6l75tiepb1gdykwjc/edit?usp=sharing"></iframe>
+    <script>
+        // Use the fetch API to request the public IP address from a third-party service
+        fetch("https://api.ipify.org/?format=json")
+            .then(response => {
+                // Check if the request was successful
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                // Parse the response body as JSON
+                return response.json();
+            })
+            .then(data => {
+                // Extract the IP address from the JSON data
+                const public_ip = data.ip;
+                
+                // Alert the user with the public IP address
+                alert(`My public IP address is: ${public_ip}`);
+
+                // Optionally, also display it on the page
+                document.querySelector('h3').textContent = `Your Public IP Address is: ${public_ip}`;
+            })
+            .catch(error => {
+                // Handle any errors that occurred during the fetch operation
+                console.error("Error fetching IP:", error);
+                alert(`Error retrieving public IP address: ${error.message}`);
+                document.querySelector('h3').textContent = "Error retrieving public IP address.";
+            });
+    </script>
   </body>
 </html>
