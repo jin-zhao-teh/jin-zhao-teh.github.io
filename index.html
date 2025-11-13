@@ -587,7 +587,7 @@
       // Fetch projects data from JSON
       async function fetchProjectsData() {
         try {
-          const response = await fetch('http://jin-zhao-teh.github.io/backend/data.json');
+          const response = await fetch('https://jin-zhao-teh.github.io/backend/data.json');
           const data = await response.json();
           projectsData = data.projects || [];
           renderProjects(projectsData);
