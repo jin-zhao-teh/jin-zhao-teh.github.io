@@ -9,6 +9,350 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      /* Additional styles for dynamic functionality */
+      .project-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .search-box {
+        position: relative;
+        flex: 1;
+        min-width: 250px;
+        max-width: 400px;
+      }
+      
+      .search-box input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+      
+      .search-box input:focus {
+        outline: none;
+        border-color: #4a6cf7;
+        box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+      }
+      
+      .search-box i {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+      }
+      
+      .tag-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      
+      .tag-filter {
+        padding: 0.5rem 1rem;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+      }
+      
+      .tag-filter:hover {
+        background-color: #e9e9e9;
+      }
+      
+      .tag-filter.active {
+        background-color: #4a6cf7;
+        color: white;
+        border-color: #4a6cf7;
+      }
+      
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      
+      .project-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: white;
+      }
+      
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      
+      .project-image {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+      }
+      
+      .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      
+      .project-card:hover .project-image img {
+        transform: scale(1.05);
+      }
+      
+      .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        padding: 1rem;
+        text-align: center;
+      }
+      
+      .project-card:hover .project-overlay {
+        opacity: 1;
+      }
+      
+      .project-overlay h3 {
+        color: white;
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+      }
+      
+      .project-overlay p {
+        color: #ddd;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .project-link {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #4a6cf7;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      
+      .project-link:hover {
+        background-color: #3a5ce5;
+      }
+      
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-top: 1px solid #eee;
+      }
+      
+      .project-tag {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        color: #666;
+      }
+      
+      .project-info {
+        padding: 1rem;
+      }
+      
+      .project-info h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+      }
+      
+      .project-info p {
+        color: #666;
+        font-size: 0.9rem;
+      }
+      
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        color: #666;
+      }
+      
+      .no-results {
+        text-align: center;
+        padding: 2rem;
+        grid-column: 1 / -1;
+        color: #666;
+      }
+      
+      .hero-slider {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      .slideX {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+      
+      .slideX.active {
+        opacity: 1;
+      }
+      
+      .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+      
+      .hero-background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        color: white;
+        padding: 0 2rem;
+      }
+      
+      .Hero-text {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      
+      .cta-button {
+        display: inline-block;
+        padding: 0.75rem 2rem;
+        background-color: #4a6cf7;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+      
+      .cta-button:hover {
+        background-color: #3a5ce5;
+        transform: translateY(-2px);
+      }
+      
+      .Hero-bttn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.3);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s ease;
+      }
+      
+      .Hero-bttn:hover {
+        background: rgba(0, 0, 0, 0.5);
+      }
+      
+      #prev {
+        left: 2rem;
+      }
+      
+      #next {
+        right: 2rem;
+      }
+      
+      .icon {
+        width: 24px;
+        height: 24px;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .project-controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        
+        .search-box {
+          max-width: 100%;
+        }
+        
+        .tag-filters {
+          justify-content: center;
+        }
+        
+        .Hero-text {
+          font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+          font-size: 1rem;
+        }
+        
+        .Hero-bttn {
+          width: 40px;
+          height: 40px;
+        }
+        
+        #prev {
+          left: 1rem;
+        }
+        
+        #next {
+          right: 1rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Navigation -->
@@ -80,47 +424,22 @@
     <section id="work" class="section">
       <div class="container">
         <h2 class="section-title">Selected Work</h2>
-        <div class="projects-grid">
-          <div class="project-card">
-            <div class="project-image">
-              <img src="https://jin-zhao-teh.github.io/Images/English.png" alt="Project 1">
-              <div class="project-overlay">
-                <h3>English</h3>
-                <p>English Studies</p>
-                <a href="/English" class="project-link">View Project</a>
-              </div>
-            </div>
+        
+        <!-- Project Controls -->
+        <div class="project-controls">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="project-search" placeholder="Search projects...">
           </div>
-          <div class="project-card">
-            <div class="project-image">
-              <img src="https://jin-zhao-teh.github.io/Images/project2.webp" alt="Project 2">
-              <div class="project-overlay">
-                <h3>Brand Identity</h3>
-                <p>Visual identity for tech startup</p>
-                <a href="#" class="project-link">View Project</a>
-              </div>
-            </div>
+          <div class="tag-filters" id="tag-filters">
+            <!-- Tags will be dynamically generated here -->
           </div>
-          <div class="project-card">
-            <div class="project-image">
-              <img src="https://jin-zhao-teh.github.io/Images/project3.webp" alt="Project 3">
-              <div class="project-overlay">
-                <h3>Mobile Application</h3>
-                <p>iOS & Android fitness tracking app</p>
-                <a href="#" class="project-link">View Project</a>
-              </div>
-            </div>
-          </div>
-          <div class="project-card">
-            <div class="project-image">
-              <img src="https://jin-zhao-teh.github.io/Images/project4.webp" alt="Project 4">
-              <div class="project-overlay">
-                <h3>Data Visualization</h3>
-                <p>Interactive dashboard with D3.js</p>
-                <a href="#" class="project-link">View Project</a>
-              </div>
-            </div>
-          </div>
+        </div>
+        
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projects-grid">
+          <!-- Projects will be dynamically generated here -->
+          <div class="loading">Loading projects...</div>
         </div>
       </div>
     </section>
@@ -201,13 +520,15 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="container">
-        <p>&copy; 2023 Jin-Zhao Teh. All rights reserved.</p>
+        <p>&copy; <span id="current-year"></span> Jin-Zhao Teh. All rights reserved.</p>
       </div>
     </footer>
 
-    <script src="https://jin-zhao-teh.github.io/js/js/hero-page-transition.js"></script>
-    <script src="https://jin-zhao-teh.github.io/js/js/links.js"></script>
+    <!-- Dynamic JavaScript -->
     <script>
+      // Set current year in footer
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+      
       // Mobile Navigation Toggle
       const navToggle = document.querySelector('.nav-toggle');
       const navMenu = document.querySelector('.nav-menu');
@@ -229,6 +550,222 @@
             });
           }
         });
+      });
+
+      // Hero Slider Functionality
+      const slides = document.querySelectorAll('.slideX');
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      let currentSlide = 0;
+      
+      function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+      }
+      
+      function nextSlide() {
+        let nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex);
+      }
+      
+      function prevSlide() {
+        let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prevIndex);
+      }
+      
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+      
+      // Auto slide every 5 seconds
+      setInterval(nextSlide, 5000);
+
+      // Dynamic Projects Data
+      let projectsData = [];
+      let allTags = [];
+      
+      // Fetch projects data from JSON
+      async function fetchProjectsData() {
+        try {
+          const response = await fetch('http://jin-zhao-teh.github.io/backend/data.json');
+          const data = await response.json();
+          projectsData = data.projects || [];
+          renderProjects(projectsData);
+          extractTags(projectsData);
+          renderTagFilters();
+        } catch (error) {
+          console.error('Error fetching projects data:', error);
+          document.getElementById('projects-grid').innerHTML = 
+            '<div class="no-results">Failed to load projects. Please try again later.</div>';
+        }
+      }
+      
+      // Extract unique tags from projects
+      function extractTags(projects) {
+        allTags = [];
+        projects.forEach(project => {
+          if (project.tags) {
+            const projectTags = project.tags.split(',').map(tag => tag.trim());
+            projectTags.forEach(tag => {
+              if (!allTags.includes(tag)) {
+                allTags.push(tag);
+              }
+            });
+          }
+        });
+      }
+      
+      // Render tag filters
+      function renderTagFilters() {
+        const tagFiltersContainer = document.getElementById('tag-filters');
+        tagFiltersContainer.innerHTML = '';
+        
+        // Add "All" filter
+        const allFilter = document.createElement('div');
+        allFilter.className = 'tag-filter active';
+        allFilter.textContent = 'All';
+        allFilter.dataset.tag = 'all';
+        allFilter.addEventListener('click', () => {
+          document.querySelectorAll('.tag-filter').forEach(filter => {
+            filter.classList.remove('active');
+          });
+          allFilter.classList.add('active');
+          filterProjects();
+        });
+        tagFiltersContainer.appendChild(allFilter);
+        
+        // Add individual tag filters
+        allTags.forEach(tag => {
+          const tagFilter = document.createElement('div');
+          tagFilter.className = 'tag-filter';
+          tagFilter.textContent = tag;
+          tagFilter.dataset.tag = tag;
+          tagFilter.addEventListener('click', () => {
+            document.querySelectorAll('.tag-filter').forEach(filter => {
+              filter.classList.remove('active');
+            });
+            tagFilter.classList.add('active');
+            filterProjects();
+          });
+          tagFiltersContainer.appendChild(tagFilter);
+        });
+      }
+      
+      // Render projects
+      function renderProjects(projects) {
+        const projectsGrid = document.getElementById('projects-grid');
+        
+        if (projects.length === 0) {
+          projectsGrid.innerHTML = '<div class="no-results">No projects found matching your criteria.</div>';
+          return;
+        }
+        
+        projectsGrid.innerHTML = '';
+        
+        projects.forEach(project => {
+          const projectCard = document.createElement('div');
+          projectCard.className = 'project-card';
+          
+          const projectImage = document.createElement('div');
+          projectImage.className = 'project-image';
+          
+          const img = document.createElement('img');
+          img.src = project.image;
+          img.alt = project.title;
+          
+          const projectOverlay = document.createElement('div');
+          projectOverlay.className = 'project-overlay';
+          
+          const overlayTitle = document.createElement('h3');
+          overlayTitle.textContent = project.title;
+          
+          const overlayDesc = document.createElement('p');
+          overlayDesc.textContent = project.description || 'Project description';
+          
+          const overlayLink = document.createElement('a');
+          overlayLink.href = project.href;
+          overlayLink.className = 'project-link';
+          overlayLink.textContent = 'View Project';
+          
+          projectOverlay.appendChild(overlayTitle);
+          projectOverlay.appendChild(overlayDesc);
+          projectOverlay.appendChild(overlayLink);
+          
+          projectImage.appendChild(img);
+          projectImage.appendChild(projectOverlay);
+          
+          const projectInfo = document.createElement('div');
+          projectInfo.className = 'project-info';
+          
+          const infoTitle = document.createElement('h3');
+          infoTitle.textContent = project.title;
+          
+          const infoDesc = document.createElement('p');
+          infoDesc.textContent = project.description || 'Project description';
+          
+          projectInfo.appendChild(infoTitle);
+          projectInfo.appendChild(infoDesc);
+          
+          const projectTags = document.createElement('div');
+          projectTags.className = 'project-tags';
+          
+          if (project.tags) {
+            const tagArray = project.tags.split(',').map(tag => tag.trim());
+            tagArray.forEach(tag => {
+              const tagElement = document.createElement('span');
+              tagElement.className = 'project-tag';
+              tagElement.textContent = tag;
+              projectTags.appendChild(tagElement);
+            });
+          }
+          
+          projectCard.appendChild(projectImage);
+          projectCard.appendChild(projectInfo);
+          projectCard.appendChild(projectTags);
+          
+          projectsGrid.appendChild(projectCard);
+        });
+      }
+      
+      // Filter projects based on search and tag filters
+      function filterProjects() {
+        const searchTerm = document.getElementById('project-search').value.toLowerCase();
+        const activeTag = document.querySelector('.tag-filter.active').dataset.tag;
+        
+        let filteredProjects = projectsData;
+        
+        // Filter by search term
+        if (searchTerm) {
+          filteredProjects = filteredProjects.filter(project => 
+            project.title.toLowerCase().includes(searchTerm) || 
+            (project.description && project.description.toLowerCase().includes(searchTerm)) ||
+            (project.tags && project.tags.toLowerCase().includes(searchTerm))
+          );
+        }
+        
+        // Filter by tag
+        if (activeTag !== 'all') {
+          filteredProjects = filteredProjects.filter(project => 
+            project.tags && project.tags.toLowerCase().includes(activeTag.toLowerCase())
+          );
+        }
+        
+        renderProjects(filteredProjects);
+      }
+      
+      // Initialize the page
+      document.addEventListener('DOMContentLoaded', () => {
+        // Set up search functionality
+        const searchInput = document.getElementById('project-search');
+        let searchTimeout;
+        
+        searchInput.addEventListener('input', () => {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(filterProjects, 300);
+        });
+        
+        // Fetch projects data
+        fetchProjectsData();
       });
     </script>
   </body>
