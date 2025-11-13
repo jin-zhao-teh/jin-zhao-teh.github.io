@@ -1,0 +1,18 @@
+{
+  "projects": [
+    {
+      "title": "New Zealand Summer",
+      "href": "/English",
+      "image": "https://jin-zhao-teh.github.io/Images/English.png",
+      "description": "A persuasive writing piece about summer in New Zealand",
+      "tags": "English, New Zealand, Summer, Writing, Persuasive, 2025"
+    },
+    {
+      "title": "Brand Identity",
+      "href": "/branding",
+      "image": "https://jin-zhao-teh.github.io/Images/project2.webp",
+      "description": "Visual identity for tech startup",
+      "tags": "Branding, Logo, Identity, Design"
+    }
+  ]
+}
