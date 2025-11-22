@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atomic Number Training</title>
+    <title>Element Training - Atomic Numbers & Electron Configurations</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
         
         body {
-            background-color: #f0f2f5;
+            background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
             padding: 20px;
@@ -25,7 +25,7 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
             color: white;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -103,13 +103,60 @@
             font-weight: normal;
         }
         
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .mode-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .mode-btn.active {
+            background-color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .group-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .group-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .group-btn.active {
+            background-color: #e74c3c;
+            font-weight: bold;
+        }
+        
         .input-section {
             margin: 30px 0;
             text-align: center;
         }
         
-        input[type="number"] {
-            width: 150px;
+        input[type="number"], input[type="text"] {
+            width: 250px;
             padding: 12px;
             font-size: 1.2rem;
             border: 2px solid #bdc3c7;
@@ -226,6 +273,7 @@
             border: none;
         }
         
+        /* Element group colors */
         .group-1 { background-color: #ff9999; }
         .group-2 { background-color: #ffde99; }
         .group-3 { background-color: #ffff99; }
@@ -259,6 +307,20 @@
             100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
         
+        .notation-guide {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .auto-progress {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
         @media (max-width: 950px) {
             .container {
                 flex-direction: column;
@@ -280,14 +342,45 @@
 </head>
 <body>
     <header>
-        <h1>Atomic Number Training</h1>
-        <p class="subtitle">Test your knowledge of the periodic table</p>
+        <h1>Element Training</h1>
+        <p class="subtitle">Practice atomic numbers, electron configurations, and valence electrons</p>
     </header>
     
     <div class="container">
         <section class="training-section">
             <h2>Training Area</h2>
-            <p>Identify the atomic number of the displayed element:</p>
+            
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="atomic">Atomic Number</button>
+                <button class="mode-btn" data-mode="shell">Electron Shells</button>
+                <button class="mode-btn" data-mode="orbital">Orbital Notation</button>
+                <button class="mode-btn" data-mode="valence">Valence Electrons</button>
+            </div>
+            
+            <p>Select group to practice:</p>
+            <div class="group-selector">
+                <button class="group-btn active" data-group="all">All</button>
+                <button class="group-btn" data-group="1">1</button>
+                <button class="group-btn" data-group="2">2</button>
+                <button class="group-btn" data-group="3">3</button>
+                <button class="group-btn" data-group="4">4</button>
+                <button class="group-btn" data-group="5">5</button>
+                <button class="group-btn" data-group="6">6</button>
+                <button class="group-btn" data-group="7">7</button>
+                <button class="group-btn" data-group="8">8</button>
+                <button class="group-btn" data-group="9">9</button>
+                <button class="group-btn" data-group="10">10</button>
+                <button class="group-btn" data-group="11">11</button>
+                <button class="group-btn" data-group="12">12</button>
+                <button class="group-btn" data-group="13">13</button>
+                <button class="group-btn" data-group="14">14</button>
+                <button class="group-btn" data-group="15">15</button>
+                <button class="group-btn" data-group="16">16</button>
+                <button class="group-btn" data-group="17">17</button>
+                <button class="group-btn" data-group="18">18</button>
+            </div>
+            
+            <p id="prompt-text">Identify the atomic number of the displayed element:</p>
             
             <div class="current-element">
                 <div id="element-display" class="element-box group-1">
@@ -297,9 +390,14 @@
             </div>
             
             <div class="input-section">
-                <input type="number" id="atomic-number-input" min="1" max="118" placeholder="Enter number">
+                <input type="number" id="answer-input" min="1" max="118" placeholder="Enter number">
                 <button id="check-answer">Check Answer</button>
                 <button id="new-element">New Element</button>
+            </div>
+            
+            <div class="auto-progress">
+                <input type="checkbox" id="auto-next" checked>
+                <label for="auto-next">Auto advance after answer (2 seconds)</label>
             </div>
             
             <div id="feedback" class="feedback"></div>
@@ -330,140 +428,97 @@
     </div>
     
     <footer>
-        <p>Practice your knowledge of the periodic table elements and their atomic numbers</p>
+        <p>Practice your knowledge of the periodic table elements and their properties</p>
     </footer>
 
     <script>
-        // Element data: symbol, name, group, period
+        // Element data with electron configurations
         const elements = [
-            { number: 1, symbol: "H", name: "Hydrogen", group: 1, period: 1 },
-            { number: 2, symbol: "He", name: "Helium", group: 18, period: 1 },
-            { number: 3, symbol: "Li", name: "Lithium", group: 1, period: 2 },
-            { number: 4, symbol: "Be", name: "Beryllium", group: 2, period: 2 },
-            { number: 5, symbol: "B", name: "Boron", group: 13, period: 2 },
-            { number: 6, symbol: "C", name: "Carbon", group: 14, period: 2 },
-            { number: 7, symbol: "N", name: "Nitrogen", group: 15, period: 2 },
-            { number: 8, symbol: "O", name: "Oxygen", group: 16, period: 2 },
-            { number: 9, symbol: "F", name: "Fluorine", group: 17, period: 2 },
-            { number: 10, symbol: "Ne", name: "Neon", group: 18, period: 2 },
-            { number: 11, symbol: "Na", name: "Sodium", group: 1, period: 3 },
-            { number: 12, symbol: "Mg", name: "Magnesium", group: 2, period: 3 },
-            { number: 13, symbol: "Al", name: "Aluminum", group: 13, period: 3 },
-            { number: 14, symbol: "Si", name: "Silicon", group: 14, period: 3 },
-            { number: 15, symbol: "P", name: "Phosphorus", group: 15, period: 3 },
-            { number: 16, symbol: "S", name: "Sulfur", group: 16, period: 3 },
-            { number: 17, symbol: "Cl", name: "Chlorine", group: 17, period: 3 },
-            { number: 18, symbol: "Ar", name: "Argon", group: 18, period: 3 },
-            { number: 19, symbol: "K", name: "Potassium", group: 1, period: 4 },
-            { number: 20, symbol: "Ca", name: "Calcium", group: 2, period: 4 },
-            { number: 21, symbol: "Sc", name: "Scandium", group: 3, period: 4 },
-            { number: 22, symbol: "Ti", name: "Titanium", group: 4, period: 4 },
-            { number: 23, symbol: "V", name: "Vanadium", group: 5, period: 4 },
-            { number: 24, symbol: "Cr", name: "Chromium", group: 6, period: 4 },
-            { number: 25, symbol: "Mn", name: "Manganese", group: 7, period: 4 },
-            { number: 26, symbol: "Fe", name: "Iron", group: 8, period: 4 },
-            { number: 27, symbol: "Co", name: "Cobalt", group: 9, period: 4 },
-            { number: 28, symbol: "Ni", name: "Nickel", group: 10, period: 4 },
-            { number: 29, symbol: "Cu", name: "Copper", group: 11, period: 4 },
-            { number: 30, symbol: "Zn", name: "Zinc", group: 12, period: 4 },
-            { number: 31, symbol: "Ga", name: "Gallium", group: 13, period: 4 },
-            { number: 32, symbol: "Ge", name: "Germanium", group: 14, period: 4 },
-            { number: 33, symbol: "As", name: "Arsenic", group: 15, period: 4 },
-            { number: 34, symbol: "Se", name: "Selenium", group: 16, period: 4 },
-            { number: 35, symbol: "Br", name: "Bromine", group: 17, period: 4 },
-            { number: 36, symbol: "Kr", name: "Krypton", group: 18, period: 4 },
-            { number: 37, symbol: "Rb", name: "Rubidium", group: 1, period: 5 },
-            { number: 38, symbol: "Sr", name: "Strontium", group: 2, period: 5 },
-            { number: 39, symbol: "Y", name: "Yttrium", group: 3, period: 5 },
-            { number: 40, symbol: "Zr", name: "Zirconium", group: 4, period: 5 },
-            { number: 41, symbol: "Nb", name: "Niobium", group: 5, period: 5 },
-            { number: 42, symbol: "Mo", name: "Molybdenum", group: 6, period: 5 },
-            { number: 43, symbol: "Tc", name: "Technetium", group: 7, period: 5 },
-            { number: 44, symbol: "Ru", name: "Ruthenium", group: 8, period: 5 },
-            { number: 45, symbol: "Rh", name: "Rhodium", group: 9, period: 5 },
-            { number: 46, symbol: "Pd", name: "Palladium", group: 10, period: 5 },
-            { number: 47, symbol: "Ag", name: "Silver", group: 11, period: 5 },
-            { number: 48, symbol: "Cd", name: "Cadmium", group: 12, period: 5 },
-            { number: 49, symbol: "In", name: "Indium", group: 13, period: 5 },
-            { number: 50, symbol: "Sn", name: "Tin", group: 14, period: 5 },
-            { number: 51, symbol: "Sb", name: "Antimony", group: 15, period: 5 },
-            { number: 52, symbol: "Te", name: "Tellurium", group: 16, period: 5 },
-            { number: 53, symbol: "I", name: "Iodine", group: 17, period: 5 },
-            { number: 54, symbol: "Xe", name: "Xenon", group: 18, period: 5 },
-            { number: 55, symbol: "Cs", name: "Cesium", group: 1, period: 6 },
-            { number: 56, symbol: "Ba", name: "Barium", group: 2, period: 6 },
-            { number: 57, symbol: "La", name: "Lanthanum", group: 3, period: 6 },
-            { number: 58, symbol: "Ce", name: "Cerium", group: -1, period: 6 }, // Lanthanide
-            { number: 59, symbol: "Pr", name: "Praseodymium", group: -1, period: 6 },
-            { number: 60, symbol: "Nd", name: "Neodymium", group: -1, period: 6 },
-            { number: 61, symbol: "Pm", name: "Promethium", group: -1, period: 6 },
-            { number: 62, symbol: "Sm", name: "Samarium", group: -1, period: 6 },
-            { number: 63, symbol: "Eu", name: "Europium", group: -1, period: 6 },
-            { number: 64, symbol: "Gd", name: "Gadolinium", group: -1, period: 6 },
-            { number: 65, symbol: "Tb", name: "Terbium", group: -1, period: 6 },
-            { number: 66, symbol: "Dy", name: "Dysprosium", group: -1, period: 6 },
-            { number: 67, symbol: "Ho", name: "Holmium", group: -1, period: 6 },
-            { number: 68, symbol: "Er", name: "Erbium", group: -1, period: 6 },
-            { number: 69, symbol: "Tm", name: "Thulium", group: -1, period: 6 },
-            { number: 70, symbol: "Yb", name: "Ytterbium", group: -1, period: 6 },
-            { number: 71, symbol: "Lu", name: "Lutetium", group: 3, period: 6 },
-            { number: 72, symbol: "Hf", name: "Hafnium", group: 4, period: 6 },
-            { number: 73, symbol: "Ta", name: "Tantalum", group: 5, period: 6 },
-            { number: 74, symbol: "W", name: "Tungsten", group: 6, period: 6 },
-            { number: 75, symbol: "Re", name: "Rhenium", group: 7, period: 6 },
-            { number: 76, symbol: "Os", name: "Osmium", group: 8, period: 6 },
-            { number: 77, symbol: "Ir", name: "Iridium", group: 9, period: 6 },
-            { number: 78, symbol: "Pt", name: "Platinum", group: 10, period: 6 },
-            { number: 79, symbol: "Au", name: "Gold", group: 11, period: 6 },
-            { number: 80, symbol: "Hg", name: "Mercury", group: 12, period: 6 },
-            { number: 81, symbol: "Tl", name: "Thallium", group: 13, period: 6 },
-            { number: 82, symbol: "Pb", name: "Lead", group: 14, period: 6 },
-            { number: 83, symbol: "Bi", name: "Bismuth", group: 15, period: 6 },
-            { number: 84, symbol: "Po", name: "Polonium", group: 16, period: 6 },
-            { number: 85, symbol: "At", name: "Astatine", group: 17, period: 6 },
-            { number: 86, symbol: "Rn", name: "Radon", group: 18, period: 6 },
-            { number: 87, symbol: "Fr", name: "Francium", group: 1, period: 7 },
-            { number: 88, symbol: "Ra", name: "Radium", group: 2, period: 7 },
-            { number: 89, symbol: "Ac", name: "Actinium", group: 3, period: 7 },
-            { number: 90, symbol: "Th", name: "Thorium", group: -2, period: 7 }, // Actinide
-            { number: 91, symbol: "Pa", name: "Protactinium", group: -2, period: 7 },
-            { number: 92, symbol: "U", name: "Uranium", group: -2, period: 7 },
-            { number: 93, symbol: "Np", name: "Neptunium", group: -2, period: 7 },
-            { number: 94, symbol: "Pu", name: "Plutonium", group: -2, period: 7 },
-            { number: 95, symbol: "Am", name: "Americium", group: -2, period: 7 },
-            { number: 96, symbol: "Cm", name: "Curium", group: -2, period: 7 },
-            { number: 97, symbol: "Bk", name: "Berkelium", group: -2, period: 7 },
-            { number: 98, symbol: "Cf", name: "Californium", group: -2, period: 7 },
-            { number: 99, symbol: "Es", name: "Einsteinium", group: -2, period: 7 },
-            { number: 100, symbol: "Fm", name: "Fermium", group: -2, period: 7 },
-            { number: 101, symbol: "Md", name: "Mendelevium", group: -2, period: 7 },
-            { number: 102, symbol: "No", name: "Nobelium", group: -2, period: 7 },
-            { number: 103, symbol: "Lr", name: "Lawrencium", group: 3, period: 7 },
-            { number: 104, symbol: "Rf", name: "Rutherfordium", group: 4, period: 7 },
-            { number: 105, symbol: "Db", name: "Dubnium", group: 5, period: 7 },
-            { number: 106, symbol: "Sg", name: "Seaborgium", group: 6, period: 7 },
-            { number: 107, symbol: "Bh", name: "Bohrium", group: 7, period: 7 },
-            { number: 108, symbol: "Hs", name: "Hassium", group: 8, period: 7 },
-            { number: 109, symbol: "Mt", name: "Meitnerium", group: 9, period: 7 },
-            { number: 110, symbol: "Ds", name: "Darmstadtium", group: 10, period: 7 },
-            { number: 111, symbol: "Rg", name: "Roentgenium", group: 11, period: 7 },
-            { number: 112, symbol: "Cn", name: "Copernicium", group: 12, period: 7 },
-            { number: 113, symbol: "Nh", name: "Nihonium", group: 13, period: 7 },
-            { number: 114, symbol: "Fl", name: "Flerovium", group: 14, period: 7 },
-            { number: 115, symbol: "Mc", name: "Moscovium", group: 15, period: 7 },
-            { number: 116, symbol: "Lv", name: "Livermorium", group: 16, period: 7 },
-            { number: 117, symbol: "Ts", name: "Tennessine", group: 17, period: 7 },
-            { number: 118, symbol: "Og", name: "Oganesson", group: 18, period: 7 }
+            { number: 1, symbol: "H", name: "Hydrogen", group: 1, period: 1, 
+              shells: "1", orbital: "1s¹", valence: 1 },
+            { number: 2, symbol: "He", name: "Helium", group: 18, period: 1, 
+              shells: "2", orbital: "1s²", valence: 2 },
+            { number: 3, symbol: "Li", name: "Lithium", group: 1, period: 2, 
+              shells: "2,1", orbital: "1s² 2s¹", valence: 1 },
+            { number: 4, symbol: "Be", name: "Beryllium", group: 2, period: 2, 
+              shells: "2,2", orbital: "1s² 2s²", valence: 2 },
+            { number: 5, symbol: "B", name: "Boron", group: 13, period: 2, 
+              shells: "2,3", orbital: "1s² 2s² 2p¹", valence: 3 },
+            { number: 6, symbol: "C", name: "Carbon", group: 14, period: 2, 
+              shells: "2,4", orbital: "1s² 2s² 2p²", valence: 4 },
+            { number: 7, symbol: "N", name: "Nitrogen", group: 15, period: 2, 
+              shells: "2,5", orbital: "1s² 2s² 2p³", valence: 5 },
+            { number: 8, symbol: "O", name: "Oxygen", group: 16, period: 2, 
+              shells: "2,6", orbital: "1s² 2s² 2p⁴", valence: 6 },
+            { number: 9, symbol: "F", name: "Fluorine", group: 17, period: 2, 
+              shells: "2,7", orbital: "1s² 2s² 2p⁵", valence: 7 },
+            { number: 10, symbol: "Ne", name: "Neon", group: 18, period: 2, 
+              shells: "2,8", orbital: "1s² 2s² 2p⁶", valence: 8 },
+            { number: 11, symbol: "Na", name: "Sodium", group: 1, period: 3, 
+              shells: "2,8,1", orbital: "1s² 2s² 2p⁶ 3s¹", valence: 1 },
+            { number: 12, symbol: "Mg", name: "Magnesium", group: 2, period: 3, 
+              shells: "2,8,2", orbital: "1s² 2s² 2p⁶ 3s²", valence: 2 },
+            { number: 13, symbol: "Al", name: "Aluminum", group: 13, period: 3, 
+              shells: "2,8,3", orbital: "1s² 2s² 2p⁶ 3s² 3p¹", valence: 3 },
+            { number: 14, symbol: "Si", name: "Silicon", group: 14, period: 3, 
+              shells: "2,8,4", orbital: "1s² 2s² 2p⁶ 3s² 3p²", valence: 4 },
+            { number: 15, symbol: "P", name: "Phosphorus", group: 15, period: 3, 
+              shells: "2,8,5", orbital: "1s² 2s² 2p⁶ 3s² 3p³", valence: 5 },
+            { number: 16, symbol: "S", name: "Sulfur", group: 16, period: 3, 
+              shells: "2,8,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁴", valence: 6 },
+            { number: 17, symbol: "Cl", name: "Chlorine", group: 17, period: 3, 
+              shells: "2,8,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁵", valence: 7 },
+            { number: 18, symbol: "Ar", name: "Argon", group: 18, period: 3, 
+              shells: "2,8,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶", valence: 8 },
+            { number: 19, symbol: "K", name: "Potassium", group: 1, period: 4, 
+              shells: "2,8,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", valence: 1 },
+            { number: 20, symbol: "Ca", name: "Calcium", group: 2, period: 4, 
+              shells: "2,8,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", valence: 2 },
+            { number: 21, symbol: "Sc", name: "Scandium", group: 3, period: 4, 
+              shells: "2,8,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹ 4s²", valence: 3 },
+            { number: 22, symbol: "Ti", name: "Titanium", group: 4, period: 4, 
+              shells: "2,8,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d² 4s²", valence: 4 },
+            { number: 23, symbol: "V", name: "Vanadium", group: 5, period: 4, 
+              shells: "2,8,11,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d³ 4s²", valence: 5 },
+            { number: 24, symbol: "Cr", name: "Chromium", group: 6, period: 4, 
+              shells: "2,8,13,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s¹", valence: 6 },
+            { number: 25, symbol: "Mn", name: "Manganese", group: 7, period: 4, 
+              shells: "2,8,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s²", valence: 7 },
+            { number: 26, symbol: "Fe", name: "Iron", group: 8, period: 4, 
+              shells: "2,8,14,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁶ 4s²", valence: 8 },
+            { number: 27, symbol: "Co", name: "Cobalt", group: 9, period: 4, 
+              shells: "2,8,15,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁷ 4s²", valence: 9 },
+            { number: 28, symbol: "Ni", name: "Nickel", group: 10, period: 4, 
+              shells: "2,8,16,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁸ 4s²", valence: 10 },
+            { number: 29, symbol: "Cu", name: "Copper", group: 11, period: 4, 
+              shells: "2,8,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s¹", valence: 11 },
+            { number: 30, symbol: "Zn", name: "Zinc", group: 12, period: 4, 
+              shells: "2,8,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s²", valence: 12 },
+            { number: 31, symbol: "Ga", name: "Gallium", group: 13, period: 4, 
+              shells: "2,8,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p¹", valence: 3 },
+            { number: 32, symbol: "Ge", name: "Germanium", group: 14, period: 4, 
+              shells: "2,8,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p²", valence: 4 },
+            { number: 33, symbol: "As", name: "Arsenic", group: 15, period: 4, 
+              shells: "2,8,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p³", valence: 5 },
+            { number: 34, symbol: "Se", name: "Selenium", group: 16, period: 4, 
+              shells: "2,8,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁴", valence: 6 },
+            { number: 35, symbol: "Br", name: "Bromine", group: 17, period: 4, 
+              shells: "2,8,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁵", valence: 7 },
+            { number: 36, symbol: "Kr", name: "Krypton", group: 18, period: 4, 
+              shells: "2,8,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶", valence: 8 },
         ];
 
-        // Track current element and statistics
+        // Track current element, mode, and statistics
         let currentElement = null;
+        let currentMode = "atomic";
+        let currentGroup = "all";
         let correctAnswers = 0;
         let totalQuestions = 0;
+        let autoNextTimer = null;
 
         // DOM elements
         const elementDisplay = document.getElementById('element-display');
-        const atomicNumberInput = document.getElementById('atomic-number-input');
+        const answerInput = document.getElementById('answer-input');
         const checkAnswerBtn = document.getElementById('check-answer');
         const newElementBtn = document.getElementById('new-element');
         const feedbackDiv = document.getElementById('feedback');
@@ -471,6 +526,10 @@
         const totalCount = document.getElementById('total-count');
         const accuracy = document.getElementById('accuracy');
         const periodicTable = document.getElementById('periodic-table');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const groupButtons = document.querySelectorAll('.group-btn');
+        const promptText = document.getElementById('prompt-text');
+        const autoNextCheckbox = document.getElementById('auto-next');
 
         // Initialize the app
         function init() {
@@ -482,17 +541,13 @@
 
         // Generate the periodic table layout
         function generatePeriodicTable() {
-            // Create the main table (periods 1-7, groups 1-18)
-            for (let period = 1; period <= 7; period++) {
+            // Create the main table (periods 1-4, groups 1-18)
+            for (let period = 1; period <= 4; period++) {
                 for (let group = 1; group <= 18; group++) {
                     const element = elements.find(el => el.period === period && el.group === group);
                     createTableElement(element, period, group);
                 }
             }
-            
-            // Add lanthanides and actinides rows
-            addSpecialRow(8, 3, 57, 71, "lanthanide");
-            addSpecialRow(9, 3, 89, 103, "actinide");
         }
 
         // Create a table element cell
@@ -523,51 +578,92 @@
             periodicTable.appendChild(div);
         }
 
-        // Add lanthanide or actinide row
-        function addSpecialRow(row, startCol, startNum, endNum, className) {
-            let col = startCol;
-            for (let num = startNum; num <= endNum; num++) {
-                const element = elements.find(el => el.number === num);
-                const div = document.createElement('div');
-                
-                if (element) {
-                    div.className = `table-element ${className}`;
-                    div.innerHTML = `
-                        <div class="table-number">${element.number}</div>
-                        <div class="table-symbol">${element.symbol}</div>
-                    `;
-                    div.dataset.number = element.number;
-                    div.addEventListener('click', () => selectSpecificElement(element.number));
-                } else {
-                    div.className = 'table-element empty';
-                }
-                
-                div.style.gridColumn = col;
-                div.style.gridRow = row;
-                periodicTable.appendChild(div);
-                col++;
-            }
-        }
-
         // Set up event listeners
         function setupEventListeners() {
             checkAnswerBtn.addEventListener('click', checkAnswer);
             newElementBtn.addEventListener('click', selectRandomElement);
-            atomicNumberInput.addEventListener('keypress', (e) => {
+            answerInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     checkAnswer();
                 }
             });
+            
+            // Mode selector buttons
+            modeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    modeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentMode = button.dataset.mode;
+                    updateMode();
+                });
+            });
+            
+            // Group selector buttons
+            groupButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    groupButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentGroup = button.dataset.group;
+                    selectRandomElement();
+                });
+            });
         }
 
-        // Select a random element
+        // Update the UI based on the current mode
+        function updateMode() {
+            switch(currentMode) {
+                case "atomic":
+                    promptText.textContent = "Identify the atomic number of the displayed element:";
+                    answerInput.type = "number";
+                    answerInput.placeholder = "Enter number (1-36)";
+                    break;
+                case "shell":
+                    promptText.textContent = "Identify the electron shell configuration (e.g., 2,8,8):";
+                    answerInput.type = "text";
+                    answerInput.placeholder = "Enter shell configuration";
+                    break;
+                case "orbital":
+                    promptText.textContent = "Identify the orbital notation (e.g., 1s² 2s² 2p⁶):";
+                    answerInput.type = "text";
+                    answerInput.placeholder = "Enter orbital notation";
+                    break;
+                case "valence":
+                    promptText.textContent = "Identify the number of valence electrons:";
+                    answerInput.type = "number";
+                    answerInput.placeholder = "Enter number (1-8)";
+                    break;
+            }
+            
+            // Clear input and feedback when switching modes
+            answerInput.value = '';
+            clearFeedback();
+        }
+
+        // Get filtered elements based on current group selection
+        function getFilteredElements() {
+            if (currentGroup === "all") {
+                return elements;
+            }
+            return elements.filter(el => el.group == currentGroup);
+        }
+
+        // Select a random element from the current group
         function selectRandomElement() {
-            const randomIndex = Math.floor(Math.random() * elements.length);
-            currentElement = elements[randomIndex];
+            const filteredElements = getFilteredElements();
+            if (filteredElements.length === 0) {
+                // If no elements in selected group, show message and return
+                feedbackDiv.textContent = "No elements in selected group. Please choose a different group.";
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.style.display = 'block';
+                return;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * filteredElements.length);
+            currentElement = filteredElements[randomIndex];
             updateElementDisplay();
             clearFeedback();
-            atomicNumberInput.value = '';
-            atomicNumberInput.focus();
+            answerInput.value = '';
+            answerInput.focus();
             highlightCurrentElement();
         }
 
@@ -576,8 +672,8 @@
             currentElement = elements.find(el => el.number === number);
             updateElementDisplay();
             clearFeedback();
-            atomicNumberInput.value = '';
-            atomicNumberInput.focus();
+            answerInput.value = '';
+            answerInput.focus();
             highlightCurrentElement();
         }
 
@@ -612,23 +708,52 @@
         function checkAnswer() {
             if (!currentElement) return;
             
-            const userAnswer = parseInt(atomicNumberInput.value);
+            let userAnswer = answerInput.value.trim();
+            let isCorrect = false;
+            let correctAnswer = "";
             
-            if (isNaN(userAnswer)) {
-                showFeedback("Please enter a number", false);
-                return;
+            switch(currentMode) {
+                case "atomic":
+                    isCorrect = parseInt(userAnswer) === currentElement.number;
+                    correctAnswer = currentElement.number;
+                    break;
+                case "shell":
+                    isCorrect = userAnswer === currentElement.shells;
+                    correctAnswer = currentElement.shells;
+                    break;
+                case "orbital":
+                    // Normalize both answers for comparison (remove spaces and convert to lowercase)
+                    const normalizedUser = userAnswer.replace(/\s+/g, '').toLowerCase();
+                    const normalizedCorrect = currentElement.orbital.replace(/\s+/g, '').toLowerCase();
+                    isCorrect = normalizedUser === normalizedCorrect;
+                    correctAnswer = currentElement.orbital;
+                    break;
+                case "valence":
+                    isCorrect = parseInt(userAnswer) === currentElement.valence;
+                    correctAnswer = currentElement.valence;
+                    break;
             }
             
             totalQuestions++;
             
-            if (userAnswer === currentElement.number) {
+            if (isCorrect) {
                 correctAnswers++;
                 showFeedback("Correct! Well done!", true);
             } else {
-                showFeedback(`Incorrect. The atomic number of ${currentElement.name} is ${currentElement.number}.`, false);
+                showFeedback(`Incorrect. The correct answer is: ${correctAnswer}`, false);
             }
             
             updateStats();
+            
+            // Auto advance to next element if enabled
+            if (autoNextCheckbox.checked) {
+                if (autoNextTimer) {
+                    clearTimeout(autoNextTimer);
+                }
+                autoNextTimer = setTimeout(() => {
+                    selectRandomElement();
+                }, 2000);
+            }
         }
 
         // Show feedback to the user
