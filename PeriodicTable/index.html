@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Number Training</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .training-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .periodic-table {
+            flex: 2;
+            min-width: 600px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .current-element {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+        }
+        
+        .element-box {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .element-box:hover {
+            transform: scale(1.05);
+        }
+        
+        .symbol {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .name {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+        
+        .input-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        input[type="number"] {
+            width: 150px;
+            padding: 12px;
+            font-size: 1.2rem;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        #new-element {
+            background-color: #2ecc71;
+        }
+        
+        #new-element:hover {
+            background-color: #27ae60;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .table-container {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 4px;
+            margin-top: 20px;
+        }
+        
+        .table-element {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+        }
+        
+        .table-element:hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+            z-index: 1;
+        }
+        
+        .table-number {
+            font-size: 0.6rem;
+            margin-bottom: 2px;
+        }
+        
+        .table-symbol {
+            font-size: 0.9rem;
+        }
+        
+        .empty {
+            background-color: transparent;
+            border: none;
+        }
+        
+        .group-1 { background-color: #ff9999; }
+        .group-2 { background-color: #ffde99; }
+        .group-3 { background-color: #ffff99; }
+        .group-4 { background-color: #ccff99; }
+        .group-5 { background-color: #99ff99; }
+        .group-6 { background-color: #99ffcc; }
+        .group-7 { background-color: #99ffff; }
+        .group-8 { background-color: #ccffff; }
+        .group-9 { background-color: #ccccff; }
+        .group-10 { background-color: #ffccff; }
+        .group-11 { background-color: #ff99cc; }
+        .group-12 { background-color: #ffcccc; }
+        .group-13 { background-color: #e6e6fa; }
+        .group-14 { background-color: #d8bfd8; }
+        .group-15 { background-color: #eee8aa; }
+        .group-16 { background-color: #f0e68c; }
+        .group-17 { background-color: #fafad2; }
+        .group-18 { background-color: #fffacd; }
+        
+        .lanthanide { background-color: #ffb6c1; }
+        .actinide { background-color: #ffa07a; }
+        
+        .current-highlight {
+            box-shadow: 0 0 0 3px #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        
+        @media (max-width: 950px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .periodic-table {
+                min-width: 100%;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Atomic Number Training</h1>
+        <p class="subtitle">Test your knowledge of the periodic table</p>
+    </header>
+    
+    <div class="container">
+        <section class="training-section">
+            <h2>Training Area</h2>
+            <p>Identify the atomic number of the displayed element:</p>
+            
+            <div class="current-element">
+                <div id="element-display" class="element-box group-1">
+                    <div class="symbol">H</div>
+                    <div class="name">Hydrogen</div>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <input type="number" id="atomic-number-input" min="1" max="118" placeholder="Enter number">
+                <button id="check-answer">Check Answer</button>
+                <button id="new-element">New Element</button>
+            </div>
+            
+            <div id="feedback" class="feedback"></div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="total-count">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="periodic-table">
+            <h2>Periodic Table Reference</h2>
+            <p>Click on an element to practice it</p>
+            <div class="table-container" id="periodic-table">
+                <!-- Periodic table will be generated by JavaScript -->
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Practice your knowledge of the periodic table elements and their atomic numbers</p>
+    </footer>
+
+    <script>
+        // Element data: symbol, name, group, period
+        const elements = [
+            { number: 1, symbol: "H", name: "Hydrogen", group: 1, period: 1 },
+            { number: 2, symbol: "He", name: "Helium", group: 18, period: 1 },
+            { number: 3, symbol: "Li", name: "Lithium", group: 1, period: 2 },
+            { number: 4, symbol: "Be", name: "Beryllium", group: 2, period: 2 },
+            { number: 5, symbol: "B", name: "Boron", group: 13, period: 2 },
+            { number: 6, symbol: "C", name: "Carbon", group: 14, period: 2 },
+            { number: 7, symbol: "N", name: "Nitrogen", group: 15, period: 2 },
+            { number: 8, symbol: "O", name: "Oxygen", group: 16, period: 2 },
+            { number: 9, symbol: "F", name: "Fluorine", group: 17, period: 2 },
+            { number: 10, symbol: "Ne", name: "Neon", group: 18, period: 2 },
+            { number: 11, symbol: "Na", name: "Sodium", group: 1, period: 3 },
+            { number: 12, symbol: "Mg", name: "Magnesium", group: 2, period: 3 },
+            { number: 13, symbol: "Al", name: "Aluminum", group: 13, period: 3 },
+            { number: 14, symbol: "Si", name: "Silicon", group: 14, period: 3 },
+            { number: 15, symbol: "P", name: "Phosphorus", group: 15, period: 3 },
+            { number: 16, symbol: "S", name: "Sulfur", group: 16, period: 3 },
+            { number: 17, symbol: "Cl", name: "Chlorine", group: 17, period: 3 },
+            { number: 18, symbol: "Ar", name: "Argon", group: 18, period: 3 },
+            { number: 19, symbol: "K", name: "Potassium", group: 1, period: 4 },
+            { number: 20, symbol: "Ca", name: "Calcium", group: 2, period: 4 },
+            { number: 21, symbol: "Sc", name: "Scandium", group: 3, period: 4 },
+            { number: 22, symbol: "Ti", name: "Titanium", group: 4, period: 4 },
+            { number: 23, symbol: "V", name: "Vanadium", group: 5, period: 4 },
+            { number: 24, symbol: "Cr", name: "Chromium", group: 6, period: 4 },
+            { number: 25, symbol: "Mn", name: "Manganese", group: 7, period: 4 },
+            { number: 26, symbol: "Fe", name: "Iron", group: 8, period: 4 },
+            { number: 27, symbol: "Co", name: "Cobalt", group: 9, period: 4 },
+            { number: 28, symbol: "Ni", name: "Nickel", group: 10, period: 4 },
+            { number: 29, symbol: "Cu", name: "Copper", group: 11, period: 4 },
+            { number: 30, symbol: "Zn", name: "Zinc", group: 12, period: 4 },
+            { number: 31, symbol: "Ga", name: "Gallium", group: 13, period: 4 },
+            { number: 32, symbol: "Ge", name: "Germanium", group: 14, period: 4 },
+            { number: 33, symbol: "As", name: "Arsenic", group: 15, period: 4 },
+            { number: 34, symbol: "Se", name: "Selenium", group: 16, period: 4 },
+            { number: 35, symbol: "Br", name: "Bromine", group: 17, period: 4 },
+            { number: 36, symbol: "Kr", name: "Krypton", group: 18, period: 4 },
+            { number: 37, symbol: "Rb", name: "Rubidium", group: 1, period: 5 },
+            { number: 38, symbol: "Sr", name: "Strontium", group: 2, period: 5 },
+            { number: 39, symbol: "Y", name: "Yttrium", group: 3, period: 5 },
+            { number: 40, symbol: "Zr", name: "Zirconium", group: 4, period: 5 },
+            { number: 41, symbol: "Nb", name: "Niobium", group: 5, period: 5 },
+            { number: 42, symbol: "Mo", name: "Molybdenum", group: 6, period: 5 },
+            { number: 43, symbol: "Tc", name: "Technetium", group: 7, period: 5 },
+            { number: 44, symbol: "Ru", name: "Ruthenium", group: 8, period: 5 },
+            { number: 45, symbol: "Rh", name: "Rhodium", group: 9, period: 5 },
+            { number: 46, symbol: "Pd", name: "Palladium", group: 10, period: 5 },
+            { number: 47, symbol: "Ag", name: "Silver", group: 11, period: 5 },
+            { number: 48, symbol: "Cd", name: "Cadmium", group: 12, period: 5 },
+            { number: 49, symbol: "In", name: "Indium", group: 13, period: 5 },
+            { number: 50, symbol: "Sn", name: "Tin", group: 14, period: 5 },
+            { number: 51, symbol: "Sb", name: "Antimony", group: 15, period: 5 },
+            { number: 52, symbol: "Te", name: "Tellurium", group: 16, period: 5 },
+            { number: 53, symbol: "I", name: "Iodine", group: 17, period: 5 },
+            { number: 54, symbol: "Xe", name: "Xenon", group: 18, period: 5 },
+            { number: 55, symbol: "Cs", name: "Cesium", group: 1, period: 6 },
+            { number: 56, symbol: "Ba", name: "Barium", group: 2, period: 6 },
+            { number: 57, symbol: "La", name: "Lanthanum", group: 3, period: 6 },
+            { number: 58, symbol: "Ce", name: "Cerium", group: -1, period: 6 }, // Lanthanide
+            { number: 59, symbol: "Pr", name: "Praseodymium", group: -1, period: 6 },
+            { number: 60, symbol: "Nd", name: "Neodymium", group: -1, period: 6 },
+            { number: 61, symbol: "Pm", name: "Promethium", group: -1, period: 6 },
+            { number: 62, symbol: "Sm", name: "Samarium", group: -1, period: 6 },
+            { number: 63, symbol: "Eu", name: "Europium", group: -1, period: 6 },
+            { number: 64, symbol: "Gd", name: "Gadolinium", group: -1, period: 6 },
+            { number: 65, symbol: "Tb", name: "Terbium", group: -1, period: 6 },
+            { number: 66, symbol: "Dy", name: "Dysprosium", group: -1, period: 6 },
+            { number: 67, symbol: "Ho", name: "Holmium", group: -1, period: 6 },
+            { number: 68, symbol: "Er", name: "Erbium", group: -1, period: 6 },
+            { number: 69, symbol: "Tm", name: "Thulium", group: -1, period: 6 },
+            { number: 70, symbol: "Yb", name: "Ytterbium", group: -1, period: 6 },
+            { number: 71, symbol: "Lu", name: "Lutetium", group: 3, period: 6 },
+            { number: 72, symbol: "Hf", name: "Hafnium", group: 4, period: 6 },
+            { number: 73, symbol: "Ta", name: "Tantalum", group: 5, period: 6 },
+            { number: 74, symbol: "W", name: "Tungsten", group: 6, period: 6 },
+            { number: 75, symbol: "Re", name: "Rhenium", group: 7, period: 6 },
+            { number: 76, symbol: "Os", name: "Osmium", group: 8, period: 6 },
+            { number: 77, symbol: "Ir", name: "Iridium", group: 9, period: 6 },
+            { number: 78, symbol: "Pt", name: "Platinum", group: 10, period: 6 },
+            { number: 79, symbol: "Au", name: "Gold", group: 11, period: 6 },
+            { number: 80, symbol: "Hg", name: "Mercury", group: 12, period: 6 },
+            { number: 81, symbol: "Tl", name: "Thallium", group: 13, period: 6 },
+            { number: 82, symbol: "Pb", name: "Lead", group: 14, period: 6 },
+            { number: 83, symbol: "Bi", name: "Bismuth", group: 15, period: 6 },
+            { number: 84, symbol: "Po", name: "Polonium", group: 16, period: 6 },
+            { number: 85, symbol: "At", name: "Astatine", group: 17, period: 6 },
+            { number: 86, symbol: "Rn", name: "Radon", group: 18, period: 6 },
+            { number: 87, symbol: "Fr", name: "Francium", group: 1, period: 7 },
+            { number: 88, symbol: "Ra", name: "Radium", group: 2, period: 7 },
+            { number: 89, symbol: "Ac", name: "Actinium", group: 3, period: 7 },
+            { number: 90, symbol: "Th", name: "Thorium", group: -2, period: 7 }, // Actinide
+            { number: 91, symbol: "Pa", name: "Protactinium", group: -2, period: 7 },
+            { number: 92, symbol: "U", name: "Uranium", group: -2, period: 7 },
+            { number: 93, symbol: "Np", name: "Neptunium", group: -2, period: 7 },
+            { number: 94, symbol: "Pu", name: "Plutonium", group: -2, period: 7 },
+            { number: 95, symbol: "Am", name: "Americium", group: -2, period: 7 },
+            { number: 96, symbol: "Cm", name: "Curium", group: -2, period: 7 },
+            { number: 97, symbol: "Bk", name: "Berkelium", group: -2, period: 7 },
+            { number: 98, symbol: "Cf", name: "Californium", group: -2, period: 7 },
+            { number: 99, symbol: "Es", name: "Einsteinium", group: -2, period: 7 },
+            { number: 100, symbol: "Fm", name: "Fermium", group: -2, period: 7 },
+            { number: 101, symbol: "Md", name: "Mendelevium", group: -2, period: 7 },
+            { number: 102, symbol: "No", name: "Nobelium", group: -2, period: 7 },
+            { number: 103, symbol: "Lr", name: "Lawrencium", group: 3, period: 7 },
+            { number: 104, symbol: "Rf", name: "Rutherfordium", group: 4, period: 7 },
+            { number: 105, symbol: "Db", name: "Dubnium", group: 5, period: 7 },
+            { number: 106, symbol: "Sg", name: "Seaborgium", group: 6, period: 7 },
+            { number: 107, symbol: "Bh", name: "Bohrium", group: 7, period: 7 },
+            { number: 108, symbol: "Hs", name: "Hassium", group: 8, period: 7 },
+            { number: 109, symbol: "Mt", name: "Meitnerium", group: 9, period: 7 },
+            { number: 110, symbol: "Ds", name: "Darmstadtium", group: 10, period: 7 },
+            { number: 111, symbol: "Rg", name: "Roentgenium", group: 11, period: 7 },
+            { number: 112, symbol: "Cn", name: "Copernicium", group: 12, period: 7 },
+            { number: 113, symbol: "Nh", name: "Nihonium", group: 13, period: 7 },
+            { number: 114, symbol: "Fl", name: "Flerovium", group: 14, period: 7 },
+            { number: 115, symbol: "Mc", name: "Moscovium", group: 15, period: 7 },
+            { number: 116, symbol: "Lv", name: "Livermorium", group: 16, period: 7 },
+            { number: 117, symbol: "Ts", name: "Tennessine", group: 17, period: 7 },
+            { number: 118, symbol: "Og", name: "Oganesson", group: 18, period: 7 }
+        ];
+
+        // Track current element and statistics
+        let currentElement = null;
+        let correctAnswers = 0;
+        let totalQuestions = 0;
+
+        // DOM elements
+        const elementDisplay = document.getElementById('element-display');
+        const atomicNumberInput = document.getElementById('atomic-number-input');
+        const checkAnswerBtn = document.getElementById('check-answer');
+        const newElementBtn = document.getElementById('new-element');
+        const feedbackDiv = document.getElementById('feedback');
+        const correctCount = document.getElementById('correct-count');
+        const totalCount = document.getElementById('total-count');
+        const accuracy = document.getElementById('accuracy');
+        const periodicTable = document.getElementById('periodic-table');
+
+        // Initialize the app
+        function init() {
+            generatePeriodicTable();
+            selectRandomElement();
+            setupEventListeners();
+            updateStats();
+        }
+
+        // Generate the periodic table layout
+        function generatePeriodicTable() {
+            // Create the main table (periods 1-7, groups 1-18)
+            for (let period = 1; period <= 7; period++) {
+                for (let group = 1; group <= 18; group++) {
+                    const element = elements.find(el => el.period === period && el.group === group);
+                    createTableElement(element, period, group);
+                }
+            }
+            
+            // Add lanthanides and actinides rows
+            addSpecialRow(8, 3, 57, 71, "lanthanide");
+            addSpecialRow(9, 3, 89, 103, "actinide");
+        }
+
+        // Create a table element cell
+        function createTableElement(element, period, group) {
+            const div = document.createElement('div');
+            
+            if (element) {
+                div.className = `table-element group-${element.group}`;
+                div.innerHTML = `
+                    <div class="table-number">${element.number}</div>
+                    <div class="table-symbol">${element.symbol}</div>
+                `;
+                div.dataset.number = element.number;
+                div.addEventListener('click', () => selectSpecificElement(element.number));
+            } else {
+                div.className = 'table-element empty';
+            }
+            
+            // Adjust position for period 1 (only has groups 1 and 18)
+            if (period === 1 && (group < 1 || group > 2)) {
+                div.style.gridColumn = group;
+                div.style.gridRow = period;
+            } else {
+                div.style.gridColumn = group;
+                div.style.gridRow = period;
+            }
+            
+            periodicTable.appendChild(div);
+        }
+
+        // Add lanthanide or actinide row
+        function addSpecialRow(row, startCol, startNum, endNum, className) {
+            let col = startCol;
+            for (let num = startNum; num <= endNum; num++) {
+                const element = elements.find(el => el.number === num);
+                const div = document.createElement('div');
+                
+                if (element) {
+                    div.className = `table-element ${className}`;
+                    div.innerHTML = `
+                        <div class="table-number">${element.number}</div>
+                        <div class="table-symbol">${element.symbol}</div>
+                    `;
+                    div.dataset.number = element.number;
+                    div.addEventListener('click', () => selectSpecificElement(element.number));
+                } else {
+                    div.className = 'table-element empty';
+                }
+                
+                div.style.gridColumn = col;
+                div.style.gridRow = row;
+                periodicTable.appendChild(div);
+                col++;
+            }
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            checkAnswerBtn.addEventListener('click', checkAnswer);
+            newElementBtn.addEventListener('click', selectRandomElement);
+            atomicNumberInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        }
+
+        // Select a random element
+        function selectRandomElement() {
+            const randomIndex = Math.floor(Math.random() * elements.length);
+            currentElement = elements[randomIndex];
+            updateElementDisplay();
+            clearFeedback();
+            atomicNumberInput.value = '';
+            atomicNumberInput.focus();
+            highlightCurrentElement();
+        }
+
+        // Select a specific element by atomic number
+        function selectSpecificElement(number) {
+            currentElement = elements.find(el => el.number === number);
+            updateElementDisplay();
+            clearFeedback();
+            atomicNumberInput.value = '';
+            atomicNumberInput.focus();
+            highlightCurrentElement();
+        }
+
+        // Update the element display
+        function updateElementDisplay() {
+            if (!currentElement) return;
+            
+            elementDisplay.className = `element-box group-${currentElement.group}`;
+            elementDisplay.innerHTML = `
+                <div class="symbol">${currentElement.symbol}</div>
+                <div class="name">${currentElement.name}</div>
+            `;
+        }
+
+        // Highlight the current element in the periodic table
+        function highlightCurrentElement() {
+            // Remove highlight from all elements
+            document.querySelectorAll('.table-element').forEach(el => {
+                el.classList.remove('current-highlight');
+            });
+            
+            // Add highlight to current element
+            if (currentElement) {
+                const elementCell = document.querySelector(`.table-element[data-number="${currentElement.number}"]`);
+                if (elementCell) {
+                    elementCell.classList.add('current-highlight');
+                }
+            }
+        }
+
+        // Check the user's answer
+        function checkAnswer() {
+            if (!currentElement) return;
+            
+            const userAnswer = parseInt(atomicNumberInput.value);
+            
+            if (isNaN(userAnswer)) {
+                showFeedback("Please enter a number", false);
+                return;
+            }
+            
+            totalQuestions++;
+            
+            if (userAnswer === currentElement.number) {
+                correctAnswers++;
+                showFeedback("Correct! Well done!", true);
+            } else {
+                showFeedback(`Incorrect. The atomic number of ${currentElement.name} is ${currentElement.number}.`, false);
+            }
+            
+            updateStats();
+        }
+
+        // Show feedback to the user
+        function showFeedback(message, isCorrect) {
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackDiv.style.display = 'block';
+        }
+
+        // Clear feedback
+        function clearFeedback() {
+            feedbackDiv.style.display = 'none';
+        }
+
+        // Update statistics
+        function updateStats() {
+            correctCount.textContent = correctAnswers;
+            totalCount.textContent = totalQuestions;
+            
+            const accuracyValue = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            accuracy.textContent = `${accuracyValue}%`;
+        }
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
