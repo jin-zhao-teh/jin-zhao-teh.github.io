@@ -619,6 +619,98 @@
             margin-top: 5px;
         }
         
+        /* Customization options */
+        .customization-section {
+            margin-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 15px;
+        }
+        
+        .customization-toggle {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .customization-toggle:hover {
+            background-color: #8e44ad;
+        }
+        
+        .customization-options {
+            display: none;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .customization-group {
+            margin-bottom: 15px;
+        }
+        
+        .customization-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .customization-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .customization-option {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .customization-label {
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+        
+        .customization-select, .customization-input {
+            padding: 6px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+        
+        .color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-left: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .customization-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .customization-checkbox input {
+            margin: 0;
+        }
+        
+        .customization-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .range-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
         @media (max-width: 1200px) {
             .container {
                 flex-direction: column;
@@ -793,6 +885,116 @@
                 <div class="stat-box">
                     <div class="stat-value" id="accuracy">0%</div>
                     <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+            
+            <div class="customization-section">
+                <button class="customization-toggle" id="customization-toggle">Customization Options</button>
+                <div class="customization-options" id="customization-options">
+                    <div class="customization-options-grid">
+                        <div class="customization-group">
+                            <div class="customization-title">Training Behavior</div>
+                            <div class="customization-option">
+                                <label class="customization-label">Question Order:</label>
+                                <select class="customization-select" id="question-order">
+                                    <option value="random">Random</option>
+                                    <option value="sequential">Sequential</option>
+                                    <option value="weighted">Weighted by mistakes</option>
+                                </select>
+                            </div>
+                            <div class="customization-option">
+                                <label class="customization-label">Show Hints:</label>
+                                <select class="customization-select" id="show-hints">
+                                    <option value="never">Never</option>
+                                    <option value="after-fail">After incorrect answer</option>
+                                    <option value="always">Always</option>
+                                </select>
+                            </div>
+                            <div class="customization-option">
+                                <label class="customization-label">Case Sensitivity:</label>
+                                <select class="customization-select" id="case-sensitivity">
+                                    <option value="insensitive">Case Insensitive</option>
+                                    <option value="sensitive">Case Sensitive</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="customization-group">
+                            <div class="customization-title">Visual Settings</div>
+                            <div class="customization-option">
+                                <label class="customization-label">Element Display Size:</label>
+                                <div class="customization-range">
+                                    <input type="range" id="element-size" min="80" max="200" value="120" class="customization-input">
+                                    <span class="range-value" id="element-size-value">120px</span>
+                                </div>
+                            </div>
+                            <div class="customization-option">
+                                <label class="customization-label">Periodic Table Colors:</label>
+                                <select class="customization-select" id="table-colors">
+                                    <option value="group">By Group</option>
+                                    <option value="period">By Period</option>
+                                    <option value="block">By Block (s,p,d,f)</option>
+                                    <option value="monochrome">Monochrome</option>
+                                </select>
+                            </div>
+                            <div class="customization-option">
+                                <label class="customization-label">Highlight Color:</label>
+                                <div>
+                                    <input type="color" id="highlight-color" value="#e74c3c" class="customization-input">
+                                    <span class="color-preview" id="highlight-preview" style="background-color: #e74c3c"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="customization-group">
+                            <div class="customization-title">Difficulty Settings</div>
+                            <div class="customization-option">
+                                <label class="customization-label">Max Atomic Number:</label>
+                                <div class="customization-range">
+                                    <input type="range" id="max-atomic-number" min="10" max="118" value="118" class="customization-input">
+                                    <span class="range-value" id="max-atomic-number-value">118</span>
+                                </div>
+                            </div>
+                            <div class="customization-option">
+                                <label class="customization-label">Time Limit (seconds):</label>
+                                <input type="number" id="time-limit" min="0" max="300" value="0" class="customization-input">
+                                <span>(0 = no limit)</span>
+                            </div>
+                            <div class="customization-option">
+                                <div class="customization-checkbox">
+                                    <input type="checkbox" id="require-notation" checked>
+                                    <label class="customization-label">Require proper notation for orbitals</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="customization-group">
+                            <div class="customization-title">Sound & Feedback</div>
+                            <div class="customization-option">
+                                <div class="customization-checkbox">
+                                    <input type="checkbox" id="sound-effects">
+                                    <label class="customization-label">Enable sound effects</label>
+                                </div>
+                            </div>
+                            <div class="customization-option">
+                                <div class="customization-checkbox">
+                                    <input type="checkbox" id="vibrate-feedback" checked>
+                                    <label class="customization-label">Vibrate on mobile</label>
+                                </div>
+                            </div>
+                            <div class="customization-option">
+                                <label class="customization-label">Feedback Duration:</label>
+                                <div class="customization-range">
+                                    <input type="range" id="feedback-duration" min="1" max="10" value="3" class="customization-input">
+                                    <span class="range-value" id="feedback-duration-value">3s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button id="reset-customization" class="custom-btn">Reset to Defaults</button>
+                        <button id="apply-customization" class="save-btn">Apply Changes</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1063,6 +1265,20 @@
         let customSelectionMode = false;
         let customSelectedElements = [];
         let debounceTimer = null;
+        let customizationSettings = {
+            questionOrder: 'random',
+            showHints: 'after-fail',
+            caseSensitivity: 'insensitive',
+            elementSize: 120,
+            tableColors: 'group',
+            highlightColor: '#e74c3c',
+            maxAtomicNumber: 118,
+            timeLimit: 0,
+            requireNotation: true,
+            soundEffects: false,
+            vibrateFeedback: true,
+            feedbackDuration: 3
+        };
 
         // DOM elements
         const elementDisplay = document.getElementById('element-display');
@@ -1090,6 +1306,26 @@
         const saveListBtn = document.getElementById('save-list');
         const loadListBtn = document.getElementById('load-list');
         const savedListsContainer = document.getElementById('saved-lists');
+        const customizationToggle = document.getElementById('customization-toggle');
+        const customizationOptions = document.getElementById('customization-options');
+        const questionOrderSelect = document.getElementById('question-order');
+        const showHintsSelect = document.getElementById('show-hints');
+        const caseSensitivitySelect = document.getElementById('case-sensitivity');
+        const elementSizeSlider = document.getElementById('element-size');
+        const elementSizeValue = document.getElementById('element-size-value');
+        const tableColorsSelect = document.getElementById('table-colors');
+        const highlightColorInput = document.getElementById('highlight-color');
+        const highlightPreview = document.getElementById('highlight-preview');
+        const maxAtomicNumberSlider = document.getElementById('max-atomic-number');
+        const maxAtomicNumberValue = document.getElementById('max-atomic-number-value');
+        const timeLimitInput = document.getElementById('time-limit');
+        const requireNotationCheckbox = document.getElementById('require-notation');
+        const soundEffectsCheckbox = document.getElementById('sound-effects');
+        const vibrateFeedbackCheckbox = document.getElementById('vibrate-feedback');
+        const feedbackDurationSlider = document.getElementById('feedback-duration');
+        const feedbackDurationValue = document.getElementById('feedback-duration-value');
+        const resetCustomizationBtn = document.getElementById('reset-customization');
+        const applyCustomizationBtn = document.getElementById('apply-customization');
 
         // Initialize the app
         function init() {
@@ -1098,6 +1334,7 @@
             setupEventListeners();
             updateStats();
             loadSavedLists();
+            loadCustomizationSettings();
         }
 
         // Generate the periodic table layout
@@ -1173,7 +1410,21 @@
             const div = document.createElement('div');
             
             if (element) {
-                div.className = `table-element group-${element.group}`;
+                // Apply color scheme based on customization
+                let colorClass = `group-${element.group}`;
+                if (customizationSettings.tableColors === 'period') {
+                    colorClass = `period-${element.period}`;
+                } else if (customizationSettings.tableColors === 'block') {
+                    // Determine block based on group
+                    if (element.group === 1 || element.group === 2) colorClass = 'block-s';
+                    else if (element.group >= 3 && element.group <= 12) colorClass = 'block-d';
+                    else if (element.group >= 13 && element.group <= 18) colorClass = 'block-p';
+                    else colorClass = 'block-f'; // For lanthanides/actinides
+                } else if (customizationSettings.tableColors === 'monochrome') {
+                    colorClass = 'monochrome';
+                }
+                
+                div.className = `table-element ${colorClass}`;
                 div.innerHTML = `
                     <div class="table-number">${element.number}</div>
                     <div class="table-symbol">${element.symbol}</div>
@@ -1396,6 +1647,34 @@
             saveListBtn.addEventListener('click', saveList);
             loadListBtn.addEventListener('click', loadList);
             
+            // Customization options
+            customizationToggle.addEventListener('click', () => {
+                const isVisible = customizationOptions.style.display === 'block';
+                customizationOptions.style.display = isVisible ? 'none' : 'block';
+                customizationToggle.textContent = isVisible ? 
+                    'Customization Options' : 'Hide Customization Options';
+            });
+            
+            // Customization controls
+            elementSizeSlider.addEventListener('input', () => {
+                elementSizeValue.textContent = `${elementSizeSlider.value}px`;
+            });
+            
+            highlightColorInput.addEventListener('input', () => {
+                highlightPreview.style.backgroundColor = highlightColorInput.value;
+            });
+            
+            maxAtomicNumberSlider.addEventListener('input', () => {
+                maxAtomicNumberValue.textContent = maxAtomicNumberSlider.value;
+            });
+            
+            feedbackDurationSlider.addEventListener('input', () => {
+                feedbackDurationValue.textContent = `${feedbackDurationSlider.value}s`;
+            });
+            
+            resetCustomizationBtn.addEventListener('click', resetCustomization);
+            applyCustomizationBtn.addEventListener('click', applyCustomization);
+            
             // Listen for fullscreen changes
             document.addEventListener('fullscreenchange', handleFullscreenChange);
         }
@@ -1568,6 +1847,10 @@
                 <div class="symbol">${currentElement.symbol}</div>
                 <div class="name">${currentElement.name}</div>
             `;
+            
+            // Apply element size customization
+            elementDisplay.style.width = `${customizationSettings.elementSize}px`;
+            elementDisplay.style.height = `${customizationSettings.elementSize}px`;
         }
 
         // Highlight the current element in the periodic table
@@ -1582,6 +1865,8 @@
                 const elementCell = document.querySelector(`.table-element[data-number="${currentElement.number}"]`);
                 if (elementCell) {
                     elementCell.classList.add('current-highlight');
+                    // Apply custom highlight color
+                    elementCell.style.boxShadow = `0 0 0 3px ${customizationSettings.highlightColor}`;
                 }
             }
         }
@@ -1691,6 +1976,11 @@
             feedbackDiv.textContent = message;
             feedbackDiv.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
             feedbackDiv.style.display = 'block';
+            
+            // Apply feedback duration setting
+            setTimeout(() => {
+                clearFeedback();
+            }, customizationSettings.feedbackDuration * 1000);
         }
 
         // Clear feedback
@@ -1864,6 +2154,138 @@
             // Show confirmation
             showFeedback(`List "${listName}" deleted successfully!`, true);
             setTimeout(() => clearFeedback(), 2000);
+        }
+
+        // Load customization settings from localStorage
+        function loadCustomizationSettings() {
+            const savedSettings = localStorage.getItem('elementTrainingCustomization');
+            if (savedSettings) {
+                customizationSettings = { ...customizationSettings, ...JSON.parse(savedSettings) };
+            }
+            
+            // Apply loaded settings to UI controls
+            questionOrderSelect.value = customizationSettings.questionOrder;
+            showHintsSelect.value = customizationSettings.showHints;
+            caseSensitivitySelect.value = customizationSettings.caseSensitivity;
+            elementSizeSlider.value = customizationSettings.elementSize;
+            elementSizeValue.textContent = `${customizationSettings.elementSize}px`;
+            tableColorsSelect.value = customizationSettings.tableColors;
+            highlightColorInput.value = customizationSettings.highlightColor;
+            highlightPreview.style.backgroundColor = customizationSettings.highlightColor;
+            maxAtomicNumberSlider.value = customizationSettings.maxAtomicNumber;
+            maxAtomicNumberValue.textContent = customizationSettings.maxAtomicNumber;
+            timeLimitInput.value = customizationSettings.timeLimit;
+            requireNotationCheckbox.checked = customizationSettings.requireNotation;
+            soundEffectsCheckbox.checked = customizationSettings.soundEffects;
+            vibrateFeedbackCheckbox.checked = customizationSettings.vibrateFeedback;
+            feedbackDurationSlider.value = customizationSettings.feedbackDuration;
+            feedbackDurationValue.textContent = `${customizationSettings.feedbackDuration}s`;
+            
+            // Apply settings to app
+            applyCustomizationSettings();
+        }
+
+        // Save customization settings to localStorage
+        function saveCustomizationSettings() {
+            localStorage.setItem('elementTrainingCustomization', JSON.stringify(customizationSettings));
+        }
+
+        // Reset customization to defaults
+        function resetCustomization() {
+            if (!confirm('Reset all customization options to default values?')) {
+                return;
+            }
+            
+            customizationSettings = {
+                questionOrder: 'random',
+                showHints: 'after-fail',
+                caseSensitivity: 'insensitive',
+                elementSize: 120,
+                tableColors: 'group',
+                highlightColor: '#e74c3c',
+                maxAtomicNumber: 118,
+                timeLimit: 0,
+                requireNotation: true,
+                soundEffects: false,
+                vibrateFeedback: true,
+                feedbackDuration: 3
+            };
+            
+            // Update UI controls
+            questionOrderSelect.value = customizationSettings.questionOrder;
+            showHintsSelect.value = customizationSettings.showHints;
+            caseSensitivitySelect.value = customizationSettings.caseSensitivity;
+            elementSizeSlider.value = customizationSettings.elementSize;
+            elementSizeValue.textContent = `${customizationSettings.elementSize}px`;
+            tableColorsSelect.value = customizationSettings.tableColors;
+            highlightColorInput.value = customizationSettings.highlightColor;
+            highlightPreview.style.backgroundColor = customizationSettings.highlightColor;
+            maxAtomicNumberSlider.value = customizationSettings.maxAtomicNumber;
+            maxAtomicNumberValue.textContent = customizationSettings.maxAtomicNumber;
+            timeLimitInput.value = customizationSettings.timeLimit;
+            requireNotationCheckbox.checked = customizationSettings.requireNotation;
+            soundEffectsCheckbox.checked = customizationSettings.soundEffects;
+            vibrateFeedbackCheckbox.checked = customizationSettings.vibrateFeedback;
+            feedbackDurationSlider.value = customizationSettings.feedbackDuration;
+            feedbackDurationValue.textContent = `${customizationSettings.feedbackDuration}s`;
+            
+            // Apply settings and save
+            applyCustomizationSettings();
+            saveCustomizationSettings();
+            
+            showFeedback('Customization settings reset to defaults!', true);
+        }
+
+        // Apply customization settings
+        function applyCustomization() {
+            // Update settings from UI controls
+            customizationSettings.questionOrder = questionOrderSelect.value;
+            customizationSettings.showHints = showHintsSelect.value;
+            customizationSettings.caseSensitivity = caseSensitivitySelect.value;
+            customizationSettings.elementSize = parseInt(elementSizeSlider.value);
+            customizationSettings.tableColors = tableColorsSelect.value;
+            customizationSettings.highlightColor = highlightColorInput.value;
+            customizationSettings.maxAtomicNumber = parseInt(maxAtomicNumberSlider.value);
+            customizationSettings.timeLimit = parseInt(timeLimitInput.value) || 0;
+            customizationSettings.requireNotation = requireNotationCheckbox.checked;
+            customizationSettings.soundEffects = soundEffectsCheckbox.checked;
+            customizationSettings.vibrateFeedback = vibrateFeedbackCheckbox.checked;
+            customizationSettings.feedbackDuration = parseInt(feedbackDurationSlider.value);
+            
+            // Apply settings and save
+            applyCustomizationSettings();
+            saveCustomizationSettings();
+            
+            showFeedback('Customization settings applied!', true);
+        }
+
+        // Apply customization settings to the app
+        function applyCustomizationSettings() {
+            // Update element display size
+            if (elementDisplay) {
+                elementDisplay.style.width = `${customizationSettings.elementSize}px`;
+                elementDisplay.style.height = `${customizationSettings.elementSize}px`;
+            }
+            
+            // Regenerate periodic table with new color scheme
+            generatePeriodicTable();
+            highlightCurrentElement();
+            
+            // Update CSS for highlight color
+            const style = document.createElement('style');
+            style.textContent = `
+                .current-highlight {
+                    box-shadow: 0 0 0 3px ${customizationSettings.highlightColor} !important;
+                    animation: pulse 1.5s infinite;
+                }
+                
+                @keyframes pulse {
+                    0% { box-shadow: 0 0 0 0 ${customizationSettings.highlightColor}80; }
+                    70% { box-shadow: 0 0 0 10px ${customizationSettings.highlightColor}00; }
+                    100% { box-shadow: 0 0 0 0 ${customizationSettings.highlightColor}00; }
+                }
+            `;
+            document.head.appendChild(style);
         }
 
         // Initialize the app when the page loads
