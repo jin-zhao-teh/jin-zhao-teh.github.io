@@ -17,7 +17,7 @@
             color: #333;
             line-height: 1.6;
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -50,20 +50,22 @@
         
         .training-section {
             flex: 1;
-            min-width: 300px;
+            min-width: 350px;
             background-color: white;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .periodic-table {
             flex: 2;
-            min-width: 600px;
+            min-width: 800px;
             background-color: white;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
         
         .current-element {
@@ -72,6 +74,7 @@
             padding: 20px;
             background-color: #ecf0f1;
             border-radius: 10px;
+            position: relative;
         }
         
         .element-box {
@@ -138,11 +141,15 @@
             background-color: #95a5a6;
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .group-btn.active {
@@ -238,6 +245,8 @@
             grid-template-columns: repeat(18, 1fr);
             gap: 4px;
             margin-top: 20px;
+            width: 100%;
+            min-width: 1000px;
         }
         
         .table-element {
@@ -251,6 +260,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s, filter 0.2s;
+            min-height: 40px;
+            min-width: 40px;
         }
         
         .table-element:hover {
@@ -307,21 +318,129 @@
             100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
         
-        .notation-guide {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #7f8c8d;
-        }
-        
-        .auto-progress {
+        .settings {
             margin-top: 15px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
             gap: 10px;
         }
         
-        @media (max-width: 950px) {
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #9b59b6;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+        
+        .fullscreen-btn:hover {
+            background-color: #8e44ad;
+        }
+        
+        /* Fullscreen mode styles */
+        body.fullscreen-mode {
+            padding: 0;
+            max-width: none;
+            background-color: white;
+        }
+        
+        body.fullscreen-mode header,
+        body.fullscreen-mode .periodic-table,
+        body.fullscreen-mode .mode-selector,
+        body.fullscreen-mode .group-selector,
+        body.fullscreen-mode .stats,
+        body.fullscreen-mode .settings,
+        body.fullscreen-mode footer {
+            display: none;
+        }
+        
+        body.fullscreen-mode .container {
+            margin: 0;
+            gap: 0;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        body.fullscreen-mode .training-section {
+            box-shadow: none;
+            border-radius: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        body.fullscreen-mode .current-element {
+            margin: 0 0 40px 0;
+            background-color: transparent;
+        }
+        
+        body.fullscreen-mode .element-box {
+            width: 200px;
+            height: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        body.fullscreen-mode .symbol {
+            font-size: 4rem;
+        }
+        
+        body.fullscreen-mode .name {
+            font-size: 1.5rem;
+        }
+        
+        body.fullscreen-mode .input-section {
+            margin: 0;
+        }
+        
+        body.fullscreen-mode input[type="number"], 
+        body.fullscreen-mode input[type="text"] {
+            width: 300px;
+            font-size: 1.5rem;
+            padding: 15px;
+        }
+        
+        body.fullscreen-mode button {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+        }
+        
+        body.fullscreen-mode .feedback {
+            font-size: 1.3rem;
+            margin-top: 30px;
+        }
+        
+        .lanthanides-actinides-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .lanthanides-row, .actinides-row {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 4px;
+        }
+        
+        .lanthanides-label, .actinides-label {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 1200px) {
             .container {
                 flex-direction: column;
             }
@@ -337,6 +456,13 @@
             padding: 20px;
             color: #7f8c8d;
             font-size: 0.9rem;
+        }
+        
+        .notation-guide {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-align: center;
         }
     </style>
 </head>
@@ -383,6 +509,7 @@
             <p id="prompt-text">Identify the atomic number of the displayed element:</p>
             
             <div class="current-element">
+                <button class="fullscreen-btn" id="fullscreen-btn">Fullscreen</button>
                 <div id="element-display" class="element-box group-1">
                     <div class="symbol">H</div>
                     <div class="name">Hydrogen</div>
@@ -395,12 +522,22 @@
                 <button id="new-element">New Element</button>
             </div>
             
-            <div class="auto-progress">
-                <input type="checkbox" id="auto-next" checked>
-                <label for="auto-next">Auto advance after answer (2 seconds)</label>
+            <div class="settings">
+                <div class="setting-item">
+                    <input type="checkbox" id="auto-next" checked>
+                    <label for="auto-next">Auto advance after answer</label>
+                </div>
+                <div class="setting-item">
+                    <label for="auto-delay">Delay (seconds):</label>
+                    <input type="number" id="auto-delay" min="1" max="10" value="2" style="width: 60px;">
+                </div>
             </div>
             
             <div id="feedback" class="feedback"></div>
+            
+            <div class="notation-guide" id="notation-guide">
+                For orbital notation, you can use either superscripts (1s²) or regular numbers (1s2), and noble gas notation ([He] 2s²)
+            </div>
             
             <div class="stats">
                 <div class="stat-box">
@@ -423,6 +560,16 @@
             <p>Click on an element to practice it</p>
             <div class="table-container" id="periodic-table">
                 <!-- Periodic table will be generated by JavaScript -->
+            </div>
+            <div class="lanthanides-actinides-container">
+                <div class="lanthanides-label">Lanthanides</div>
+                <div class="lanthanides-row" id="lanthanides-row">
+                    <!-- Lanthanides will be generated by JavaScript -->
+                </div>
+                <div class="actinides-label">Actinides</div>
+                <div class="actinides-row" id="actinides-row">
+                    <!-- Actinides will be generated by JavaScript -->
+                </div>
             </div>
         </section>
     </div>
@@ -506,6 +653,170 @@
               shells: "2,8,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁵", valence: 7 },
             { number: 36, symbol: "Kr", name: "Krypton", group: 18, period: 4, 
               shells: "2,8,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶", valence: 8 },
+            { number: 37, symbol: "Rb", name: "Rubidium", group: 1, period: 5, 
+              shells: "2,8,18,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 5s¹", valence: 1 },
+            { number: 38, symbol: "Sr", name: "Strontium", group: 2, period: 5, 
+              shells: "2,8,18,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 5s²", valence: 2 },
+            { number: 39, symbol: "Y", name: "Yttrium", group: 3, period: 5, 
+              shells: "2,8,18,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹ 5s²", valence: 3 },
+            { number: 40, symbol: "Zr", name: "Zirconium", group: 4, period: 5, 
+              shells: "2,8,18,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d² 5s²", valence: 4 },
+            { number: 41, symbol: "Nb", name: "Niobium", group: 5, period: 5, 
+              shells: "2,8,18,12,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁴ 5s¹", valence: 5 },
+            { number: 42, symbol: "Mo", name: "Molybdenum", group: 6, period: 5, 
+              shells: "2,8,18,13,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁵ 5s¹", valence: 6 },
+            { number: 43, symbol: "Tc", name: "Technetium", group: 7, period: 5, 
+              shells: "2,8,18,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁵ 5s²", valence: 7 },
+            { number: 44, symbol: "Ru", name: "Ruthenium", group: 8, period: 5, 
+              shells: "2,8,18,15,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁷ 5s¹", valence: 8 },
+            { number: 45, symbol: "Rh", name: "Rhodium", group: 9, period: 5, 
+              shells: "2,8,18,16,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁸ 5s¹", valence: 9 },
+            { number: 46, symbol: "Pd", name: "Palladium", group: 10, period: 5, 
+              shells: "2,8,18,18", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰", valence: 10 },
+            { number: 47, symbol: "Ag", name: "Silver", group: 11, period: 5, 
+              shells: "2,8,18,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s¹", valence: 11 },
+            { number: 48, symbol: "Cd", name: "Cadmium", group: 12, period: 5, 
+              shells: "2,8,18,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s²", valence: 12 },
+            { number: 49, symbol: "In", name: "Indium", group: 13, period: 5, 
+              shells: "2,8,18,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p¹", valence: 3 },
+            { number: 50, symbol: "Sn", name: "Tin", group: 14, period: 5, 
+              shells: "2,8,18,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p²", valence: 4 },
+            { number: 51, symbol: "Sb", name: "Antimony", group: 15, period: 5, 
+              shells: "2,8,18,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p³", valence: 5 },
+            { number: 52, symbol: "Te", name: "Tellurium", group: 16, period: 5, 
+              shells: "2,8,18,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁴", valence: 6 },
+            { number: 53, symbol: "I", name: "Iodine", group: 17, period: 5, 
+              shells: "2,8,18,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁵", valence: 7 },
+            { number: 54, symbol: "Xe", name: "Xenon", group: 18, period: 5, 
+              shells: "2,8,18,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶", valence: 8 },
+            { number: 55, symbol: "Cs", name: "Cesium", group: 1, period: 6, 
+              shells: "2,8,18,18,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 6s¹", valence: 1 },
+            { number: 56, symbol: "Ba", name: "Barium", group: 2, period: 6, 
+              shells: "2,8,18,18,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 6s²", valence: 2 },
+            { number: 57, symbol: "La", name: "Lanthanum", group: 3, period: 6, 
+              shells: "2,8,18,18,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 5d¹ 6s²", valence: 3 },
+            { number: 58, symbol: "Ce", name: "Cerium", group: 3, period: 6, 
+              shells: "2,8,18,19,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 59, symbol: "Pr", name: "Praseodymium", group: 3, period: 6, 
+              shells: "2,8,18,21,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f³ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 60, symbol: "Nd", name: "Neodymium", group: 3, period: 6, 
+              shells: "2,8,18,22,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁴ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 61, symbol: "Pm", name: "Promethium", group: 3, period: 6, 
+              shells: "2,8,18,23,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁵ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 62, symbol: "Sm", name: "Samarium", group: 3, period: 6, 
+              shells: "2,8,18,24,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁶ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 63, symbol: "Eu", name: "Europium", group: 3, period: 6, 
+              shells: "2,8,18,25,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁷ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 64, symbol: "Gd", name: "Gadolinium", group: 3, period: 6, 
+              shells: "2,8,18,25,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁷ 5s² 5p⁶ 5d¹ 6s²", valence: 4 },
+            { number: 65, symbol: "Tb", name: "Terbium", group: 3, period: 6, 
+              shells: "2,8,18,27,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁹ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 66, symbol: "Dy", name: "Dysprosium", group: 3, period: 6, 
+              shells: "2,8,18,28,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁰ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 67, symbol: "Ho", name: "Holmium", group: 3, period: 6, 
+              shells: "2,8,18,29,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹¹ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 68, symbol: "Er", name: "Erbium", group: 3, period: 6, 
+              shells: "2,8,18,30,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹² 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 69, symbol: "Tm", name: "Thulium", group: 3, period: 6, 
+              shells: "2,8,18,31,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹³ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 70, symbol: "Yb", name: "Ytterbium", group: 3, period: 6, 
+              shells: "2,8,18,32,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 71, symbol: "Lu", name: "Lutetium", group: 3, period: 6, 
+              shells: "2,8,18,32,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹ 6s²", valence: 4 },
+            { number: 72, symbol: "Hf", name: "Hafnium", group: 4, period: 6, 
+              shells: "2,8,18,32,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d² 6s²", valence: 4 },
+            { number: 73, symbol: "Ta", name: "Tantalum", group: 5, period: 6, 
+              shells: "2,8,18,32,11,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d³ 6s²", valence: 5 },
+            { number: 74, symbol: "W", name: "Tungsten", group: 6, period: 6, 
+              shells: "2,8,18,32,12,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁴ 6s²", valence: 6 },
+            { number: 75, symbol: "Re", name: "Rhenium", group: 7, period: 6, 
+              shells: "2,8,18,32,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁵ 6s²", valence: 7 },
+            { number: 76, symbol: "Os", name: "Osmium", group: 8, period: 6, 
+              shells: "2,8,18,32,14,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁶ 6s²", valence: 8 },
+            { number: 77, symbol: "Ir", name: "Iridium", group: 9, period: 6, 
+              shells: "2,8,18,32,15,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁷ 6s²", valence: 9 },
+            { number: 78, symbol: "Pt", name: "Platinum", group: 10, period: 6, 
+              shells: "2,8,18,32,17,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁹ 6s¹", valence: 10 },
+            { number: 79, symbol: "Au", name: "Gold", group: 11, period: 6, 
+              shells: "2,8,18,32,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s¹", valence: 11 },
+            { number: 80, symbol: "Hg", name: "Mercury", group: 12, period: 6, 
+              shells: "2,8,18,32,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s²", valence: 12 },
+            { number: 81, symbol: "Tl", name: "Thallium", group: 13, period: 6, 
+              shells: "2,8,18,32,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p¹", valence: 3 },
+            { number: 82, symbol: "Pb", name: "Lead", group: 14, period: 6, 
+              shells: "2,8,18,32,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p²", valence: 4 },
+            { number: 83, symbol: "Bi", name: "Bismuth", group: 15, period: 6, 
+              shells: "2,8,18,32,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p³", valence: 5 },
+            { number: 84, symbol: "Po", name: "Polonium", group: 16, period: 6, 
+              shells: "2,8,18,32,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁴", valence: 6 },
+            { number: 85, symbol: "At", name: "Astatine", group: 17, period: 6, 
+              shells: "2,8,18,32,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁵", valence: 7 },
+            { number: 86, symbol: "Rn", name: "Radon", group: 18, period: 6, 
+              shells: "2,8,18,32,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶", valence: 8 },
+            { number: 87, symbol: "Fr", name: "Francium", group: 1, period: 7, 
+              shells: "2,8,18,32,18,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 7s¹", valence: 1 },
+            { number: 88, symbol: "Ra", name: "Radium", group: 2, period: 7, 
+              shells: "2,8,18,32,18,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 7s²", valence: 2 },
+            { number: 89, symbol: "Ac", name: "Actinium", group: 3, period: 7, 
+              shells: "2,8,18,32,18,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 6d¹ 7s²", valence: 3 },
+            { number: 90, symbol: "Th", name: "Thorium", group: 3, period: 7, 
+              shells: "2,8,18,32,18,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 6d² 7s²", valence: 4 },
+            { number: 91, symbol: "Pa", name: "Protactinium", group: 3, period: 7, 
+              shells: "2,8,18,32,20,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f² 6s² 6p⁶ 6d¹ 7s²", valence: 5 },
+            { number: 92, symbol: "U", name: "Uranium", group: 3, period: 7, 
+              shells: "2,8,18,32,21,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f³ 6s² 6p⁶ 6d¹ 7s²", valence: 6 },
+            { number: 93, symbol: "Np", name: "Neptunium", group: 3, period: 7, 
+              shells: "2,8,18,32,22,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁴ 6s² 6p⁶ 6d¹ 7s²", valence: 7 },
+            { number: 94, symbol: "Pu", name: "Plutonium", group: 3, period: 7, 
+              shells: "2,8,18,32,24,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁶ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 95, symbol: "Am", name: "Americium", group: 3, period: 7, 
+              shells: "2,8,18,32,25,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁷ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 96, symbol: "Cm", name: "Curium", group: 3, period: 7, 
+              shells: "2,8,18,32,25,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁷ 6s² 6p⁶ 6d¹ 7s²", valence: 8 },
+            { number: 97, symbol: "Bk", name: "Berkelium", group: 3, period: 7, 
+              shells: "2,8,18,32,26,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁹ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 98, symbol: "Cf", name: "Californium", group: 3, period: 7, 
+              shells: "2,8,18,32,28,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁰ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 99, symbol: "Es", name: "Einsteinium", group: 3, period: 7, 
+              shells: "2,8,18,32,29,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹¹ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 100, symbol: "Fm", name: "Fermium", group: 3, period: 7, 
+              shells: "2,8,18,32,30,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹² 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 101, symbol: "Md", name: "Mendelevium", group: 3, period: 7, 
+              shells: "2,8,18,32,31,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹³ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 102, symbol: "No", name: "Nobelium", group: 3, period: 7, 
+              shells: "2,8,18,32,32,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 103, symbol: "Lr", name: "Lawrencium", group: 3, period: 7, 
+              shells: "2,8,18,32,32,8,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 7s² 7p¹", valence: 3 },
+            { number: 104, symbol: "Rf", name: "Rutherfordium", group: 4, period: 7, 
+              shells: "2,8,18,32,32,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d² 7s²", valence: 4 },
+            { number: 105, symbol: "Db", name: "Dubnium", group: 5, period: 7, 
+              shells: "2,8,18,32,32,11,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d³ 7s²", valence: 5 },
+            { number: 106, symbol: "Sg", name: "Seaborgium", group: 6, period: 7, 
+              shells: "2,8,18,32,32,12,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁴ 7s²", valence: 6 },
+            { number: 107, symbol: "Bh", name: "Bohrium", group: 7, period: 7, 
+              shells: "2,8,18,32,32,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁵ 7s²", valence: 7 },
+            { number: 108, symbol: "Hs", name: "Hassium", group: 8, period: 7, 
+              shells: "2,8,18,32,32,14,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁶ 7s²", valence: 8 },
+            { number: 109, symbol: "Mt", name: "Meitnerium", group: 9, period: 7, 
+              shells: "2,8,18,32,32,15,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁷ 7s²", valence: 9 },
+            { number: 110, symbol: "Ds", name: "Darmstadtium", group: 10, period: 7, 
+              shells: "2,8,18,32,32,17,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁹ 7s¹", valence: 10 },
+            { number: 111, symbol: "Rg", name: "Roentgenium", group: 11, period: 7, 
+              shells: "2,8,18,32,32,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s¹", valence: 11 },
+            { number: 112, symbol: "Cn", name: "Copernicium", group: 12, period: 7, 
+              shells: "2,8,18,32,32,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s²", valence: 12 },
+            { number: 113, symbol: "Nh", name: "Nihonium", group: 13, period: 7, 
+              shells: "2,8,18,32,32,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p¹", valence: 3 },
+            { number: 114, symbol: "Fl", name: "Flerovium", group: 14, period: 7, 
+              shells: "2,8,18,32,32,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p²", valence: 4 },
+            { number: 115, symbol: "Mc", name: "Moscovium", group: 15, period: 7, 
+              shells: "2,8,18,32,32,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p³", valence: 5 },
+            { number: 116, symbol: "Lv", name: "Livermorium", group: 16, period: 7, 
+              shells: "2,8,18,32,32,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p⁴", valence: 6 },
+            { number: 117, symbol: "Ts", name: "Tennessine", group: 17, period: 7, 
+              shells: "2,8,18,32,32,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p⁵", valence: 7 },
+            { number: 118, symbol: "Og", name: "Oganesson", group: 18, period: 7, 
+              shells: "2,8,18,32,32,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p⁶", valence: 8 }
         ];
 
         // Track current element, mode, and statistics
@@ -515,6 +826,7 @@
         let correctAnswers = 0;
         let totalQuestions = 0;
         let autoNextTimer = null;
+        let isFullscreen = false;
 
         // DOM elements
         const elementDisplay = document.getElementById('element-display');
@@ -526,10 +838,15 @@
         const totalCount = document.getElementById('total-count');
         const accuracy = document.getElementById('accuracy');
         const periodicTable = document.getElementById('periodic-table');
+        const lanthanidesRow = document.getElementById('lanthanides-row');
+        const actinidesRow = document.getElementById('actinides-row');
         const modeButtons = document.querySelectorAll('.mode-btn');
         const groupButtons = document.querySelectorAll('.group-btn');
         const promptText = document.getElementById('prompt-text');
         const autoNextCheckbox = document.getElementById('auto-next');
+        const autoDelayInput = document.getElementById('auto-delay');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const notationGuide = document.getElementById('notation-guide');
 
         // Initialize the app
         function init() {
@@ -541,13 +858,50 @@
 
         // Generate the periodic table layout
         function generatePeriodicTable() {
-            // Create the main table (periods 1-4, groups 1-18)
-            for (let period = 1; period <= 4; period++) {
+            // Create the main table (periods 1-7, groups 1-18)
+            for (let period = 1; period <= 7; period++) {
                 for (let group = 1; group <= 18; group++) {
                     const element = elements.find(el => el.period === period && el.group === group);
                     createTableElement(element, period, group);
                 }
             }
+            
+            // Add lanthanides and actinides
+            generateLanthanidesAndActinides();
+        }
+        
+        // Generate lanthanides and actinides rows
+        function generateLanthanidesAndActinides() {
+            // Lanthanides (elements 57-71)
+            for (let i = 57; i <= 71; i++) {
+                const element = elements.find(el => el.number === i);
+                createSpecialElement(element, lanthanidesRow, 'lanthanide');
+            }
+            
+            // Actinides (elements 89-103)
+            for (let i = 89; i <= 103; i++) {
+                const element = elements.find(el => el.number === i);
+                createSpecialElement(element, actinidesRow, 'actinide');
+            }
+        }
+        
+        // Create element for lanthanides/actinides rows
+        function createSpecialElement(element, container, className) {
+            const div = document.createElement('div');
+            
+            if (element) {
+                div.className = `table-element ${className}`;
+                div.innerHTML = `
+                    <div class="table-number">${element.number}</div>
+                    <div class="table-symbol">${element.symbol}</div>
+                `;
+                div.dataset.number = element.number;
+                div.addEventListener('click', () => selectSpecificElement(element.number));
+            } else {
+                div.className = 'table-element empty';
+            }
+            
+            container.appendChild(div);
         }
 
         // Create a table element cell
@@ -607,6 +961,21 @@
                     selectRandomElement();
                 });
             });
+            
+            // Fullscreen button
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+        }
+
+        // Toggle fullscreen mode
+        function toggleFullscreen() {
+            isFullscreen = !isFullscreen;
+            document.body.classList.toggle('fullscreen-mode', isFullscreen);
+            fullscreenBtn.textContent = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen';
+            
+            // Adjust focus for better UX
+            if (isFullscreen) {
+                answerInput.focus();
+            }
         }
 
         // Update the UI based on the current mode
@@ -615,22 +984,26 @@
                 case "atomic":
                     promptText.textContent = "Identify the atomic number of the displayed element:";
                     answerInput.type = "number";
-                    answerInput.placeholder = "Enter number (1-36)";
+                    answerInput.placeholder = "Enter number (1-118)";
+                    notationGuide.style.display = "none";
                     break;
                 case "shell":
                     promptText.textContent = "Identify the electron shell configuration (e.g., 2,8,8):";
                     answerInput.type = "text";
                     answerInput.placeholder = "Enter shell configuration";
+                    notationGuide.style.display = "none";
                     break;
                 case "orbital":
-                    promptText.textContent = "Identify the orbital notation (e.g., 1s² 2s² 2p⁶):";
+                    promptText.textContent = "Identify the orbital notation (e.g., 1s² 2s² 2p⁶ or [He] 2s²):";
                     answerInput.type = "text";
                     answerInput.placeholder = "Enter orbital notation";
+                    notationGuide.style.display = "block";
                     break;
                 case "valence":
                     promptText.textContent = "Identify the number of valence electrons:";
                     answerInput.type = "number";
                     answerInput.placeholder = "Enter number (1-8)";
+                    notationGuide.style.display = "none";
                     break;
             }
             
@@ -704,6 +1077,49 @@
             }
         }
 
+        // Normalize orbital notation for comparison
+        function normalizeOrbitalNotation(notation) {
+            if (!notation) return '';
+            
+            // Convert to lowercase and remove spaces for easier comparison
+            let normalized = notation.toLowerCase().replace(/\s+/g, '');
+            
+            // Convert superscript numbers to regular numbers
+            normalized = normalized
+                .replace(/¹/g, '1')
+                .replace(/²/g, '2')
+                .replace(/³/g, '3')
+                .replace(/⁴/g, '4')
+                .replace(/⁵/g, '5')
+                .replace(/⁶/g, '6')
+                .replace(/⁷/g, '7')
+                .replace(/⁸/g, '8')
+                .replace(/⁹/g, '9')
+                .replace(/⁰/g, '0');
+            
+            // Handle noble gas notation by expanding it
+            const nobleGases = {
+                'he': '1s2',
+                'ne': '1s22s22p6',
+                'ar': '1s22s22p63s23p6',
+                'kr': '1s22s22p63s23p64s23d104p6',
+                'xe': '1s22s22p63s23p64s23d104p65s24d105p6',
+                'rn': '1s22s22p63s23p64s23d104p65s24d105p66s24f145d106p6'
+            };
+            
+            // Check if notation starts with a noble gas in brackets
+            const nobleGasMatch = normalized.match(/^\[(\w+)\]/);
+            if (nobleGasMatch) {
+                const nobleGasSymbol = nobleGasMatch[1].toLowerCase();
+                if (nobleGases[nobleGasSymbol]) {
+                    // Replace the noble gas notation with the full configuration
+                    normalized = nobleGases[nobleGasSymbol] + normalized.slice(nobleGasMatch[0].length);
+                }
+            }
+            
+            return normalized;
+        }
+
         // Check the user's answer
         function checkAnswer() {
             if (!currentElement) return;
@@ -722,9 +1138,9 @@
                     correctAnswer = currentElement.shells;
                     break;
                 case "orbital":
-                    // Normalize both answers for comparison (remove spaces and convert to lowercase)
-                    const normalizedUser = userAnswer.replace(/\s+/g, '').toLowerCase();
-                    const normalizedCorrect = currentElement.orbital.replace(/\s+/g, '').toLowerCase();
+                    // Normalize both answers for comparison
+                    const normalizedUser = normalizeOrbitalNotation(userAnswer);
+                    const normalizedCorrect = normalizeOrbitalNotation(currentElement.orbital);
                     isCorrect = normalizedUser === normalizedCorrect;
                     correctAnswer = currentElement.orbital;
                     break;
@@ -750,9 +1166,10 @@
                 if (autoNextTimer) {
                     clearTimeout(autoNextTimer);
                 }
+                const delay = parseInt(autoDelayInput.value) * 1000;
                 autoNextTimer = setTimeout(() => {
                     selectRandomElement();
-                }, 2000);
+                }, delay);
             }
         }
 
