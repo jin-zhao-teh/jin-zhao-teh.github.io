@@ -17,7 +17,6 @@
             color: #333;
             line-height: 1.6;
             padding: 20px;
-            margin: 0 auto;
         }
         
         header {
@@ -74,6 +73,12 @@
             background-color: #ecf0f1;
             border-radius: 10px;
             position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .current-element:hover {
+            background-color: #dde4e6;
         }
         
         .element-box {
@@ -153,6 +158,55 @@
         
         .group-btn.active {
             background-color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .period-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .period-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .period-btn.active {
+            background-color: #9b59b6;
+            font-weight: bold;
+        }
+        
+        .custom-selector {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .custom-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .custom-btn.active {
+            background-color: #f39c12;
             font-weight: bold;
         }
         
@@ -311,6 +365,15 @@
             animation: pulse 1.5s infinite;
         }
         
+        .grayed-out {
+            opacity: 0.3;
+            filter: grayscale(70%);
+        }
+        
+        .custom-selected {
+            box-shadow: 0 0 0 2px #f39c12;
+        }
+        
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
@@ -331,23 +394,17 @@
             gap: 8px;
         }
         
-        .fullscreen-btn {
+        .fullscreen-hint {
             position: absolute;
-            top: 10px;
+            bottom: 10px;
             right: 10px;
-            background-color: #9b59b6;
-            padding: 8px 12px;
-            font-size: 0.9rem;
-        }
-        
-        .fullscreen-btn:hover {
-            background-color: #8e44ad;
+            font-size: 0.8rem;
+            color: #7f8c8d;
         }
         
         /* Fullscreen mode styles */
         body.fullscreen-mode {
             padding: 0;
-            max-width: none;
             background-color: white;
         }
         
@@ -355,6 +412,8 @@
         body.fullscreen-mode .periodic-table,
         body.fullscreen-mode .mode-selector,
         body.fullscreen-mode .group-selector,
+        body.fullscreen-mode .period-selector,
+        body.fullscreen-mode .custom-selector,
         body.fullscreen-mode .stats,
         body.fullscreen-mode .settings,
         body.fullscreen-mode footer {
@@ -439,6 +498,55 @@
             color: #7f8c8d;
         }
         
+        .selected-elements-list {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .selected-elements-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .selected-elements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .selected-element {
+            background-color: #f39c12;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .delay-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .delay-setting {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .delay-input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+        
         @media (max-width: 1200px) {
             .container {
                 flex-direction: column;
@@ -462,6 +570,27 @@
             font-size: 0.9rem;
             color: #7f8c8d;
             text-align: center;
+        }
+        
+        .period-label {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: #7f8c8d;
+        }
+        
+        .period-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        
+        .period-number {
+            width: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #2c3e50;
         }
     </style>
 </head>
@@ -505,10 +634,33 @@
                 <button class="group-btn" data-group="18">18</button>
             </div>
             
+            <p>Select period to practice:</p>
+            <div class="period-selector">
+                <button class="period-btn active" data-period="all">All</button>
+                <button class="period-btn" data-period="1">1</button>
+                <button class="period-btn" data-period="2">2</button>
+                <button class="period-btn" data-period="3">3</button>
+                <button class="period-btn" data-period="4">4</button>
+                <button class="period-btn" data-period="5">5</button>
+                <button class="period-btn" data-period="6">6</button>
+                <button class="period-btn" data-period="7">7</button>
+            </div>
+            
+            <div class="custom-selector">
+                <button class="custom-btn" id="custom-select-btn">Select Elements Manually</button>
+            </div>
+            
+            <div class="selected-elements-list" id="selected-elements-list" style="display: none;">
+                <div class="selected-elements-title">Selected Elements:</div>
+                <div class="selected-elements" id="selected-elements">
+                    <!-- Selected elements will be displayed here -->
+                </div>
+            </div>
+            
             <p id="prompt-text">Identify the atomic number of the displayed element:</p>
             
-            <div class="current-element">
-                <button class="fullscreen-btn" id="fullscreen-btn">Fullscreen</button>
+            <div class="current-element" id="current-element-area">
+                <div class="fullscreen-hint">Click to enter fullscreen</div>
                 <div id="element-display" class="element-box group-1">
                     <div class="symbol">H</div>
                     <div class="name">Hydrogen</div>
@@ -526,9 +678,15 @@
                     <input type="checkbox" id="auto-next" checked>
                     <label for="auto-next">Auto advance after answer</label>
                 </div>
-                <div class="setting-item">
-                    <label for="auto-delay">Delay (seconds):</label>
-                    <input type="number" id="auto-delay" min="1" max="10" value="2" style="width: 60px;">
+                <div class="delay-settings">
+                    <div class="delay-setting">
+                        <label for="correct-delay">Correct delay (seconds):</label>
+                        <input type="number" id="correct-delay" min="1" max="10" value="1" class="delay-input">
+                    </div>
+                    <div class="delay-setting">
+                        <label for="incorrect-delay">Incorrect delay (seconds):</label>
+                        <input type="number" id="incorrect-delay" min="1" max="10" value="3" class="delay-input">
+                    </div>
                 </div>
             </div>
             
@@ -556,19 +714,9 @@
         
         <section class="periodic-table">
             <h2>Periodic Table Reference</h2>
-            <p>Click on an element to practice it</p>
-            <div class="table-container" id="periodic-table">
+            <p>Click on an element to practice it. In custom selection mode, click to add/remove from practice set.</p>
+            <div id="periodic-table-container">
                 <!-- Periodic table will be generated by JavaScript -->
-            </div>
-            <div class="lanthanides-actinides-container">
-                <div class="lanthanides-label">Lanthanides</div>
-                <div class="lanthanides-row" id="lanthanides-row">
-                    <!-- Lanthanides will be generated by JavaScript -->
-                </div>
-                <div class="actinides-label">Actinides</div>
-                <div class="actinides-row" id="actinides-row">
-                    <!-- Actinides will be generated by JavaScript -->
-                </div>
             </div>
         </section>
     </div>
@@ -822,10 +970,13 @@
         let currentElement = null;
         let currentMode = "atomic";
         let currentGroup = "all";
+        let currentPeriod = "all";
         let correctAnswers = 0;
         let totalQuestions = 0;
         let autoNextTimer = null;
         let isFullscreen = false;
+        let customSelectionMode = false;
+        let customSelectedElements = [];
 
         // DOM elements
         const elementDisplay = document.getElementById('element-display');
@@ -836,15 +987,18 @@
         const correctCount = document.getElementById('correct-count');
         const totalCount = document.getElementById('total-count');
         const accuracy = document.getElementById('accuracy');
-        const periodicTable = document.getElementById('periodic-table');
-        const lanthanidesRow = document.getElementById('lanthanides-row');
-        const actinidesRow = document.getElementById('actinides-row');
+        const periodicTableContainer = document.getElementById('periodic-table-container');
         const modeButtons = document.querySelectorAll('.mode-btn');
         const groupButtons = document.querySelectorAll('.group-btn');
+        const periodButtons = document.querySelectorAll('.period-btn');
+        const customSelectBtn = document.getElementById('custom-select-btn');
+        const selectedElementsList = document.getElementById('selected-elements-list');
+        const selectedElementsContainer = document.getElementById('selected-elements');
+        const currentElementArea = document.getElementById('current-element-area');
         const promptText = document.getElementById('prompt-text');
         const autoNextCheckbox = document.getElementById('auto-next');
-        const autoDelayInput = document.getElementById('auto-delay');
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const correctDelayInput = document.getElementById('correct-delay');
+        const incorrectDelayInput = document.getElementById('incorrect-delay');
         const notationGuide = document.getElementById('notation-guide');
 
         // Initialize the app
@@ -857,12 +1011,29 @@
 
         // Generate the periodic table layout
         function generatePeriodicTable() {
-            // Create the main table (periods 1-7, groups 1-18)
+            // Clear container
+            periodicTableContainer.innerHTML = '';
+            
+            // Create main table with periods
             for (let period = 1; period <= 7; period++) {
+                const periodRow = document.createElement('div');
+                periodRow.className = 'period-row';
+                
+                const periodLabel = document.createElement('div');
+                periodLabel.className = 'period-number';
+                periodLabel.textContent = period;
+                periodRow.appendChild(periodLabel);
+                
+                const tableRow = document.createElement('div');
+                tableRow.className = 'table-container';
+                
                 for (let group = 1; group <= 18; group++) {
                     const element = elements.find(el => el.period === period && el.group === group);
-                    createTableElement(element, period, group);
+                    createTableElement(element, tableRow);
                 }
+                
+                periodRow.appendChild(tableRow);
+                periodicTableContainer.appendChild(periodRow);
             }
             
             // Add lanthanides and actinides
@@ -871,40 +1042,43 @@
         
         // Generate lanthanides and actinides rows
         function generateLanthanidesAndActinides() {
-            // Lanthanides (elements 57-71)
+            // Lanthanides label
+            const lanthanidesLabel = document.createElement('div');
+            lanthanidesLabel.className = 'lanthanides-label';
+            lanthanidesLabel.textContent = 'Lanthanides';
+            periodicTableContainer.appendChild(lanthanidesLabel);
+            
+            // Lanthanides row
+            const lanthanidesRow = document.createElement('div');
+            lanthanidesRow.className = 'lanthanides-row';
+            
             for (let i = 57; i <= 71; i++) {
                 const element = elements.find(el => el.number === i);
-                createSpecialElement(element, lanthanidesRow, 'lanthanide');
+                createTableElement(element, lanthanidesRow);
             }
             
-            // Actinides (elements 89-103)
+            periodicTableContainer.appendChild(lanthanidesRow);
+            
+            // Actinides label
+            const actinidesLabel = document.createElement('div');
+            actinidesLabel.className = 'actinides-label';
+            actinidesLabel.textContent = 'Actinides';
+            periodicTableContainer.appendChild(actinidesLabel);
+            
+            // Actinides row
+            const actinidesRow = document.createElement('div');
+            actinidesRow.className = 'actinides-row';
+            
             for (let i = 89; i <= 103; i++) {
                 const element = elements.find(el => el.number === i);
-                createSpecialElement(element, actinidesRow, 'actinide');
+                createTableElement(element, actinidesRow);
             }
+            
+            periodicTableContainer.appendChild(actinidesRow);
         }
         
-        // Create element for lanthanides/actinides rows
-        function createSpecialElement(element, container, className) {
-            const div = document.createElement('div');
-            
-            if (element) {
-                div.className = `table-element ${className}`;
-                div.innerHTML = `
-                    <div class="table-number">${element.number}</div>
-                    <div class="table-symbol">${element.symbol}</div>
-                `;
-                div.dataset.number = element.number;
-                div.addEventListener('click', () => selectSpecificElement(element.number));
-            } else {
-                div.className = 'table-element empty';
-            }
-            
-            container.appendChild(div);
-        }
-
         // Create a table element cell
-        function createTableElement(element, period, group) {
+        function createTableElement(element, container) {
             const div = document.createElement('div');
             
             if (element) {
@@ -914,21 +1088,30 @@
                     <div class="table-symbol">${element.symbol}</div>
                 `;
                 div.dataset.number = element.number;
-                div.addEventListener('click', () => selectSpecificElement(element.number));
+                div.addEventListener('click', () => handleElementClick(element.number));
             } else {
                 div.className = 'table-element empty';
             }
             
-            // Adjust position for period 1 (only has groups 1 and 18)
-            if (period === 1 && (group < 1 || group > 2)) {
-                div.style.gridColumn = group;
-                div.style.gridRow = period;
+            container.appendChild(div);
+        }
+
+        // Handle element click (either select for practice or add to custom set)
+        function handleElementClick(number) {
+            if (customSelectionMode) {
+                // Toggle custom selection
+                const index = customSelectedElements.indexOf(number);
+                if (index === -1) {
+                    customSelectedElements.push(number);
+                } else {
+                    customSelectedElements.splice(index, 1);
+                }
+                updateElementAppearance();
+                updateSelectedElementsList();
             } else {
-                div.style.gridColumn = group;
-                div.style.gridRow = period;
+                // Select this element for practice
+                selectSpecificElement(number);
             }
-            
-            periodicTable.appendChild(div);
         }
 
         // Set up event listeners
@@ -957,23 +1140,54 @@
                     groupButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
                     currentGroup = button.dataset.group;
+                    updateElementAppearance();
                     selectRandomElement();
                 });
             });
             
-            // Fullscreen button
-            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            // Period selector buttons
+            periodButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    periodButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentPeriod = button.dataset.period;
+                    updateElementAppearance();
+                    selectRandomElement();
+                });
+            });
+            
+            // Custom selection button
+            customSelectBtn.addEventListener('click', () => {
+                customSelectionMode = !customSelectionMode;
+                customSelectBtn.classList.toggle('active', customSelectionMode);
+                customSelectBtn.textContent = customSelectionMode ? 
+                    'Finish Selection' : 'Select Elements Manually';
+                
+                if (!customSelectionMode && customSelectedElements.length === 0) {
+                    // If no elements selected, revert to all
+                    customSelectedElements = elements.map(el => el.number);
+                }
+                
+                selectedElementsList.style.display = customSelectionMode ? 'block' : 'none';
+                updateElementAppearance();
+                updateSelectedElementsList();
+                selectRandomElement();
+            });
+            
+            // Fullscreen on current element area click
+            currentElementArea.addEventListener('click', toggleFullscreen);
         }
 
         // Toggle fullscreen mode
         function toggleFullscreen() {
-            isFullscreen = !isFullscreen;
-            document.body.classList.toggle('fullscreen-mode', isFullscreen);
-            fullscreenBtn.textContent = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen';
-            document.getElementsByClassName("training-section")[0].requestFullScreen();
-            // Adjust focus for better UX
-            if (isFullscreen) {
-                answerInput.focus();
+            if (!document.fullscreenElement) {
+                document.getElementsByClassName("training-section")[0].requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
         }
 
@@ -1011,20 +1225,88 @@
             clearFeedback();
         }
 
-        // Get filtered elements based on current group selection
-        function getFilteredElements() {
-            if (currentGroup === "all") {
-                return elements;
-            }
-            return elements.filter(el => el.group == currentGroup);
+        // Update element appearance based on current filters
+        function updateElementAppearance() {
+            document.querySelectorAll('.table-element').forEach(el => {
+                if (el.classList.contains('empty')) return;
+                
+                const number = parseInt(el.dataset.number);
+                const element = elements.find(el => el.number === number);
+                
+                // Reset classes
+                el.classList.remove('grayed-out', 'custom-selected');
+                
+                if (customSelectionMode) {
+                    // In custom selection mode, gray out all elements
+                    el.classList.add('grayed-out');
+                    
+                    // Highlight selected elements
+                    if (customSelectedElements.includes(number)) {
+                        el.classList.remove('grayed-out');
+                        el.classList.add('custom-selected');
+                    }
+                } else {
+                    // Apply group/period filtering
+                    const groupMatch = currentGroup === "all" || element.group == currentGroup;
+                    const periodMatch = currentPeriod === "all" || element.period == currentPeriod;
+                    
+                    if (!groupMatch || !periodMatch) {
+                        el.classList.add('grayed-out');
+                    }
+                }
+            });
         }
 
-        // Select a random element from the current group
+        // Update the selected elements list
+        function updateSelectedElementsList() {
+            selectedElementsContainer.innerHTML = '';
+            
+            if (customSelectedElements.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.textContent = 'No elements selected';
+                emptyMsg.style.color = '#7f8c8d';
+                emptyMsg.style.fontStyle = 'italic';
+                selectedElementsContainer.appendChild(emptyMsg);
+                return;
+            }
+            
+            // Sort selected elements by atomic number
+            const sortedElements = [...customSelectedElements].sort((a, b) => a - b);
+            
+            sortedElements.forEach(number => {
+                const element = elements.find(el => el.number === number);
+                const elementDiv = document.createElement('div');
+                elementDiv.className = 'selected-element';
+                elementDiv.textContent = `${element.symbol} (${element.number})`;
+                selectedElementsContainer.appendChild(elementDiv);
+            });
+        }
+
+        // Get filtered elements based on current selection
+        function getFilteredElements() {
+            if (customSelectionMode) {
+                return elements.filter(el => customSelectedElements.includes(el.number));
+            }
+            
+            let filtered = elements;
+            
+            if (currentGroup !== "all") {
+                filtered = filtered.filter(el => el.group == currentGroup);
+            }
+            
+            if (currentPeriod !== "all") {
+                filtered = filtered.filter(el => el.period == currentPeriod);
+            }
+            
+            return filtered;
+        }
+
+        // Select a random element from the current filter
         function selectRandomElement() {
             const filteredElements = getFilteredElements();
             if (filteredElements.length === 0) {
                 // If no elements in selected group, show message and return
-                feedbackDiv.textContent = "No elements in selected group. Please choose a different group.";
+                feedbackDiv.textContent = "No elements match your selection. Please choose different filters.";
                 feedbackDiv.className = "feedback incorrect";
                 feedbackDiv.style.display = 'block';
                 return;
@@ -1165,7 +1447,11 @@
                 if (autoNextTimer) {
                     clearTimeout(autoNextTimer);
                 }
-                const delay = parseInt(autoDelayInput.value) * 1000;
+                
+                const delay = isCorrect ? 
+                    parseInt(correctDelayInput.value) * 1000 : 
+                    parseInt(incorrectDelayInput.value) * 1000;
+                    
                 autoNextTimer = setTimeout(() => {
                     selectRandomElement();
                 }, delay);
