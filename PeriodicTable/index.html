@@ -970,7 +970,7 @@
             isFullscreen = !isFullscreen;
             document.body.classList.toggle('fullscreen-mode', isFullscreen);
             fullscreenBtn.textContent = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen';
-            
+            document.getElementsByClassName("training-section")[0].requestFullScreen();
             // Adjust focus for better UX
             if (isFullscreen) {
                 answerInput.focus();
