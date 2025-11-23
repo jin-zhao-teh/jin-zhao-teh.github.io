@@ -610,7 +610,7 @@
           console.error('Error loading project:', error);
           
           // Set error state on loading screen
-          document.getElementById('loading-title').textContent = 'Error Loading Project' + error;
+          document.getElementById('loading-title').textContent = error;
           document.getElementById('loading-description').textContent = 'We encountered an issue while loading the project.';
           
           // Show error after a brief delay
