@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element Training - Atomic Numbers & Electron Configurations</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .training-section {
+            flex: 1;
+            min-width: 350px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .periodic-table {
+            flex: 2;
+            min-width: 800px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        .current-element {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .current-element:hover {
+            background-color: #dde4e6;
+        }
+        
+        .element-box {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .element-box:hover {
+            transform: scale(1.05);
+        }
+        
+        .symbol {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .name {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+        
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .mode-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .mode-btn.active {
+            background-color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .group-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .group-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .group-btn.active {
+            background-color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .period-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .period-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .period-btn.active {
+            background-color: #9b59b6;
+            font-weight: bold;
+        }
+        
+        .custom-selector {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .custom-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .custom-btn.active {
+            background-color: #f39c12;
+            font-weight: bold;
+        }
+        
+        .input-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        input[type="number"], input[type="text"] {
+            width: 250px;
+            padding: 12px;
+            font-size: 1.2rem;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        #new-element {
+            background-color: #2ecc71;
+        }
+        
+        #new-element:hover {
+            background-color: #27ae60;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .table-container {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 4px;
+            margin-top: 20px;
+            width: 100%;
+            min-width: 1000px;
+        }
+        
+        .table-element {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            min-height: 40px;
+            min-width: 40px;
+        }
+        
+        .table-element:hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+            z-index: 1;
+        }
+        
+        .table-number {
+            font-size: 0.6rem;
+            margin-bottom: 2px;
+        }
+        
+        .table-symbol {
+            font-size: 0.9rem;
+        }
+        
+        .empty {
+            background-color: transparent;
+            border: none;
+        }
+        
+        /* Element group colors */
+        .group-1 { background-color: #ff9999; }
+        .group-2 { background-color: #ffde99; }
+        .group-3 { background-color: #ffff99; }
+        .group-4 { background-color: #ccff99; }
+        .group-5 { background-color: #99ff99; }
+        .group-6 { background-color: #99ffcc; }
+        .group-7 { background-color: #99ffff; }
+        .group-8 { background-color: #ccffff; }
+        .group-9 { background-color: #ccccff; }
+        .group-10 { background-color: #ffccff; }
+        .group-11 { background-color: #ff99cc; }
+        .group-12 { background-color: #ffcccc; }
+        .group-13 { background-color: #e6e6fa; }
+        .group-14 { background-color: #d8bfd8; }
+        .group-15 { background-color: #eee8aa; }
+        .group-16 { background-color: #f0e68c; }
+        .group-17 { background-color: #fafad2; }
+        .group-18 { background-color: #fffacd; }
+        
+        .lanthanide { background-color: #ffb6c1; }
+        .actinide { background-color: #ffa07a; }
+        
+        .current-highlight {
+            box-shadow: 0 0 0 3px #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .grayed-out {
+            opacity: 0.3;
+            filter: grayscale(70%);
+        }
+        
+        .custom-selected {
+            box-shadow: 0 0 0 2px #f39c12;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        
+        .settings {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .fullscreen-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+        
+        /* Fullscreen mode styles */
+        body.fullscreen-mode {
+            padding: 0;
+            background-color: white;
+        }
+        
+        body.fullscreen-mode header,
+        body.fullscreen-mode .periodic-table,
+        body.fullscreen-mode .mode-selector,
+        body.fullscreen-mode .group-selector,
+        body.fullscreen-mode .period-selector,
+        body.fullscreen-mode .custom-selector,
+        body.fullscreen-mode .settings,
+        body.fullscreen-mode footer {
+            display: none;
+        }
+        
+        body.fullscreen-mode .container {
+            margin: 0;
+            gap: 0;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        body.fullscreen-mode .training-section {
+            box-shadow: none;
+            border-radius: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        body.fullscreen-mode .current-element {
+            margin: 0 0 40px 0;
+            background-color: transparent;
+        }
+        
+        body.fullscreen-mode .element-box {
+            width: 200px;
+            height: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        body.fullscreen-mode .symbol {
+            font-size: 4rem;
+        }
+        
+        body.fullscreen-mode .name {
+            font-size: 1.5rem;
+        }
+        
+        body.fullscreen-mode .input-section {
+            margin: 0;
+        }
+        
+        body.fullscreen-mode input[type="number"], 
+        body.fullscreen-mode input[type="text"] {
+            width: 300px;
+            font-size: 1.5rem;
+            padding: 15px;
+        }
+        
+        body.fullscreen-mode button {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+        }
+        
+        body.fullscreen-mode .feedback {
+            font-size: 1.3rem;
+            margin-top: 30px;
+        }
+        
+        .lanthanides-actinides-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .lanthanides-row, .actinides-row {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 4px;
+        }
+        
+        .lanthanides-label, .actinides-label {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: #7f8c8d;
+        }
+        
+        .selected-elements-list {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .selected-elements-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .selected-elements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .selected-element {
+            background-color: #f39c12;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .delay-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .delay-setting {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .delay-input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+        
+        .save-load-section {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .save-load-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .save-btn {
+            background-color: #2ecc71;
+        }
+        
+        .save-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .load-btn {
+            background-color: #e67e22;
+        }
+        
+        .load-btn:hover {
+            background-color: #d35400;
+        }
+        
+        .list-name-input {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+        }
+        
+        .saved-lists {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        .saved-list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #ecf0f1;
+            cursor: pointer;
+        }
+        
+        .saved-list-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .delete-list-btn {
+            background-color: #e74c3c;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+        }
+        
+        .delete-list-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .multi-select-hint {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .periodic-table {
+                min-width: 100%;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .notation-guide {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-align: center;
+        }
+        
+        .period-label {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: #7f8c8d;
+        }
+        
+        .period-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        
+        .period-number {
+            width: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Element Training</h1>
+        <p class="subtitle">Practice atomic numbers, electron configurations, and valence electrons</p>
+    </header>
+    
+    <div class="container">
+        <section class="training-section">
+            <h2>Training Area</h2>
+            
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="atomic">Atomic Number</button>
+                <button class="mode-btn" data-mode="shell">Electron Shells</button>
+                <button class="mode-btn" data-mode="orbital">Orbital Notation</button>
+                <button class="mode-btn" data-mode="valence">Valence Electrons</button>
+            </div>
+            
+            <p>Select group to practice:</p>
+            <div class="group-selector">
+                <button class="group-btn active" data-group="all">All</button>
+                <button class="group-btn" data-group="1">1</button>
+                <button class="group-btn" data-group="2">2</button>
+                <button class="group-btn" data-group="3">3</button>
+                <button class="group-btn" data-group="4">4</button>
+                <button class="group-btn" data-group="5">5</button>
+                <button class="group-btn" data-group="6">6</button>
+                <button class="group-btn" data-group="7">7</button>
+                <button class="group-btn" data-group="8">8</button>
+                <button class="group-btn" data-group="9">9</button>
+                <button class="group-btn" data-group="10">10</button>
+                <button class="group-btn" data-group="11">11</button>
+                <button class="group-btn" data-group="12">12</button>
+                <button class="group-btn" data-group="13">13</button>
+                <button class="group-btn" data-group="14">14</button>
+                <button class="group-btn" data-group="15">15</button>
+                <button class="group-btn" data-group="16">16</button>
+                <button class="group-btn" data-group="17">17</button>
+                <button class="group-btn" data-group="18">18</button>
+            </div>
+            <div class="multi-select-hint">Hold Ctrl/Cmd to select multiple groups</div>
+            
+            <p>Select period to practice:</p>
+            <div class="period-selector">
+                <button class="period-btn active" data-period="all">All</button>
+                <button class="period-btn" data-period="1">1</button>
+                <button class="period-btn" data-period="2">2</button>
+                <button class="period-btn" data-period="3">3</button>
+                <button class="period-btn" data-period="4">4</button>
+                <button class="period-btn" data-period="5">5</button>
+                <button class="period-btn" data-period="6">6</button>
+                <button class="period-btn" data-period="7">7</button>
+            </div>
+            <div class="multi-select-hint">Hold Ctrl/Cmd to select multiple periods</div>
+            
+            <div class="custom-selector">
+                <button class="custom-btn" id="custom-select-btn">Select Elements Manually</button>
+            </div>
+            
+            <div class="selected-elements-list" id="selected-elements-list" style="display: none;">
+                <div class="selected-elements-title">Selected Elements:</div>
+                <div class="selected-elements" id="selected-elements">
+                    <!-- Selected elements will be displayed here -->
+                </div>
+            </div>
+            
+            <div class="save-load-section">
+                <div class="save-load-buttons">
+                    <input type="text" id="list-name-input" class="list-name-input" placeholder="List name">
+                    <button id="save-list" class="save-btn">Save List</button>
+                    <button id="load-list" class="load-btn">Load List</button>
+                </div>
+                <div class="saved-lists" id="saved-lists">
+                    <!-- Saved lists will be displayed here -->
+                </div>
+            </div>
+            
+            <p id="prompt-text">Identify the atomic number of the displayed element:</p>
+            
+            <div class="current-element" id="current-element-area">
+                <div class="fullscreen-hint">Click to enter fullscreen</div>
+                <div id="element-display" class="element-box group-1">
+                    <div class="symbol">H</div>
+                    <div class="name">Hydrogen</div>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <input type="number" id="answer-input" min="1" max="118" placeholder="Enter number">
+                <button id="check-answer">Check Answer</button>
+                <button id="new-element">New Element</button>
+            </div>
+            
+            <div class="settings">
+                <div class="setting-item">
+                    <input type="checkbox" id="auto-next" checked>
+                    <label for="auto-next">Auto advance after answer</label>
+                </div>
+                <div class="delay-settings">
+                    <div class="delay-setting">
+                        <label for="correct-delay">Correct delay (seconds):</label>
+                        <input type="number" id="correct-delay" min="1" max="10" value="1" class="delay-input">
+                    </div>
+                    <div class="delay-setting">
+                        <label for="incorrect-delay">Incorrect delay (seconds):</label>
+                        <input type="number" id="incorrect-delay" min="1" max="10" value="3" class="delay-input">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="feedback" class="feedback"></div>
+            
+            <div class="notation-guide" id="notation-guide">
+                For orbital notation, you can use either superscripts (1s²) or regular numbers (1s2), and noble gas notation ([He] 2s²)
+            </div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="total-count">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="periodic-table">
+            <h2>Periodic Table Reference</h2>
+            <p>Click on an element to practice it. In custom selection mode, click to add/remove from practice set.</p>
+            <div id="periodic-table-container">
+                <!-- Periodic table will be generated by JavaScript -->
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Practice your knowledge of the periodic table elements and their properties</p>
+    </footer>
+
+    <script>
+        // Element data with electron configurations
+        const elements = [
+            { number: 1, symbol: "H", name: "Hydrogen", group: 1, period: 1, 
+              shells: "1", orbital: "1s¹", valence: 1 },
+            { number: 2, symbol: "He", name: "Helium", group: 18, period: 1, 
+              shells: "2", orbital: "1s²", valence: 2 },
+            { number: 3, symbol: "Li", name: "Lithium", group: 1, period: 2, 
+              shells: "2,1", orbital: "1s² 2s¹", valence: 1 },
+            { number: 4, symbol: "Be", name: "Beryllium", group: 2, period: 2, 
+              shells: "2,2", orbital: "1s² 2s²", valence: 2 },
+            { number: 5, symbol: "B", name: "Boron", group: 13, period: 2, 
+              shells: "2,3", orbital: "1s² 2s² 2p¹", valence: 3 },
+            { number: 6, symbol: "C", name: "Carbon", group: 14, period: 2, 
+              shells: "2,4", orbital: "1s² 2s² 2p²", valence: 4 },
+            { number: 7, symbol: "N", name: "Nitrogen", group: 15, period: 2, 
+              shells: "2,5", orbital: "1s² 2s² 2p³", valence: 5 },
+            { number: 8, symbol: "O", name: "Oxygen", group: 16, period: 2, 
+              shells: "2,6", orbital: "1s² 2s² 2p⁴", valence: 6 },
+            { number: 9, symbol: "F", name: "Fluorine", group: 17, period: 2, 
+              shells: "2,7", orbital: "1s² 2s² 2p⁵", valence: 7 },
+            { number: 10, symbol: "Ne", name: "Neon", group: 18, period: 2, 
+              shells: "2,8", orbital: "1s² 2s² 2p⁶", valence: 8 },
+            { number: 11, symbol: "Na", name: "Sodium", group: 1, period: 3, 
+              shells: "2,8,1", orbital: "1s² 2s² 2p⁶ 3s¹", valence: 1 },
+            { number: 12, symbol: "Mg", name: "Magnesium", group: 2, period: 3, 
+              shells: "2,8,2", orbital: "1s² 2s² 2p⁶ 3s²", valence: 2 },
+            { number: 13, symbol: "Al", name: "Aluminum", group: 13, period: 3, 
+              shells: "2,8,3", orbital: "1s² 2s² 2p⁶ 3s² 3p¹", valence: 3 },
+            { number: 14, symbol: "Si", name: "Silicon", group: 14, period: 3, 
+              shells: "2,8,4", orbital: "1s² 2s² 2p⁶ 3s² 3p²", valence: 4 },
+            { number: 15, symbol: "P", name: "Phosphorus", group: 15, period: 3, 
+              shells: "2,8,5", orbital: "1s² 2s² 2p⁶ 3s² 3p³", valence: 5 },
+            { number: 16, symbol: "S", name: "Sulfur", group: 16, period: 3, 
+              shells: "2,8,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁴", valence: 6 },
+            { number: 17, symbol: "Cl", name: "Chlorine", group: 17, period: 3, 
+              shells: "2,8,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁵", valence: 7 },
+            { number: 18, symbol: "Ar", name: "Argon", group: 18, period: 3, 
+              shells: "2,8,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶", valence: 8 },
+            { number: 19, symbol: "K", name: "Potassium", group: 1, period: 4, 
+              shells: "2,8,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", valence: 1 },
+            { number: 20, symbol: "Ca", name: "Calcium", group: 2, period: 4, 
+              shells: "2,8,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", valence: 2 },
+            { number: 21, symbol: "Sc", name: "Scandium", group: 3, period: 4, 
+              shells: "2,8,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹ 4s²", valence: 3 },
+            { number: 22, symbol: "Ti", name: "Titanium", group: 4, period: 4, 
+              shells: "2,8,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d² 4s²", valence: 4 },
+            { number: 23, symbol: "V", name: "Vanadium", group: 5, period: 4, 
+              shells: "2,8,11,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d³ 4s²", valence: 5 },
+            { number: 24, symbol: "Cr", name: "Chromium", group: 6, period: 4, 
+              shells: "2,8,13,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s¹", valence: 6 },
+            { number: 25, symbol: "Mn", name: "Manganese", group: 7, period: 4, 
+              shells: "2,8,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s²", valence: 7 },
+            { number: 26, symbol: "Fe", name: "Iron", group: 8, period: 4, 
+              shells: "2,8,14,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁶ 4s²", valence: 8 },
+            { number: 27, symbol: "Co", name: "Cobalt", group: 9, period: 4, 
+              shells: "2,8,15,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁷ 4s²", valence: 9 },
+            { number: 28, symbol: "Ni", name: "Nickel", group: 10, period: 4, 
+              shells: "2,8,16,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁸ 4s²", valence: 10 },
+            { number: 29, symbol: "Cu", name: "Copper", group: 11, period: 4, 
+              shells: "2,8,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s¹", valence: 11 },
+            { number: 30, symbol: "Zn", name: "Zinc", group: 12, period: 4, 
+              shells: "2,8,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s²", valence: 12 },
+            { number: 31, symbol: "Ga", name: "Gallium", group: 13, period: 4, 
+              shells: "2,8,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p¹", valence: 3 },
+            { number: 32, symbol: "Ge", name: "Germanium", group: 14, period: 4, 
+              shells: "2,8,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p²", valence: 4 },
+            { number: 33, symbol: "As", name: "Arsenic", group: 15, period: 4, 
+              shells: "2,8,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p³", valence: 5 },
+            { number: 34, symbol: "Se", name: "Selenium", group: 16, period: 4, 
+              shells: "2,8,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁴", valence: 6 },
+            { number: 35, symbol: "Br", name: "Bromine", group: 17, period: 4, 
+              shells: "2,8,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁵", valence: 7 },
+            { number: 36, symbol: "Kr", name: "Krypton", group: 18, period: 4, 
+              shells: "2,8,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶", valence: 8 },
+            { number: 37, symbol: "Rb", name: "Rubidium", group: 1, period: 5, 
+              shells: "2,8,18,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 5s¹", valence: 1 },
+            { number: 38, symbol: "Sr", name: "Strontium", group: 2, period: 5, 
+              shells: "2,8,18,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 5s²", valence: 2 },
+            { number: 39, symbol: "Y", name: "Yttrium", group: 3, period: 5, 
+              shells: "2,8,18,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹ 5s²", valence: 3 },
+            { number: 40, symbol: "Zr", name: "Zirconium", group: 4, period: 5, 
+              shells: "2,8,18,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d² 5s²", valence: 4 },
+            { number: 41, symbol: "Nb", name: "Niobium", group: 5, period: 5, 
+              shells: "2,8,18,12,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁴ 5s¹", valence: 5 },
+            { number: 42, symbol: "Mo", name: "Molybdenum", group: 6, period: 5, 
+              shells: "2,8,18,13,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁵ 5s¹", valence: 6 },
+            { number: 43, symbol: "Tc", name: "Technetium", group: 7, period: 5, 
+              shells: "2,8,18,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁵ 5s²", valence: 7 },
+            { number: 44, symbol: "Ru", name: "Ruthenium", group: 8, period: 5, 
+              shells: "2,8,18,15,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁷ 5s¹", valence: 8 },
+            { number: 45, symbol: "Rh", name: "Rhodium", group: 9, period: 5, 
+              shells: "2,8,18,16,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d⁸ 5s¹", valence: 9 },
+            { number: 46, symbol: "Pd", name: "Palladium", group: 10, period: 5, 
+              shells: "2,8,18,18", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰", valence: 10 },
+            { number: 47, symbol: "Ag", name: "Silver", group: 11, period: 5, 
+              shells: "2,8,18,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s¹", valence: 11 },
+            { number: 48, symbol: "Cd", name: "Cadmium", group: 12, period: 5, 
+              shells: "2,8,18,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s²", valence: 12 },
+            { number: 49, symbol: "In", name: "Indium", group: 13, period: 5, 
+              shells: "2,8,18,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p¹", valence: 3 },
+            { number: 50, symbol: "Sn", name: "Tin", group: 14, period: 5, 
+              shells: "2,8,18,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p²", valence: 4 },
+            { number: 51, symbol: "Sb", name: "Antimony", group: 15, period: 5, 
+              shells: "2,8,18,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p³", valence: 5 },
+            { number: 52, symbol: "Te", name: "Tellurium", group: 16, period: 5, 
+              shells: "2,8,18,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁴", valence: 6 },
+            { number: 53, symbol: "I", name: "Iodine", group: 17, period: 5, 
+              shells: "2,8,18,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁵", valence: 7 },
+            { number: 54, symbol: "Xe", name: "Xenon", group: 18, period: 5, 
+              shells: "2,8,18,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶", valence: 8 },
+            { number: 55, symbol: "Cs", name: "Cesium", group: 1, period: 6, 
+              shells: "2,8,18,18,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 6s¹", valence: 1 },
+            { number: 56, symbol: "Ba", name: "Barium", group: 2, period: 6, 
+              shells: "2,8,18,18,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 6s²", valence: 2 },
+            { number: 57, symbol: "La", name: "Lanthanum", group: 3, period: 6, 
+              shells: "2,8,18,18,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 5d¹ 6s²", valence: 3 },
+            { number: 58, symbol: "Ce", name: "Cerium", group: 3, period: 6, 
+              shells: "2,8,18,19,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 59, symbol: "Pr", name: "Praseodymium", group: 3, period: 6, 
+              shells: "2,8,18,21,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f³ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 60, symbol: "Nd", name: "Neodymium", group: 3, period: 6, 
+              shells: "2,8,18,22,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁴ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 61, symbol: "Pm", name: "Promethium", group: 3, period: 6, 
+              shells: "2,8,18,23,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁵ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 62, symbol: "Sm", name: "Samarium", group: 3, period: 6, 
+              shells: "2,8,18,24,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁶ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 63, symbol: "Eu", name: "Europium", group: 3, period: 6, 
+              shells: "2,8,18,25,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁷ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 64, symbol: "Gd", name: "Gadolinium", group: 3, period: 6, 
+              shells: "2,8,18,25,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁷ 5s² 5p⁶ 5d¹ 6s²", valence: 4 },
+            { number: 65, symbol: "Tb", name: "Terbium", group: 3, period: 6, 
+              shells: "2,8,18,27,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f⁹ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 66, symbol: "Dy", name: "Dysprosium", group: 3, period: 6, 
+              shells: "2,8,18,28,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁰ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 67, symbol: "Ho", name: "Holmium", group: 3, period: 6, 
+              shells: "2,8,18,29,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹¹ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 68, symbol: "Er", name: "Erbium", group: 3, period: 6, 
+              shells: "2,8,18,30,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹² 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 69, symbol: "Tm", name: "Thulium", group: 3, period: 6, 
+              shells: "2,8,18,31,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹³ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 70, symbol: "Yb", name: "Ytterbium", group: 3, period: 6, 
+              shells: "2,8,18,32,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 6s²", valence: 4 },
+            { number: 71, symbol: "Lu", name: "Lutetium", group: 3, period: 6, 
+              shells: "2,8,18,32,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹ 6s²", valence: 4 },
+            { number: 72, symbol: "Hf", name: "Hafnium", group: 4, period: 6, 
+              shells: "2,8,18,32,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d² 6s²", valence: 4 },
+            { number: 73, symbol: "Ta", name: "Tantalum", group: 5, period: 6, 
+              shells: "2,8,18,32,11,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d³ 6s²", valence: 5 },
+            { number: 74, symbol: "W", name: "Tungsten", group: 6, period: 6, 
+              shells: "2,8,18,32,12,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁴ 6s²", valence: 6 },
+            { number: 75, symbol: "Re", name: "Rhenium", group: 7, period: 6, 
+              shells: "2,8,18,32,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁵ 6s²", valence: 7 },
+            { number: 76, symbol: "Os", name: "Osmium", group: 8, period: 6, 
+              shells: "2,8,18,32,14,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁶ 6s²", valence: 8 },
+            { number: 77, symbol: "Ir", name: "Iridium", group: 9, period: 6, 
+              shells: "2,8,18,32,15,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁷ 6s²", valence: 9 },
+            { number: 78, symbol: "Pt", name: "Platinum", group: 10, period: 6, 
+              shells: "2,8,18,32,17,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d⁹ 6s¹", valence: 10 },
+            { number: 79, symbol: "Au", name: "Gold", group: 11, period: 6, 
+              shells: "2,8,18,32,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s¹", valence: 11 },
+            { number: 80, symbol: "Hg", name: "Mercury", group: 12, period: 6, 
+              shells: "2,8,18,32,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s²", valence: 12 },
+            { number: 81, symbol: "Tl", name: "Thallium", group: 13, period: 6, 
+              shells: "2,8,18,32,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p¹", valence: 3 },
+            { number: 82, symbol: "Pb", name: "Lead", group: 14, period: 6, 
+              shells: "2,8,18,32,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p²", valence: 4 },
+            { number: 83, symbol: "Bi", name: "Bismuth", group: 15, period: 6, 
+              shells: "2,8,18,32,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p³", valence: 5 },
+            { number: 84, symbol: "Po", name: "Polonium", group: 16, period: 6, 
+              shells: "2,8,18,32,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁴", valence: 6 },
+            { number: 85, symbol: "At", name: "Astatine", group: 17, period: 6, 
+              shells: "2,8,18,32,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁵", valence: 7 },
+            { number: 86, symbol: "Rn", name: "Radon", group: 18, period: 6, 
+              shells: "2,8,18,32,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶", valence: 8 },
+            { number: 87, symbol: "Fr", name: "Francium", group: 1, period: 7, 
+              shells: "2,8,18,32,18,8,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 7s¹", valence: 1 },
+            { number: 88, symbol: "Ra", name: "Radium", group: 2, period: 7, 
+              shells: "2,8,18,32,18,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 7s²", valence: 2 },
+            { number: 89, symbol: "Ac", name: "Actinium", group: 3, period: 7, 
+              shells: "2,8,18,32,18,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 6d¹ 7s²", valence: 3 },
+            { number: 90, symbol: "Th", name: "Thorium", group: 3, period: 7, 
+              shells: "2,8,18,32,18,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 6d² 7s²", valence: 4 },
+            { number: 91, symbol: "Pa", name: "Protactinium", group: 3, period: 7, 
+              shells: "2,8,18,32,20,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f² 6s² 6p⁶ 6d¹ 7s²", valence: 5 },
+            { number: 92, symbol: "U", name: "Uranium", group: 3, period: 7, 
+              shells: "2,8,18,32,21,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f³ 6s² 6p⁶ 6d¹ 7s²", valence: 6 },
+            { number: 93, symbol: "Np", name: "Neptunium", group: 3, period: 7, 
+              shells: "2,8,18,32,22,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁴ 6s² 6p⁶ 6d¹ 7s²", valence: 7 },
+            { number: 94, symbol: "Pu", name: "Plutonium", group: 3, period: 7, 
+              shells: "2,8,18,32,24,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁶ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 95, symbol: "Am", name: "Americium", group: 3, period: 7, 
+              shells: "2,8,18,32,25,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁷ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 96, symbol: "Cm", name: "Curium", group: 3, period: 7, 
+              shells: "2,8,18,32,25,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁷ 6s² 6p⁶ 6d¹ 7s²", valence: 8 },
+            { number: 97, symbol: "Bk", name: "Berkelium", group: 3, period: 7, 
+              shells: "2,8,18,32,26,9,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f⁹ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 98, symbol: "Cf", name: "Californium", group: 3, period: 7, 
+              shells: "2,8,18,32,28,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁰ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 99, symbol: "Es", name: "Einsteinium", group: 3, period: 7, 
+              shells: "2,8,18,32,29,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹¹ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 100, symbol: "Fm", name: "Fermium", group: 3, period: 7, 
+              shells: "2,8,18,32,30,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹² 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 101, symbol: "Md", name: "Mendelevium", group: 3, period: 7, 
+              shells: "2,8,18,32,31,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹³ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 102, symbol: "No", name: "Nobelium", group: 3, period: 7, 
+              shells: "2,8,18,32,32,8,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 7s²", valence: 8 },
+            { number: 103, symbol: "Lr", name: "Lawrencium", group: 3, period: 7, 
+              shells: "2,8,18,32,32,8,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 7s² 7p¹", valence: 3 },
+            { number: 104, symbol: "Rf", name: "Rutherfordium", group: 4, period: 7, 
+              shells: "2,8,18,32,32,10,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d² 7s²", valence: 4 },
+            { number: 105, symbol: "Db", name: "Dubnium", group: 5, period: 7, 
+              shells: "2,8,18,32,32,11,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d³ 7s²", valence: 5 },
+            { number: 106, symbol: "Sg", name: "Seaborgium", group: 6, period: 7, 
+              shells: "2,8,18,32,32,12,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁴ 7s²", valence: 6 },
+            { number: 107, symbol: "Bh", name: "Bohrium", group: 7, period: 7, 
+              shells: "2,8,18,32,32,13,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁵ 7s²", valence: 7 },
+            { number: 108, symbol: "Hs", name: "Hassium", group: 8, period: 7, 
+              shells: "2,8,18,32,32,14,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁶ 7s²", valence: 8 },
+            { number: 109, symbol: "Mt", name: "Meitnerium", group: 9, period: 7, 
+              shells: "2,8,18,32,32,15,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁷ 7s²", valence: 9 },
+            { number: 110, symbol: "Ds", name: "Darmstadtium", group: 10, period: 7, 
+              shells: "2,8,18,32,32,17,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d⁹ 7s¹", valence: 10 },
+            { number: 111, symbol: "Rg", name: "Roentgenium", group: 11, period: 7, 
+              shells: "2,8,18,32,32,18,1", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s¹", valence: 11 },
+            { number: 112, symbol: "Cn", name: "Copernicium", group: 12, period: 7, 
+              shells: "2,8,18,32,32,18,2", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s²", valence: 12 },
+            { number: 113, symbol: "Nh", name: "Nihonium", group: 13, period: 7, 
+              shells: "2,8,18,32,32,18,3", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p¹", valence: 3 },
+            { number: 114, symbol: "Fl", name: "Flerovium", group: 14, period: 7, 
+              shells: "2,8,18,32,32,18,4", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p²", valence: 4 },
+            { number: 115, symbol: "Mc", name: "Moscovium", group: 15, period: 7, 
+              shells: "2,8,18,32,32,18,5", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p³", valence: 5 },
+            { number: 116, symbol: "Lv", name: "Livermorium", group: 16, period: 7, 
+              shells: "2,8,18,32,32,18,6", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p⁴", valence: 6 },
+            { number: 117, symbol: "Ts", name: "Tennessine", group: 17, period: 7, 
+              shells: "2,8,18,32,32,18,7", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p⁵", valence: 7 },
+            { number: 118, symbol: "Og", name: "Oganesson", group: 18, period: 7, 
+              shells: "2,8,18,32,32,18,8", orbital: "1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 5f¹⁴ 6s² 6p⁶ 6d¹⁰ 7s² 7p⁶", valence: 8 }
+        ];
+
+        // Track current element, mode, and statistics
+        let currentElement = null;
+        let currentMode = "atomic";
+        let currentGroups = ["all"];
+        let currentPeriods = ["all"];
+        let correctAnswers = 0;
+        let totalQuestions = 0;
+        let autoNextTimer = null;
+        let isFullscreen = false;
+        let customSelectionMode = false;
+        let customSelectedElements = [];
+        let debounceTimer = null;
+
+        // DOM elements
+        const elementDisplay = document.getElementById('element-display');
+        const answerInput = document.getElementById('answer-input');
+        const checkAnswerBtn = document.getElementById('check-answer');
+        const newElementBtn = document.getElementById('new-element');
+        const feedbackDiv = document.getElementById('feedback');
+        const correctCount = document.getElementById('correct-count');
+        const totalCount = document.getElementById('total-count');
+        const accuracy = document.getElementById('accuracy');
+        const periodicTableContainer = document.getElementById('periodic-table-container');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const groupButtons = document.querySelectorAll('.group-btn');
+        const periodButtons = document.querySelectorAll('.period-btn');
+        const customSelectBtn = document.getElementById('custom-select-btn');
+        const selectedElementsList = document.getElementById('selected-elements-list');
+        const selectedElementsContainer = document.getElementById('selected-elements');
+        const currentElementArea = document.getElementById('current-element-area');
+        const promptText = document.getElementById('prompt-text');
+        const autoNextCheckbox = document.getElementById('auto-next');
+        const correctDelayInput = document.getElementById('correct-delay');
+        const incorrectDelayInput = document.getElementById('incorrect-delay');
+        const notationGuide = document.getElementById('notation-guide');
+        const listNameInput = document.getElementById('list-name-input');
+        const saveListBtn = document.getElementById('save-list');
+        const loadListBtn = document.getElementById('load-list');
+        const savedListsContainer = document.getElementById('saved-lists');
+
+        // Initialize the app
+        function init() {
+            generatePeriodicTable();
+            selectRandomElement();
+            setupEventListeners();
+            updateStats();
+            loadSavedLists();
+        }
+
+        // Generate the periodic table layout
+        function generatePeriodicTable() {
+            // Clear container
+            periodicTableContainer.innerHTML = '';
+            
+            // Create main table with periods
+            for (let period = 1; period <= 7; period++) {
+                const periodRow = document.createElement('div');
+                periodRow.className = 'period-row';
+                
+                const periodLabel = document.createElement('div');
+                periodLabel.className = 'period-number';
+                periodLabel.textContent = period;
+                periodRow.appendChild(periodLabel);
+                
+                const tableRow = document.createElement('div');
+                tableRow.className = 'table-container';
+                
+                for (let group = 1; group <= 18; group++) {
+                    const element = elements.find(el => el.period === period && el.group === group);
+                    createTableElement(element, tableRow);
+                }
+                
+                periodRow.appendChild(tableRow);
+                periodicTableContainer.appendChild(periodRow);
+            }
+            
+            // Add lanthanides and actinides
+            generateLanthanidesAndActinides();
+        }
+        
+        // Generate lanthanides and actinides rows
+        function generateLanthanidesAndActinides() {
+            // Lanthanides label
+            const lanthanidesLabel = document.createElement('div');
+            lanthanidesLabel.className = 'lanthanides-label';
+            lanthanidesLabel.textContent = 'Lanthanides';
+            periodicTableContainer.appendChild(lanthanidesLabel);
+            
+            // Lanthanides row
+            const lanthanidesRow = document.createElement('div');
+            lanthanidesRow.className = 'lanthanides-row';
+            
+            for (let i = 57; i <= 71; i++) {
+                const element = elements.find(el => el.number === i);
+                createTableElement(element, lanthanidesRow);
+            }
+            
+            periodicTableContainer.appendChild(lanthanidesRow);
+            
+            // Actinides label
+            const actinidesLabel = document.createElement('div');
+            actinidesLabel.className = 'actinides-label';
+            actinidesLabel.textContent = 'Actinides';
+            periodicTableContainer.appendChild(actinidesLabel);
+            
+            // Actinides row
+            const actinidesRow = document.createElement('div');
+            actinidesRow.className = 'actinides-row';
+            
+            for (let i = 89; i <= 103; i++) {
+                const element = elements.find(el => el.number === i);
+                createTableElement(element, actinidesRow);
+            }
+            
+            periodicTableContainer.appendChild(actinidesRow);
+        }
+        
+        // Create a table element cell
+        function createTableElement(element, container) {
+            const div = document.createElement('div');
+            
+            if (element) {
+                div.className = `table-element group-${element.group}`;
+                div.innerHTML = `
+                    <div class="table-number">${element.number}</div>
+                    <div class="table-symbol">${element.symbol}</div>
+                `;
+                div.dataset.number = element.number;
+                div.addEventListener('click', () => handleElementClick(element.number));
+            } else {
+                div.className = 'table-element empty';
+            }
+            
+            container.appendChild(div);
+        }
+
+        // Handle element click (either select for practice or add to custom set)
+        function handleElementClick(number) {
+            if (customSelectionMode) {
+                // Toggle custom selection
+                const index = customSelectedElements.indexOf(number);
+                if (index === -1) {
+                    customSelectedElements.push(number);
+                } else {
+                    customSelectedElements.splice(index, 1);
+                }
+                updateElementAppearance();
+                updateSelectedElementsList();
+            } else {
+                // Select this element for practice
+                selectSpecificElement(number);
+            }
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            checkAnswerBtn.addEventListener('click', checkAnswer);
+            newElementBtn.addEventListener('click', selectRandomElement);
+            answerInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+            
+            // Mode selector buttons
+            modeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    modeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentMode = button.dataset.mode;
+                    updateMode();
+                });
+            });
+            
+            // Group selector buttons with debounce and multi-select
+            groupButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Debounce to prevent rapid clicking
+                    if (debounceTimer) {
+                        clearTimeout(debounceTimer);
+                    }
+                    
+                    debounceTimer = setTimeout(() => {
+                        const group = button.dataset.group;
+                        
+                        // Handle multi-select with Ctrl/Cmd key
+                        if (e.ctrlKey || e.metaKey) {
+                            // Toggle selection for this group
+                            if (group === 'all') {
+                                // If selecting 'all', clear other selections
+                                currentGroups = ['all'];
+                                groupButtons.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.group === 'all') {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            } else {
+                                // Remove 'all' if it's selected
+                                if (currentGroups.includes('all')) {
+                                    currentGroups = [];
+                                    document.querySelector('.group-btn[data-group="all"]').classList.remove('active');
+                                }
+                                
+                                // Toggle this group
+                                const index = currentGroups.indexOf(group);
+                                if (index === -1) {
+                                    currentGroups.push(group);
+                                    button.classList.add('active');
+                                } else {
+                                    currentGroups.splice(index, 1);
+                                    button.classList.remove('active');
+                                }
+                                
+                                // If no groups selected, select 'all'
+                                if (currentGroups.length === 0) {
+                                    currentGroups = ['all'];
+                                    document.querySelector('.group-btn[data-group="all"]').classList.add('active');
+                                }
+                            }
+                        } else {
+                            // Single selection mode
+                            if (group === 'all') {
+                                currentGroups = ['all'];
+                                groupButtons.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.group === 'all') {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            } else {
+                                currentGroups = [group];
+                                groupButtons.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.group === group) {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            }
+                        }
+                        
+                        updateElementAppearance();
+                        selectRandomElement();
+                    }, 150);
+                });
+            });
+            
+            // Period selector buttons with debounce and multi-select
+            periodButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Debounce to prevent rapid clicking
+                    if (debounceTimer) {
+                        clearTimeout(debounceTimer);
+                    }
+                    
+                    debounceTimer = setTimeout(() => {
+                        const period = button.dataset.period;
+                        
+                        // Handle multi-select with Ctrl/Cmd key
+                        if (e.ctrlKey || e.metaKey) {
+                            // Toggle selection for this period
+                            if (period === 'all') {
+                                // If selecting 'all', clear other selections
+                                currentPeriods = ['all'];
+                                periodButtons.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.period === 'all') {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            } else {
+                                // Remove 'all' if it's selected
+                                if (currentPeriods.includes('all')) {
+                                    currentPeriods = [];
+                                    document.querySelector('.period-btn[data-period="all"]').classList.remove('active');
+                                }
+                                
+                                // Toggle this period
+                                const index = currentPeriods.indexOf(period);
+                                if (index === -1) {
+                                    currentPeriods.push(period);
+                                    button.classList.add('active');
+                                } else {
+                                    currentPeriods.splice(index, 1);
+                                    button.classList.remove('active');
+                                }
+                                
+                                // If no periods selected, select 'all'
+                                if (currentPeriods.length === 0) {
+                                    currentPeriods = ['all'];
+                                    document.querySelector('.period-btn[data-period="all"]').classList.add('active');
+                                }
+                            }
+                        } else {
+                            // Single selection mode
+                            if (period === 'all') {
+                                currentPeriods = ['all'];
+                                periodButtons.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.period === 'all') {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            } else {
+                                currentPeriods = [period];
+                                periodButtons.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.period === period) {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            }
+                        }
+                        
+                        updateElementAppearance();
+                        selectRandomElement();
+                    }, 150);
+                });
+            });
+            
+            // Custom selection button
+            customSelectBtn.addEventListener('click', () => {
+                customSelectionMode = !customSelectionMode;
+                customSelectBtn.classList.toggle('active', customSelectionMode);
+                customSelectBtn.textContent = customSelectionMode ? 
+                    'Finish Selection' : 'Select Elements Manually';
+                
+                if (!customSelectionMode && customSelectedElements.length === 0) {
+                    // If no elements selected, revert to all
+                    customSelectedElements = elements.map(el => el.number);
+                }
+                
+                selectedElementsList.style.display = customSelectionMode ? 'block' : 'none';
+                updateElementAppearance();
+                updateSelectedElementsList();
+                selectRandomElement();
+            });
+            
+            // Fullscreen on current element area click
+            currentElementArea.addEventListener('click', toggleFullscreen);
+            
+            // Save and load list buttons
+            saveListBtn.addEventListener('click', saveList);
+            loadListBtn.addEventListener('click', loadList);
+            
+            // Listen for fullscreen changes
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+        }
+        
+        // Handle fullscreen changes
+        function handleFullscreenChange() {
+            isFullscreen = !!document.fullscreenElement;
+            document.body.classList.toggle('fullscreen-mode', isFullscreen);
+        }
+
+        // Toggle fullscreen mode
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Update the UI based on the current mode
+        function updateMode() {
+            switch(currentMode) {
+                case "atomic":
+                    promptText.textContent = "Identify the atomic number of the displayed element:";
+                    answerInput.type = "number";
+                    answerInput.placeholder = "Enter number (1-118)";
+                    notationGuide.style.display = "none";
+                    break;
+                case "shell":
+                    promptText.textContent = "Identify the electron shell configuration (e.g., 2,8,8):";
+                    answerInput.type = "text";
+                    answerInput.placeholder = "Enter shell configuration";
+                    notationGuide.style.display = "none";
+                    break;
+                case "orbital":
+                    promptText.textContent = "Identify the orbital notation (e.g., 1s² 2s² 2p⁶ or [He] 2s²):";
+                    answerInput.type = "text";
+                    answerInput.placeholder = "Enter orbital notation";
+                    notationGuide.style.display = "block";
+                    break;
+                case "valence":
+                    promptText.textContent = "Identify the number of valence electrons:";
+                    answerInput.type = "number";
+                    answerInput.placeholder = "Enter number (1-8)";
+                    notationGuide.style.display = "none";
+                    break;
+            }
+            
+            // Clear input and feedback when switching modes
+            answerInput.value = '';
+            clearFeedback();
+        }
+
+        // Update element appearance based on current filters
+        function updateElementAppearance() {
+            document.querySelectorAll('.table-element').forEach(el => {
+                if (el.classList.contains('empty')) return;
+                
+                const number = parseInt(el.dataset.number);
+                const element = elements.find(el => el.number === number);
+                
+                // Reset classes
+                el.classList.remove('grayed-out', 'custom-selected');
+                
+                if (customSelectionMode) {
+                    // In custom selection mode, gray out all elements
+                    el.classList.add('grayed-out');
+                    
+                    // Highlight selected elements
+                    if (customSelectedElements.includes(number)) {
+                        el.classList.remove('grayed-out');
+                        el.classList.add('custom-selected');
+                    }
+                } else {
+                    // Apply group/period filtering
+                    const groupMatch = currentGroups.includes("all") || currentGroups.includes(element.group.toString());
+                    const periodMatch = currentPeriods.includes("all") || currentPeriods.includes(element.period.toString());
+                    
+                    if (!groupMatch || !periodMatch) {
+                        el.classList.add('grayed-out');
+                    }
+                }
+            });
+        }
+
+        // Update the selected elements list
+        function updateSelectedElementsList() {
+            selectedElementsContainer.innerHTML = '';
+            
+            if (customSelectedElements.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.textContent = 'No elements selected';
+                emptyMsg.style.color = '#7f8c8d';
+                emptyMsg.style.fontStyle = 'italic';
+                selectedElementsContainer.appendChild(emptyMsg);
+                return;
+            }
+            
+            // Sort selected elements by atomic number
+            const sortedElements = [...customSelectedElements].sort((a, b) => a - b);
+            
+            sortedElements.forEach(number => {
+                const element = elements.find(el => el.number === number);
+                const elementDiv = document.createElement('div');
+                elementDiv.className = 'selected-element';
+                elementDiv.textContent = `${element.symbol} (${element.number})`;
+                selectedElementsContainer.appendChild(elementDiv);
+            });
+        }
+
+        // Get filtered elements based on current selection
+        function getFilteredElements() {
+            if (customSelectionMode) {
+                return elements.filter(el => customSelectedElements.includes(el.number));
+            }
+            
+            let filtered = elements;
+            
+            if (!currentGroups.includes("all")) {
+                filtered = filtered.filter(el => currentGroups.includes(el.group.toString()));
+            }
+            
+            if (!currentPeriods.includes("all")) {
+                filtered = filtered.filter(el => currentPeriods.includes(el.period.toString()));
+            }
+            
+            return filtered;
+        }
+
+        // Select a random element from the current filter
+        function selectRandomElement() {
+            const filteredElements = getFilteredElements();
+            if (filteredElements.length === 0) {
+                // If no elements in selected group, show message and return
+                feedbackDiv.textContent = "No elements match your selection. Please choose different filters.";
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.style.display = 'block';
+                return;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * filteredElements.length);
+            currentElement = filteredElements[randomIndex];
+            updateElementDisplay();
+            clearFeedback();
+            answerInput.value = '';
+            answerInput.focus();
+            highlightCurrentElement();
+        }
+
+        // Select a specific element by atomic number
+        function selectSpecificElement(number) {
+            currentElement = elements.find(el => el.number === number);
+            updateElementDisplay();
+            clearFeedback();
+            answerInput.value = '';
+            answerInput.focus();
+            highlightCurrentElement();
+        }
+
+        // Update the element display
+        function updateElementDisplay() {
+            if (!currentElement) return;
+            
+            elementDisplay.className = `element-box group-${currentElement.group}`;
+            elementDisplay.innerHTML = `
+                <div class="symbol">${currentElement.symbol}</div>
+                <div class="name">${currentElement.name}</div>
+            `;
+        }
+
+        // Highlight the current element in the periodic table
+        function highlightCurrentElement() {
+            // Remove highlight from all elements
+            document.querySelectorAll('.table-element').forEach(el => {
+                el.classList.remove('current-highlight');
+            });
+            
+            // Add highlight to current element
+            if (currentElement) {
+                const elementCell = document.querySelector(`.table-element[data-number="${currentElement.number}"]`);
+                if (elementCell) {
+                    elementCell.classList.add('current-highlight');
+                }
+            }
+        }
+
+        // Normalize orbital notation for comparison
+        function normalizeOrbitalNotation(notation) {
+            if (!notation) return '';
+            
+            // Convert to lowercase and remove spaces for easier comparison
+            let normalized = notation.toLowerCase().replace(/\s+/g, '');
+            
+            // Convert superscript numbers to regular numbers
+            normalized = normalized
+                .replace(/¹/g, '1')
+                .replace(/²/g, '2')
+                .replace(/³/g, '3')
+                .replace(/⁴/g, '4')
+                .replace(/⁵/g, '5')
+                .replace(/⁶/g, '6')
+                .replace(/⁷/g, '7')
+                .replace(/⁸/g, '8')
+                .replace(/⁹/g, '9')
+                .replace(/⁰/g, '0');
+            
+            // Handle noble gas notation by expanding it
+            const nobleGases = {
+                'he': '1s2',
+                'ne': '1s22s22p6',
+                'ar': '1s22s22p63s23p6',
+                'kr': '1s22s22p63s23p64s23d104p6',
+                'xe': '1s22s22p63s23p64s23d104p65s24d105p6',
+                'rn': '1s22s22p63s23p64s23d104p65s24d105p66s24f145d106p6'
+            };
+            
+            // Check if notation starts with a noble gas in brackets
+            const nobleGasMatch = normalized.match(/^\[(\w+)\]/);
+            if (nobleGasMatch) {
+                const nobleGasSymbol = nobleGasMatch[1].toLowerCase();
+                if (nobleGases[nobleGasSymbol]) {
+                    // Replace the noble gas notation with the full configuration
+                    normalized = nobleGases[nobleGasSymbol] + normalized.slice(nobleGasMatch[0].length);
+                }
+            }
+            
+            return normalized;
+        }
+
+        // Check the user's answer
+        function checkAnswer() {
+            if (!currentElement) return;
+            
+            let userAnswer = answerInput.value.trim();
+            let isCorrect = false;
+            let correctAnswer = "";
+            
+            switch(currentMode) {
+                case "atomic":
+                    isCorrect = parseInt(userAnswer) === currentElement.number;
+                    correctAnswer = currentElement.number;
+                    break;
+                case "shell":
+                    isCorrect = userAnswer === currentElement.shells;
+                    correctAnswer = currentElement.shells;
+                    break;
+                case "orbital":
+                    // Normalize both answers for comparison
+                    const normalizedUser = normalizeOrbitalNotation(userAnswer);
+                    const normalizedCorrect = normalizeOrbitalNotation(currentElement.orbital);
+                    isCorrect = normalizedUser === normalizedCorrect;
+                    correctAnswer = currentElement.orbital;
+                    break;
+                case "valence":
+                    isCorrect = parseInt(userAnswer) === currentElement.valence;
+                    correctAnswer = currentElement.valence;
+                    break;
+            }
+            
+            totalQuestions++;
+            
+            if (isCorrect) {
+                correctAnswers++;
+                showFeedback("Correct! Well done!", true);
+            } else {
+                showFeedback(`Incorrect. The correct answer is: ${correctAnswer}`, false);
+            }
+            
+            updateStats();
+            
+            // Auto advance to next element if enabled
+            if (autoNextCheckbox.checked) {
+                if (autoNextTimer) {
+                    clearTimeout(autoNextTimer);
+                }
+                
+                const delay = isCorrect ? 
+                    parseInt(correctDelayInput.value) * 1000 : 
+                    parseInt(incorrectDelayInput.value) * 1000;
+                    
+                autoNextTimer = setTimeout(() => {
+                    selectRandomElement();
+                }, delay);
+            }
+        }
+
+        // Show feedback to the user
+        function showFeedback(message, isCorrect) {
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackDiv.style.display = 'block';
+        }
+
+        // Clear feedback
+        function clearFeedback() {
+            feedbackDiv.style.display = 'none';
+        }
+
+        // Update statistics
+        function updateStats() {
+            correctCount.textContent = correctAnswers;
+            totalCount.textContent = totalQuestions;
+            
+            const accuracyValue = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            accuracy.textContent = `${accuracyValue}%`;
+        }
+
+        // Save current list to localStorage
+        function saveList() {
+            const listName = listNameInput.value.trim();
+            if (!listName) {
+                alert("Please enter a name for your list.");
+                return;
+            }
+            
+            const listData = {
+                name: listName,
+                customSelectedElements: customSelectedElements,
+                groups: currentGroups,
+                periods: currentPeriods,
+                mode: currentMode,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Get existing lists from localStorage
+            const savedLists = JSON.parse(localStorage.getItem('elementTrainingLists') || '[]');
+            
+            // Check if a list with this name already exists
+            const existingIndex = savedLists.findIndex(list => list.name === listName);
+            if (existingIndex !== -1) {
+                // Replace existing list
+                savedLists[existingIndex] = listData;
+            } else {
+                // Add new list
+                savedLists.push(listData);
+            }
+            
+            // Save back to localStorage
+            localStorage.setItem('elementTrainingLists', JSON.stringify(savedLists));
+            
+            // Update UI
+            listNameInput.value = '';
+            loadSavedLists();
+            
+            // Show confirmation
+            showFeedback(`List "${listName}" saved successfully!`, true);
+            setTimeout(() => clearFeedback(), 2000);
+        }
+
+        // Load a saved list from localStorage
+        function loadList() {
+            const listName = listNameInput.value.trim();
+            if (!listName) {
+                alert("Please enter the name of the list you want to load.");
+                return;
+            }
+            
+            // Get saved lists from localStorage
+            const savedLists = JSON.parse(localStorage.getItem('elementTrainingLists') || '[]');
+            const listToLoad = savedLists.find(list => list.name === listName);
+            
+            if (!listToLoad) {
+                alert(`No list found with name "${listName}".`);
+                return;
+            }
+            
+            // Apply the saved list settings
+            customSelectedElements = listToLoad.customSelectedElements || [];
+            currentGroups = listToLoad.groups || ["all"];
+            currentPeriods = listToLoad.periods || ["all"];
+            currentMode = listToLoad.mode || "atomic";
+            
+            // Update UI
+            updateGroupButtons();
+            updatePeriodButtons();
+            updateModeButtons();
+            updateElementAppearance();
+            updateSelectedElementsList();
+            selectRandomElement();
+            
+            // Show confirmation
+            showFeedback(`List "${listName}" loaded successfully!`, true);
+            setTimeout(() => clearFeedback(), 2000);
+        }
+
+        // Update group buttons based on currentGroups
+        function updateGroupButtons() {
+            groupButtons.forEach(button => {
+                const group = button.dataset.group;
+                button.classList.toggle('active', currentGroups.includes(group));
+            });
+        }
+
+        // Update period buttons based on currentPeriods
+        function updatePeriodButtons() {
+            periodButtons.forEach(button => {
+                const period = button.dataset.period;
+                button.classList.toggle('active', currentPeriods.includes(period));
+            });
+        }
+
+        // Update mode buttons based on currentMode
+        function updateModeButtons() {
+            modeButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.mode === currentMode);
+            });
+            updateMode();
+        }
+
+        // Load and display saved lists
+        function loadSavedLists() {
+            const savedLists = JSON.parse(localStorage.getItem('elementTrainingLists') || '[]');
+            savedListsContainer.innerHTML = '';
+            
+            if (savedLists.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.textContent = 'No saved lists yet';
+                emptyMsg.style.padding = '10px';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.style.color = '#7f8c8d';
+                savedListsContainer.appendChild(emptyMsg);
+                return;
+            }
+            
+            savedLists.forEach(list => {
+                const listItem = document.createElement('div');
+                listItem.className = 'saved-list-item';
+                
+                const listName = document.createElement('span');
+                listName.textContent = list.name;
+                listName.style.cursor = 'pointer';
+                listName.addEventListener('click', () => {
+                    listNameInput.value = list.name;
+                    loadList();
+                });
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-list-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteList(list.name);
+                });
+                
+                listItem.appendChild(listName);
+                listItem.appendChild(deleteBtn);
+                savedListsContainer.appendChild(listItem);
+            });
+        }
+
+        // Delete a saved list
+        function deleteList(listName) {
+            if (!confirm(`Are you sure you want to delete the list "${listName}"?`)) {
+                return;
+            }
+            
+            const savedLists = JSON.parse(localStorage.getItem('elementTrainingLists') || '[]');
+            const filteredLists = savedLists.filter(list => list.name !== listName);
+            localStorage.setItem('elementTrainingLists', JSON.stringify(filteredLists));
+            loadSavedLists();
+            
+            // Show confirmation
+            showFeedback(`List "${listName}" deleted successfully!`, true);
+            setTimeout(() => clearFeedback(), 2000);
+        }
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
