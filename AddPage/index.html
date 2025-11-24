@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Editor | Jin-Zhao Teh | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      /* Dark Theme Base Styles */
+      :root {
+        --bg-dark: #121212;
+        --bg-card: #1e1e1e;
+        --bg-card-hover: #252525;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #888888;
+        --accent: #4a6cf7;
+        --accent-hover: #3a5ce5;
+        --border: #333333;
+        --separator: #444444;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --error: #ef4444;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      
+      /* Navigation */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: rgba(18, 18, 18, 0.9);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .nav-logo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      
+      .nav-menu {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
+      
+      /* Editor Layout */
+      .editor-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 5rem;
+        padding: 2rem 0;
+      }
+      
+      .editor-section {
+        background-color: var(--bg-card);
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .section-title i {
+        color: var(--accent);
+      }
+      
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+      
+      .form-input, .form-textarea, .form-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background-color: var(--bg-dark);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        color: var(--text-primary);
+      }
+      
+      .form-input:focus, .form-textarea:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+      }
+      
+      .form-textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      
+      .form-hint {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+      }
+      
+      .tag-input-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        background-color: var(--accent);
+        color: var(--text-primary);
+        border-radius: 4px;
+        font-size: 0.875rem;
+      }
+      
+      .tag-remove {
+        margin-left: 0.25rem;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: inherit;
+      }
+      
+      .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .btn-primary {
+        background-color: var(--accent);
+        color: var(--text-primary);
+      }
+      
+      .btn-primary:hover {
+        background-color: var(--accent-hover);
+      }
+      
+      .btn-secondary {
+        background-color: var(--bg-dark);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+      }
+      
+      .btn-secondary:hover {
+        background-color: var(--bg-card-hover);
+      }
+      
+      .btn-success {
+        background-color: var(--success);
+        color: var(--text-primary);
+      }
+      
+      .btn-success:hover {
+        opacity: 0.9;
+      }
+      
+      /* Preview Styles */
+      .preview-container {
+        background-color: var(--bg-dark);
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        min-height: 400px;
+      }
+      
+      .preview-project {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      
+      .preview-image {
+        width: 100%;
+        height: 200px;
+        background-color: var(--bg-card);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      
+      .preview-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .preview-image-placeholder {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+      }
+      
+      .preview-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+      }
+      
+      .preview-description {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .preview-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      
+      .preview-tag {
+        padding: 0.25rem 0.5rem;
+        background-color: var(--bg-card);
+        border-radius: 4px;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+      }
+      
+      /* Projects List */
+      .projects-list {
+        margin-top: 2rem;
+      }
+      
+      .project-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background-color: var(--bg-dark);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        transition: all 0.3s ease;
+      }
+      
+      .project-item:hover {
+        background-color: var(--bg-card-hover);
+      }
+      
+      .project-thumbnail {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+      
+      .project-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .project-info {
+        flex: 1;
+      }
+      
+      .project-name {
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+      }
+      
+      .project-meta {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+      }
+      
+      .project-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      
+      .btn-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-card);
+        color: var(--text-secondary);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-icon:hover {
+        background-color: var(--accent);
+        color: var(--text-primary);
+      }
+      
+      /* Loading Screen Styles */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85); /* Darker background */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        color: var(--text-primary);
+      }
+      
+      .loading-content {
+        text-align: center;
+        max-width: 500px;
+        padding: 2rem;
+      }
+      
+      .loading-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+      
+      .loading-project-name {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: var(--text-primary);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      
+      .loading-separator {
+        width: 100px;
+        height: 2px;
+        background-color: var(--separator);
+        margin: 1.5rem auto;
+      }
+      
+      .loading-description {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+      
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid var(--text-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 2rem;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .loading-progress {
+        font-size: 1rem;
+        color: var(--text-secondary);
+      }
+      
+      /* Toast Notifications */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        background-color: var(--success);
+        color: var(--text-primary);
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      
+      .toast.error {
+        background-color: var(--error);
+      }
+      
+      .toast.warning {
+        background-color: var(--warning);
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .editor-layout {
+          grid-template-columns: 1fr;
+        }
+        
+        .nav-menu {
+          display: none;
+        }
+        
+        .form-actions {
+          flex-direction: column;
+        }
+        
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        
+        .project-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        
+        .project-thumbnail {
+          margin-right: 0;
+          margin-bottom: 1rem;
+        }
+        
+        .project-actions {
+          margin-top: 1rem;
+          width: 100%;
+          justify-content: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">JIN-ZHAO TEH</a>
+        <div class="nav-menu">
+          <a href="index.html" class="nav-link">Portfolio</a>
+          <a href="project.html" class="nav-link">Project View</a>
+          <a href="editor.html" class="nav-link">Editor</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen" style="display: none;">
+      <div class="loading-content">
+        <div class="loading-title">Loading...</div>
+        <div class="loading-project-name" id="loading-project-name">Project Name</div>
+        <div class="loading-separator"></div>
+        <div class="loading-description" id="loading-description">Project description will appear here</div>
+        <div class="loading-spinner"></div>
+        <div class="loading-progress" id="loading-progress">Loading... 0%</div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+      <i class="fas fa-check-circle"></i>
+      <span id="toast-message">Project saved successfully!</span>
+    </div>
+
+    <div class="container">
+      <div class="editor-layout">
+        <!-- Project Form -->
+        <div class="editor-section">
+          <h2 class="section-title">
+            <i class="fas fa-plus-circle"></i>
+            Add New Project
+          </h2>
+          
+          <form id="project-form">
+            <div class="form-group">
+              <label class="form-label" for="project-title">Project Title</label>
+              <input type="text" id="project-title" class="form-input" placeholder="Enter project title" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="project-href">Project URL</label>
+              <input type="text" id="project-href" class="form-input" placeholder="/project-name" required>
+              <div class="form-hint">This will be the URL path for your project</div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="project-image">Project Image URL</label>
+              <input type="url" id="project-image" class="form-input" placeholder="https://example.com/image.jpg">
+              <div class="form-hint">Provide a direct link to your project image</div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="project-description">Project Description</label>
+              <textarea id="project-description" class="form-textarea" placeholder="Describe your project..." rows="4"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="project-tags">Project Tags</label>
+              <input type="text" id="project-tags" class="form-input" placeholder="Add tags separated by commas">
+              <div class="form-hint">Separate tags with commas (e.g., Web Design, Development, UI/UX)</div>
+              <div class="tag-input-container" id="tags-container">
+                <!-- Tags will be added here dynamically -->
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save Project
+              </button>
+              <button type="button" id="preview-loading" class="btn btn-secondary">
+                <i class="fas fa-eye"></i>
+                Preview Loading
+              </button>
+              <button type="button" id="reset-form" class="btn btn-secondary">
+                <i class="fas fa-redo"></i>
+                Reset Form
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Project Preview -->
+        <div class="editor-section">
+          <h2 class="section-title">
+            <i class="fas fa-desktop"></i>
+            Project Preview
+          </h2>
+          
+          <div class="preview-container">
+            <div class="preview-project">
+              <div class="preview-image" id="preview-image">
+                <div class="preview-image-placeholder">No image selected</div>
+              </div>
+              <h3 class="preview-title" id="preview-title">Project Title</h3>
+              <p class="preview-description" id="preview-description">Project description will appear here.</p>
+              <div class="preview-tags" id="preview-tags">
+                <!-- Tags will be added here dynamically -->
+              </div>
+            </div>
+          </div>
+          
+          <div class="projects-list">
+            <h2 class="section-title">
+              <i class="fas fa-list"></i>
+              Your Projects
+            </h2>
+            
+            <div id="projects-list">
+              <!-- Projects will be listed here dynamically -->
+              <div class="no-projects" id="no-projects">
+                <p>No projects added yet. Create your first project using the form.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // DOM Elements
+      const projectForm = document.getElementById('project-form');
+      const projectsList = document.getElementById('projects-list');
+      const noProjects = document.getElementById('no-projects');
+      const previewLoadingBtn = document.getElementById('preview-loading');
+      const resetFormBtn = document.getElementById('reset-form');
+      const loadingScreen = document.getElementById('loading-screen');
+      const toast = document.getElementById('toast');
+      
+      // Form input elements
+      const titleInput = document.getElementById('project-title');
+      const hrefInput = document.getElementById('project-href');
+      const imageInput = document.getElementById('project-image');
+      const descriptionInput = document.getElementById('project-description');
+      const tagsInput = document.getElementById('project-tags');
+      const tagsContainer = document.getElementById('tags-container');
+      
+      // Preview elements
+      const previewTitle = document.getElementById('preview-title');
+      const previewImage = document.getElementById('preview-image');
+      const previewDescription = document.getElementById('preview-description');
+      const previewTags = document.getElementById('preview-tags');
+      
+      // Loading screen elements
+      const loadingProjectName = document.getElementById('loading-project-name');
+      const loadingDescription = document.getElementById('loading-description');
+      const loadingProgress = document.getElementById('loading-progress');
+      
+      // Current projects data
+      let projects = JSON.parse(localStorage.getItem('projects')) || [];
+      
+      // Initialize the editor
+      function initEditor() {
+        // Load existing projects
+        renderProjectsList();
+        
+        // Set up form event listeners
+        projectForm.addEventListener('submit', handleFormSubmit);
+        previewLoadingBtn.addEventListener('click', previewLoadingScreen);
+        resetFormBtn.addEventListener('click', resetForm);
+        
+        // Set up input event listeners for live preview
+        titleInput.addEventListener('input', updatePreview);
+        hrefInput.addEventListener('input', updatePreview);
+        imageInput.addEventListener('input', updatePreview);
+        descriptionInput.addEventListener('input', updatePreview);
+        tagsInput.addEventListener('input', updateTagsPreview);
+        
+        // Set up tags input
+        tagsInput.addEventListener('keydown', handleTagsInput);
+        
+        // Initial preview update
+        updatePreview();
+      }
+      
+      // Handle form submission
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const title = titleInput.value.trim();
+        const href = hrefInput.value.trim();
+        const image = imageInput.value.trim();
+        const description = descriptionInput.value.trim();
+        const tags = getTagsFromInput();
+        
+        // Validate form
+        if (!title || !href) {
+          showToast('Project title and URL are required', 'error');
+          return;
+        }
+        
+        // Create project object
+        const project = {
+          id: generateId(),
+          title,
+          href,
+          image,
+          description,
+          tags: tags.join(', ')
+        };
+        
+        // Add to projects array
+        projects.push(project);
+        
+        // Save to localStorage
+        localStorage.setItem('projects', JSON.stringify(projects));
+        
+        // Update UI
+        renderProjectsList();
+        resetForm();
+        
+        // Show success message
+        showToast('Project saved successfully!');
+      }
+      
+      // Reset form
+      function resetForm() {
+        projectForm.reset();
+        tagsContainer.innerHTML = '';
+        updatePreview();
+      }
+      
+      // Generate unique ID
+      function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+      }
+      
+      // Get tags from input
+      function getTagsFromInput() {
+        const tags = [];
+        const tagElements = tagsContainer.querySelectorAll('.tag');
+        
+        tagElements.forEach(tagEl => {
+          tags.push(tagEl.textContent.replace('×', '').trim());
+        });
+        
+        return tags;
+      }
+      
+      // Handle tags input
+      function handleTagsInput(e) {
+        if (e.key === 'Enter' || e.key === ',') {
+          e.preventDefault();
+          const value = tagsInput.value.trim();
+          
+          if (value) {
+            addTag(value);
+            tagsInput.value = '';
+            updateTagsPreview();
+          }
+        }
+      }
+      
+      // Add tag to the tags container
+      function addTag(text) {
+        const tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.innerHTML = `
+          ${text}
+          <button type="button" class="tag-remove">&times;</button>
+        `;
+        
+        tag.querySelector('.tag-remove').addEventListener('click', function() {
+          tag.remove();
+          updateTagsPreview();
+        });
+        
+        tagsContainer.appendChild(tag);
+      }
+      
+      // Update preview based on form inputs
+      function updatePreview() {
+        previewTitle.textContent = titleInput.value || 'Project Title';
+        previewDescription.textContent = descriptionInput.value || 'Project description will appear here.';
+        
+        // Update image preview
+        if (imageInput.value) {
+          previewImage.innerHTML = `<img src="${imageInput.value}" alt="${titleInput.value || 'Project'}">`;
+        } else {
+          previewImage.innerHTML = '<div class="preview-image-placeholder">No image selected</div>';
+        }
+      }
+      
+      // Update tags preview
+      function updateTagsPreview() {
+        const tags = getTagsFromInput();
+        previewTags.innerHTML = '';
+        
+        tags.forEach(tag => {
+          const tagEl = document.createElement('span');
+          tagEl.className = 'preview-tag';
+          tagEl.textContent = tag;
+          previewTags.appendChild(tagEl);
+        });
+      }
+      
+      // Render projects list
+      function renderProjectsList() {
+        if (projects.length === 0) {
+          noProjects.style.display = 'block';
+          projectsList.innerHTML = '';
+          return;
+        }
+        
+        noProjects.style.display = 'none';
+        
+        projectsList.innerHTML = projects.map(project => `
+          <div class="project-item">
+            <div class="project-thumbnail">
+              ${project.image ? 
+                `<img src="${project.image}" alt="${project.title}">` : 
+                '<div style="width:100%;height:100%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.75rem;">No Image</div>'
+              }
+            </div>
+            <div class="project-info">
+              <div class="project-name">${project.title}</div>
+              <div class="project-meta">${project.href} • ${project.tags.split(', ').length} tags</div>
+            </div>
+            <div class="project-actions">
+              <button class="btn-icon edit-project" data-id="${project.id}">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-icon delete-project" data-id="${project.id}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+        
+        // Add event listeners to action buttons
+        document.querySelectorAll('.edit-project').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const projectId = this.getAttribute('data-id');
+            editProject(projectId);
+          });
+        });
+        
+        document.querySelectorAll('.delete-project').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const projectId = this.getAttribute('data-id');
+            deleteProject(projectId);
+          });
+        });
+      }
+      
+      // Edit project
+      function editProject(projectId) {
+        const project = projects.find(p => p.id === projectId);
+        
+        if (!project) return;
+        
+        // Fill form with project data
+        titleInput.value = project.title;
+        hrefInput.value = project.href;
+        imageInput.value = project.image;
+        descriptionInput.value = project.description;
+        
+        // Clear and add tags
+        tagsContainer.innerHTML = '';
+        if (project.tags) {
+          project.tags.split(', ').forEach(tag => {
+            if (tag.trim()) addTag(tag.trim());
+          });
+        }
+        
+        // Update preview
+        updatePreview();
+        updateTagsPreview();
+        
+        // Scroll to form
+        document.querySelector('.editor-section').scrollIntoView({ behavior: 'smooth' });
+        
+        showToast('Project loaded for editing');
+      }
+      
+      // Delete project
+      function deleteProject(projectId) {
+        if (confirm('Are you sure you want to delete this project?')) {
+          projects = projects.filter(p => p.id !== projectId);
+          localStorage.setItem('projects', JSON.stringify(projects));
+          renderProjectsList();
+          showToast('Project deleted successfully');
+        }
+      }
+      
+      // Preview loading screen
+      function previewLoadingScreen() {
+        const title = titleInput.value || 'Project Name';
+        const description = descriptionInput.value || 'Project description will appear here';
+        
+        // Update loading screen content
+        loadingProjectName.textContent = title;
+        loadingDescription.textContent = description;
+        
+        // Show loading screen
+        loadingScreen.style.display = 'flex';
+        
+        // Simulate loading progress
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += Math.random() * 15;
+          if (progress > 100) progress = 100;
+          
+          loadingProgress.textContent = `Loading... ${Math.round(progress)}%`;
+          
+          if (progress >= 100) {
+            clearInterval(interval);
+            
+            // Hide loading screen after 1 second
+            setTimeout(() => {
+              loadingScreen.style.display = 'none';
+            }, 1000);
+          }
+        }, 300);
+      }
+      
+      // Show toast notification
+      function showToast(message, type = 'success') {
+        const toastMessage = document.getElementById('toast-message');
+        toastMessage.textContent = message;
+        
+        // Set toast type
+        toast.className = 'toast';
+        if (type === 'error') {
+          toast.classList.add('error');
+          toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span id="toast-message">${message}</span>`;
+        } else if (type === 'warning') {
+          toast.classList.add('warning');
+          toast.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <span id="toast-message">${message}</span>`;
+        } else {
+          toast.innerHTML = `<i class="fas fa-check-circle"></i> <span id="toast-message">${message}</span>`;
+        }
+        
+        // Show toast
+        toast.classList.add('show');
+        
+        // Hide toast after 3 seconds
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+      
+      // Initialize the editor when DOM is loaded
+      document.addEventListener('DOMContentLoaded', initEditor);
+    </script>
+  </body>
+</html>
