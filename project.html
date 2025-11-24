@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project | Jin-Zhao Teh | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      /* Dark Theme Base Styles */
+      :root {
+        --bg-dark: #121212;
+        --bg-card: #1e1e1e;
+        --bg-card-hover: #252525;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #888888;
+        --accent: #4a6cf7;
+        --accent-hover: #3a5ce5;
+        --border: #333333;
+        --separator: #444444;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+        overflow: hidden;
+      }
+      
+      /* Forced Loading Screen */
+      .project-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      
+      .project-loading-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%);
+        z-index: -1;
+      }
+      
+      .project-loading-background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7);
+      }
+      
+      .project-loading-content {
+        padding: 3rem;
+        max-width: 600px;
+        width: 100%;
+      }
+      
+      .project-loading-info {
+        margin-bottom: 2rem;
+      }
+      
+      .project-loading-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+      
+      .project-loading-description {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      
+      .separator {
+        width: 80px;
+        height: 2px;
+        background-color: var(--separator);
+        margin: 1.5rem 0;
+      }
+      
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid var(--text-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 2rem 0;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .loading-progress {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 1rem;
+      }
+      
+      /* Project Content (hidden during loading) */
+      .project-content {
+        display: none;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .project-header {
+        margin-bottom: 3rem;
+        padding-top: 2rem;
+      }
+      
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 2rem;
+        transition: color 0.3s ease;
+      }
+      
+      .back-button:hover {
+        color: var(--text-primary);
+      }
+      
+      .back-button i {
+        margin-right: 0.5rem;
+      }
+      
+      .project-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+      
+      .project-meta {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        color: var(--text-secondary);
+      }
+      
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .project-tag {
+        padding: 0.5rem 1rem;
+        background-color: var(--bg-card);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+      
+      .project-description {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+        max-width: 800px;
+      }
+      
+      .project-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+      
+      .gallery-item {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      
+      .gallery-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+      }
+      
+      .project-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+      
+      .detail-card {
+        background-color: var(--bg-card);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      .detail-card h3 {
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        font-size: 1.3rem;
+      }
+      
+      .detail-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      
+      .project-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+      }
+      
+      .nav-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .nav-button:hover {
+        background-color: var(--bg-card-hover);
+      }
+      
+      .nav-button i {
+        margin: 0 0.5rem;
+      }
+      
+      /* Error State */
+      .error-state {
+        display: none;
+        text-align: center;
+        padding: 4rem 2rem;
+      }
+      
+      .error-state i {
+        font-size: 4rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+      }
+      
+      .error-state h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+      
+      .error-state p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .retry-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--accent);
+        color: var(--text-primary);
+        border: none;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      .retry-button:hover {
+        background-color: var(--accent-hover);
+      }
+      
+      .retry-button i {
+        margin-right: 0.5rem;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .project-loading-content {
+          padding: 2rem;
+        }
+        
+        .project-loading-title {
+          font-size: 2.5rem;
+        }
+        
+        .project-loading-description {
+          font-size: 1.1rem;
+        }
+        
+        .project-content {
+          padding: 1rem;
+        }
+        
+        .project-title {
+          font-size: 2.5rem;
+        }
+        
+        .project-meta {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        
+        .project-navigation {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        
+        .nav-button {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Forced Loading Screen - Always visible initially -->
+    <div id="project-loading" class="project-loading">
+      <div class="project-loading-background">
+        <img src="https://jin-zhao-teh.github.io/Images/English.png" alt="Project Background" id="loading-bg">
+      </div>
+      <div class="project-loading-content">
+        <div class="project-loading-info">
+          <h1 class="project-loading-title" id="loading-title">Loading Project</h1>
+          <div class="separator"></div>
+          <p class="project-loading-description" id="loading-description">Preparing your project experience</p>
+          <div class="separator"></div>
+        </div>
+        <div class="loading-spinner"></div>
+        <div class="loading-progress" id="loading-progress">Loading... 0%</div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="error-state">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h2>Project Not Found</h2>
+      <p>We couldn't load the project you're looking for. It might have been moved or no longer exists.</p>
+      <button class="retry-button" id="retry-button">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
+      <p style="margin-top: 2rem;">
+        <a href="index.html" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          Back to Portfolio
+        </a>
+      </p>
+    </div>
+
+    <!-- Project Content -->
+    <div id="project-content" class="project-content">
+      <div class="project-header">
+        <a href="index.html" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          Back to Portfolio
+        </a>
+        <h1 class="project-title" id="project-title">New Zealand Summer</h1>
+        <div class="project-meta">
+          <span><i class="far fa-calendar"></i> <span id="project-year">2025</span></span>
+          <span><i class="far fa-clock"></i> <span id="project-duration">5 min read</span></span>
+          <span><i class="fas fa-tag"></i> <span id="project-category">English, Writing</span></span>
+        </div>
+        <div class="project-tags" id="project-tags">
+          <!-- Tags will be dynamically added here -->
+        </div>
+        <p class="project-description" id="project-description">
+          A persuasive writing piece exploring the unique beauty of New Zealand's summer season, capturing the essence of its landscapes, culture, and atmosphere.
+        </p>
+      </div>
+
+      <div class="project-gallery" id="project-gallery">
+        <!-- Gallery items will be dynamically added here -->
+      </div>
+
+      <div class="project-details" id="project-details">
+        <!-- Detail cards will be dynamically added here -->
+      </div>
+
+      <div class="project-full-content" id="project-full-content">
+        <!-- Full content will be dynamically added here -->
+      </div>
+
+      <div class="project-navigation">
+        <a href="#" class="nav-button" id="prev-project">
+          <i class="fas fa-arrow-left"></i>
+          Previous Project
+        </a>
+        <a href="index.html" class="nav-button">
+          Back to Portfolio
+          <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="#" class="nav-button" id="next-project">
+          Next Project
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Function to get URL parameters
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      }
+
+      // Function to simulate loading progress
+      function simulateProgress(callback) {
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += Math.random() * 15;
+          if (progress > 100) progress = 100;
+          
+          document.getElementById('loading-progress').textContent = `Loading... ${Math.round(progress)}%`;
+          
+          if (progress >= 100) {
+            clearInterval(progressInterval);
+            if (callback) callback();
+          }
+        }, 300);
+      }
+
+      // Function to show error state
+      function showErrorState() {
+        document.getElementById('project-loading').style.display = 'none';
+        document.getElementById('error-state').style.display = 'block';
+        document.body.style.overflow = 'auto';
+      }
+
+      // Function to show project content
+      function showProjectContent() {
+        document.getElementById('project-loading').style.display = 'none';
+        document.getElementById('project-content').style.display = 'block';
+        document.body.style.overflow = 'auto';
+      }
+
+      // Function to render project data
+      function renderProjectData(projectData) {
+        // Set project content
+        document.getElementById('project-title').textContent = projectData.title;
+        document.getElementById('project-description').textContent = projectData.description;
+        
+        // Extract year from tags if available
+        if (projectData.tags) {
+          const yearMatch = projectData.tags.match(/\b20\d{2}\b/);
+          if (yearMatch) {
+            document.getElementById('project-year').textContent = yearMatch[0];
+          }
+        }
+        
+        // Add tags to project page
+        const tagsContainer = document.getElementById('project-tags');
+        tagsContainer.innerHTML = '';
+        
+        if (projectData.tags) {
+          const tagArray = projectData.tags.split(',').map(tag => tag.trim());
+          tagArray.forEach(tag => {
+            const tagElement = document.createElement('span');
+            tagElement.className = 'project-tag';
+            tagElement.textContent = tag;
+            tagsContainer.appendChild(tagElement);
+          });
+        }
+        
+        // Add gallery images
+        const galleryContainer = document.getElementById('project-gallery');
+        galleryContainer.innerHTML = '';
+        
+        // Main project image
+        const mainGalleryItem = document.createElement('div');
+        mainGalleryItem.className = 'gallery-item';
+        
+        const mainImg = document.createElement('img');
+        mainImg.src = projectData.image;
+        mainImg.alt = projectData.title;
+        
+        mainGalleryItem.appendChild(mainImg);
+        galleryContainer.appendChild(mainGalleryItem);
+        
+        // Additional images based on project type
+        if (projectData.title.includes("New Zealand")) {
+          const additionalImages = [
+            "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+            "https://images.unsplash.com/photo-1578640461922-7a27a6d52954?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+          ];
+          
+          additionalImages.forEach(imgSrc => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = projectData.title;
+            
+            galleryItem.appendChild(img);
+            galleryContainer.appendChild(galleryItem);
+          });
+        }
+        
+        // Add detail cards
+        const detailsContainer = document.getElementById('project-details');
+        detailsContainer.innerHTML = '';
+        
+        const detailCards = [
+          {
+            title: "Project Overview",
+            content: projectData.description
+          },
+          {
+            title: "Writing Style",
+            content: "The piece employs descriptive language and persuasive techniques to convey the distinctive qualities of a New Zealand summer."
+          },
+          {
+            title: "Key Themes",
+            content: "Natural beauty, seasonal change, cultural identity, environmental appreciation, and the unique characteristics of the Southern Hemisphere summer experience."
+          }
+        ];
+        
+        detailCards.forEach(detail => {
+          const detailCard = document.createElement('div');
+          detailCard.className = 'detail-card';
+          
+          const title = document.createElement('h3');
+          title.textContent = detail.title;
+          
+          const content = document.createElement('p');
+          content.textContent = detail.content;
+          
+          detailCard.appendChild(title);
+          detailCard.appendChild(content);
+          detailsContainer.appendChild(detailCard);
+        });
+        
+        // Add full content
+        const fullContentContainer = document.getElementById('project-full-content');
+        fullContentContainer.innerHTML = '';
+        
+        if (projectData.title.includes("New Zealand")) {
+          fullContentContainer.innerHTML = `
+            <h2>New Zealand Summer: A Persuasive Exploration</h2>
+            <p>There is something truly magical about a New Zealand summer. Unlike the oppressive heat of tropical climates or the fleeting warmth of European summers, the New Zealand summer offers a perfect balance—a golden season that invites both adventure and reflection.</p>
+            
+            <p>The days stretch long into the evening, with sunlight lingering until past nine o'clock, casting a warm glow across landscapes that seem almost unreal in their beauty. From the rugged coastlines where turquoise waters meet black sand beaches, to the lush native forests alive with the song of tui and bellbirds, every corner of the country seems to awaken during these precious months.</p>
+            
+            <p>What makes a New Zealand summer truly special is its accessibility. Within a single day, one can experience the cool morning mist of a mountain hike, the warmth of an afternoon at a secluded beach, and the breathtaking spectacle of a sunset over the ocean. The air carries the scent of salt, sun-warmed earth, and the distinctive fragrance of manuka and kanuka in bloom.</p>
+            
+            <p>This persuasive piece aims not just to describe, but to convince—to transport the reader to this unique summer experience and argue for its singular place among the world's great seasonal transformations.</p>
+          `;
+        }
+        
+        // Set up navigation
+        document.getElementById('prev-project').style.display = 'none';
+        document.getElementById('next-project').style.display = 'none';
+      }
+
+      // Main function to load project data
+      async function loadProjectData() {
+        const projectId = getUrlParameter('id') || 'English';
+        
+        try {
+          // Fetch routes data
+          const response = await fetch('https://jin-zhao-teh.github.io/backend/data.json');
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch project data');
+          }
+          
+          const data = await response.json();
+          
+          // Find the current project in the data
+          let projectData = null;
+          
+          if (data.projects && Array.isArray(data.projects)) {
+            // Try to find project by href (without leading slash)
+            projectData = data.projects.find(project => 
+              project.href && project.href.replace(/^\//, '') === projectId
+            );
+            
+            // If not found by href, try by title
+            if (!projectData) {
+              projectData = data.projects.find(project => 
+                project.title && project.title.toLowerCase().replace(/\s+/g, '-') === projectId.toLowerCase()
+              );
+            }
+            
+            // If still not found, use the first project
+            if (!projectData && data.projects.length > 0) {
+              projectData = data.projects[0];
+            }
+          }
+          
+          // If project not found, show error
+          if (!projectData) {
+            throw new Error('Project not found');
+          }
+          
+          // Set loading screen content
+          document.getElementById('loading-title').textContent = `Loading ${projectData.title}`;
+          document.getElementById('loading-description').textContent = projectData.description || 'Loading project details...';
+          
+          if (projectData.image) {
+            document.getElementById('loading-bg').src = projectData.image;
+          }
+          
+          // Start progress simulation
+          simulateProgress(() => {
+            // Force loading screen to show for at least 3-5 seconds
+            const minLoadingTime = 3000 + Math.random() * 2000; // Between 3-5 seconds
+            setTimeout(() => {
+              renderProjectData(projectData);
+              showProjectContent();
+            }, minLoadingTime);
+          });
+          
+        } catch (error) {
+          console.error('Error loading project:', error);
+          
+          // Set error state on loading screen
+          document.getElementById('loading-title').textContent = 'Error Loading Project';
+          document.getElementById('loading-description').textContent = 'We encountered an issue while loading the project.';
+          
+          // Show error after a brief delay
+          setTimeout(() => {
+            showErrorState();
+          }, 2000);
+        }
+      }
+
+      // Initialize the page immediately
+      // We don't wait for DOMContentLoaded because we want the loading screen immediately
+      (function init() {
+        // Set up retry button
+        document.getElementById('retry-button').addEventListener('click', function() {
+          document.getElementById('error-state').style.display = 'none';
+          document.getElementById('project-loading').style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+          loadProjectData();
+        });
+        
+        // Start loading project data immediately
+        loadProjectData();
+      })();
+    </script>
+  </body>
+</html>
